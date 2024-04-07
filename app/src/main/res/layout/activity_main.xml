@@ -1,18 +1,84 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/titleScreenBackground"
+    android:orientation="vertical"
+    android:paddingHorizontal="16dp"
+    android:paddingBottom="28dp"
     tools:context=".MainActivity">
+
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Hello World!"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:paddingTop="10dp"
+        android:paddingBottom="12dp"
+        android:layout_marginBottom="20dp"
+        android:text="@string/titleScreenName"
+        android:textColor="@color/white"
+        android:textSize="22sp" />
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <Button
+            android:id="@+id/buttonSearch"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+
+            android:backgroundTint="#ffffff"
+            android:text="@string/Search"
+            android:textSize="22dp"
+            android:textColor="@color/black"
+            app:cornerRadius="16dp"
+            app:icon="@drawable/icon_search"
+            app:iconGravity="textStart"
+            app:iconPadding="8dp"
+            android:textAllCaps="false"
+            app:iconTint="@color/black"
+            android:foreground="?attr/selectableItemBackground" />
+
+        <Button
+            android:id="@+id/buttonMediateka"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+
+            android:backgroundTint="#ffffff"
+            android:text="@string/Mediateka"
+            android:textSize="22dp"
+            android:textColor="@color/black"
+            app:cornerRadius="16dp"
+            app:icon="@drawable/icon_mediateka"
+            app:iconGravity="textStart"
+            app:iconPadding="8dp"
+            android:textAllCaps="false"
+            app:iconTint="@color/black"
+            android:foreground="?attr/selectableItemBackground" />
+
+        <Button
+            android:id="@+id/buttonSettings"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+
+            android:backgroundTint="#ffffff"
+            android:text="@string/Settings"
+            android:textSize="22dp"
+            android:textAllCaps="false"
+            android:textColor="@color/black"
+            app:cornerRadius="16dp"
+            app:icon="@drawable/icon_settings"
+            app:iconGravity="textStart"
+            app:iconPadding="8dp"
+            app:iconTint="@color/black"
+            android:foreground="?attr/selectableItemBackground" />/>
+
+    </LinearLayout>
+</LinearLayout>
