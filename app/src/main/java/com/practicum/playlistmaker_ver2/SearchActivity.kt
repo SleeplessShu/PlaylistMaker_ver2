@@ -10,10 +10,9 @@ class SearchActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_search)
 
-        val reactionOnButtonBackToMain = findViewById<ImageView>(R.id.buttonBackToMain)
-        reactionOnButtonBackToMain.setOnClickListener {
-            val intentBackToMain = Intent(this, MainActivity::class.java)
-            startActivity(intentBackToMain)
+        val onPressBackToMain = findViewById<ImageView>(R.id.buttonBackToMain)
+        onPressBackToMain.setOnClickListener {
+            finish()
         }
     }
 }

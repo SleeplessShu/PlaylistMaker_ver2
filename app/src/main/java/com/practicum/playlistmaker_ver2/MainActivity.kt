@@ -15,24 +15,22 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        val reactionOnButtonSettings = findViewById<Button>(R.id.buttonSettings)
-        reactionOnButtonSettings.setOnClickListener {
+        val onPressSettings = findViewById<Button>(R.id.buttonSettings)
+        onPressSettings.setOnClickListener {
             val intentSettings = Intent(this, SettingsActivity::class.java)
             startActivity(intentSettings)
         }
-        val reactionOnButtonMediateka = findViewById<Button>(R.id.buttonMediateka)
-        reactionOnButtonMediateka.setOnClickListener {
+        val onPressMediateka = findViewById<Button>(R.id.buttonMediateka)
+        onPressMediateka.setOnClickListener {
             val intentMediateka = Intent(this, MediatekaActivity::class.java)
             startActivity(intentMediateka)
         }
-        val reactionOnButtonSearch = findViewById<Button>(R.id.buttonSearch)
-        reactionOnButtonSearch.setOnClickListener(object : View.OnClickListener {
+        val onPressSearch = findViewById<Button>(R.id.buttonSearch)
+        onPressSearch.setOnClickListener(object : View.OnClickListener {
             override fun onClick(v: View?) {
-                val intentButtonSearch = Intent(this@MainActivity, SearchActivity::class.java)
-                startActivity(intentButtonSearch)
+                val intentSearch = Intent(this@MainActivity, SearchActivity::class.java)
+                startActivity(intentSearch)
             }
         })
-
-
     }
 }
