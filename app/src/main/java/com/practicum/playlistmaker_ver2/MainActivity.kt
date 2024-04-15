@@ -26,11 +26,9 @@ class MainActivity : AppCompatActivity() {
             startActivity(intentMediateka)
         }
         val onPressSearch = findViewById<Button>(R.id.buttonSearch)
-        onPressSearch.setOnClickListener(object : View.OnClickListener {
-            override fun onClick(v: View?) {
-                val intentSearch = Intent(this@MainActivity, SearchActivity::class.java)
-                startActivity(intentSearch)
-            }
-        })
+        onPressSearch.setOnClickListener {
+            val intentSearch = Intent(this, SearchActivity::class.java)
+            startActivity(intentSearch)
+        }
     }
 }

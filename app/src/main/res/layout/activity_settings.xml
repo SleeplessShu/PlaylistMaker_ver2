@@ -1,11 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-
     android:orientation="vertical"
-
-    android:background="@color/white">
+    android:background="?attr/colorPrimary">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -13,18 +12,15 @@
         android:orientation="horizontal"
         android:paddingBottom="@dimen/dim_16dp">
 
-        <TextView
+
+        <ImageView
+            style="@style/PM2_Header_Image"
             android:id="@+id/buttonBackToMain"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center_vertical"
-            android:layout_gravity="center_vertical"
-            android:padding="@dimen/dim_16dp"
-            android:drawableStart="@drawable/icon_arrow"
-            android:drawablePadding="@dimen/dim_24dp"
-            android:text="@string/Settings"
-            android:textColor="@color/black"
-            android:textSize="@dimen/text_size_Header" />
+            android:src="@drawable/icon_arrow" />
+
+        <TextView
+            style="@style/PM2_Header_Text"
+            android:text="@string/Settings" />
 
     </LinearLayout>
 
@@ -38,23 +34,21 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:layout_gravity="center"
             android:paddingVertical="@dimen/dim_24dp"
             android:paddingHorizontal="@dimen/dim_16dp">
 
             <TextView
+                style="@style/SettingsStyleStart"
+                android:text="@string/switchDarkTheme" />
+
+            <Switch
+                android:id="@+id/switchTheme"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="start"
-                android:text="@string/switchDarkTheme"
-                android:textSize="@dimen/text_size_Base"
-                android:textColor="@color/black" />
-
-            <androidx.appcompat.widget.SwitchCompat
-                android:layout_width="wrap_content"
-                android:layout_height="0dp"
                 android:layout_gravity="end"
-                android:backgroundTint="@color/black" />
+                android:thumbTint="?attr/colorSwitcherTop"
+                android:trackTint="?attr/colorSwitcherBottom" />
+
         </FrameLayout>
 
         <FrameLayout
@@ -66,18 +60,11 @@
             android:paddingHorizontal="@dimen/dim_16dp">
 
             <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="start"
-                android:text="@string/shareApp"
-                android:textSize="@dimen/text_size_Base"
-                android:textColor="@color/black" />
+                style="@style/SettingsStyleStart"
+                android:text="@string/shareApp" />
 
             <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="end"
-                android:backgroundTint="@color/iconsColor"
+                style="@style/SettingsStyleEnd"
                 android:src="@drawable/icon_share" />
         </FrameLayout>
 
@@ -90,18 +77,11 @@
             android:paddingHorizontal="@dimen/dim_16dp">
 
             <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="start"
-                android:text="@string/support"
-                android:textSize="@dimen/text_size_Base"
-                android:textColor="@color/black" />
+                style="@style/SettingsStyleStart"
+                android:text="@string/support" />
 
             <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="end"
-                android:backgroundTint="@color/iconsColor"
+                style="@style/SettingsStyleEnd"
                 android:src="@drawable/icon_support" />
         </FrameLayout>
 
@@ -114,18 +94,11 @@
             android:paddingHorizontal="@dimen/dim_16dp">
 
             <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="start"
-                android:text="@string/agreement"
-                android:textSize="@dimen/text_size_Base"
-                android:textColor="@color/black" />
+                style="@style/SettingsStyleStart"
+                android:text="@string/agreement" />
 
             <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="end"
-                android:backgroundTint="@color/black"
+                style="@style/SettingsStyleEnd"
                 android:src="@drawable/icon_agreement" />
         </FrameLayout>
     </LinearLayout>
