@@ -14,8 +14,8 @@
 
 
         <ImageView
-            style="@style/PM2_Header_Image"
             android:id="@+id/buttonBackToMain"
+            style="@style/PM2_Header_Image"
             android:src="@drawable/icon_arrow" />
 
         <TextView
@@ -40,6 +40,7 @@
             <TextView
                 style="@style/SettingsStyleStart"
                 android:text="@string/switchDarkTheme" />
+
 
             <Switch
                 android:id="@+id/switchTheme"
