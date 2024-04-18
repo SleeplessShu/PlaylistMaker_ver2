@@ -4,8 +4,9 @@ package com.practicum.playlistmaker_ver2
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.ImageView
-import android.widget.Switch
+
 import androidx.appcompat.app.AppCompatDelegate
+import androidx.appcompat.widget.SwitchCompat
 
 class SettingsActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -17,7 +18,7 @@ class SettingsActivity : AppCompatActivity() {
             finish()
         }
 
-        val switchTheme = findViewById<Switch>(R.id.switchTheme)
+        val switchTheme = findViewById<SwitchCompat>(R.id.switchTheme)
         switchTheme.setOnCheckedChangeListener { _, isChecked ->
             if (isChecked) {
                 AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)

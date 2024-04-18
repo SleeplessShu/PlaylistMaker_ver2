@@ -37,19 +37,18 @@
             android:paddingVertical="@dimen/dim_24dp"
             android:paddingHorizontal="@dimen/dim_16dp">
 
-            <TextView
-                style="@style/SettingsStyleStart"
-                android:text="@string/switchDarkTheme" />
-
-
-            <Switch
+            <androidx.appcompat.widget.SwitchCompat
                 android:id="@+id/switchTheme"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_gravity="end"
-                android:thumbTint="?attr/colorSwitcherTop"
-                android:trackTint="?attr/colorSwitcherBottom" />
-
+                android:text="@string/switchDarkTheme"
+                android:fontFamily="@font/ys_display_regular"
+                android:textSize="@dimen/text_size_Base"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="@+id/textBlack"
+                app:layout_constraintTop_toTopOf="@+id/textBlack"
+                app:thumbTint="?attr/colorSwitcherBottom"
+                app:trackTint="?attr/colorSwitcherTop" />
         </FrameLayout>
 
         <FrameLayout
