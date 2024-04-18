@@ -31,4 +31,20 @@ class MainActivity : AppCompatActivity() {
             startActivity(intentSearch)
         }
     }
+
+    override fun onPause() {
+        super.onPause()
+    }
+
+    override fun onResume() {
+        super.onResume()
+    }
+
+    override fun onStop() {
+        super.onStop()
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+    }
 }

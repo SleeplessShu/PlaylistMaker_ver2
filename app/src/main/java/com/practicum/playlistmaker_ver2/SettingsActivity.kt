@@ -54,4 +54,20 @@ class SettingsActivity : AppCompatActivity() {
             startActivity(agreementIntent)
         }
     }
+
+    override fun onPause() {
+        super.onPause()
+    }
+
+    override fun onResume() {
+        super.onResume()
+    }
+
+    override fun onStop() {
+        super.onStop()
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+    }
 }
