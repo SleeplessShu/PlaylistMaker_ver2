@@ -1,6 +1,8 @@
 package com.practicum.playlistmaker_ver2
 
 
+import android.content.Intent
+import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.ImageView
@@ -25,6 +27,31 @@ class SettingsActivity : AppCompatActivity() {
             } else {
                 AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
             }
+        }
+        val supportApp = findViewById<ImageView>(R.id.mailToSupport)
+        supportApp.setOnClickListener {
+            val supportIntent = Intent(Intent.ACTION_SENDTO)
+            supportIntent.data = Uri.parse("mailto:")
+            supportIntent.putExtra(Intent.EXTRA_EMAIL, arrayOf(getString(R.string.supportEmail)))
+            supportIntent.putExtra(Intent.EXTRA_SUBJECT, getString(R.string.mailToSupportSubject))
+            supportIntent.putExtra(Intent.EXTRA_TEXT, getString(R.string.mailToSupportText))
+            startActivity(supportIntent)
+        }
+
+        val shareApp = findViewById<ImageView>(R.id.shareApp)
+        shareApp.setOnClickListener {
+
+            val shareIntent = Intent(Intent.ACTION_SEND)
+            shareIntent.type = "text/plain"
+            shareIntent.putExtra(Intent.EXTRA_TEXT, getString(R.string.linkToAndroidCourse))
+            startActivity(shareIntent)
+        }
+
+        val toAgreementWeb = findViewById<ImageView>(R.id.toAgreementWeb)
+        toAgreementWeb.setOnClickListener {
+            val agreementIntent =
+                Intent(Intent.ACTION_VIEW, Uri.parse(getString(R.string.linkToAgreement)))
+            startActivity(agreementIntent)
         }
     }
 }
