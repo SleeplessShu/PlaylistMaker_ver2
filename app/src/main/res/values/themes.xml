@@ -12,6 +12,9 @@
 
         <item name="colorSwitcherTop">@color/grey</item>
         <item name="colorSwitcherBottom">@color/greyLight</item>
+
+        <item name="colorTextInputFont">@color/grey</item>
+        <item name="colorTextInputBackground">@color/greyLight</item>
     </style>
 
     <!--<style name="Theme.PlaylistMaker_ver2" parent="Theme_Day_PlaylistMaker_ver2" />-->

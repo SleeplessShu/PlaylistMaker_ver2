@@ -12,5 +12,8 @@
 
         <item name="colorSwitcherTop">@color/blue</item>
         <item name="colorSwitcherBottom">@color/blueLight</item>
+
+        <item name="colorTextInputFont">@color/black</item>
+        <item name="colorTextInputBackground">@color/white</item>
     </style>
 </resources>

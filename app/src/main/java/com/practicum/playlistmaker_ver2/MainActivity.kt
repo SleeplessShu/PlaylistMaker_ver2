@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import android.widget.Button
+import androidx.appcompat.app.AppCompatDelegate
 import com.practicum.playlistmaker_ver2.MediatekaActivity
 import com.practicum.playlistmaker_ver2.SearchActivity
 import com.practicum.playlistmaker_ver2.SettingsActivity
@@ -30,6 +31,11 @@ class MainActivity : AppCompatActivity() {
             val intentSearch = Intent(this, SearchActivity::class.java)
             startActivity(intentSearch)
         }
+        val prefs = getSharedPreferences("Settings", MODE_PRIVATE)
+        val isNightModeOn = prefs.getBoolean("NightMode", false)
+        AppCompatDelegate.setDefaultNightMode(
+            if (isNightModeOn) AppCompatDelegate.MODE_NIGHT_YES else AppCompatDelegate.MODE_NIGHT_NO
+        )
     }
 
     override fun onPause() {

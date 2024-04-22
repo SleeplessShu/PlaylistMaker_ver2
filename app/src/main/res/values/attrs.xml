@@ -2,4 +2,6 @@
 <resources>
     <attr name="colorSwitcherTop" format="reference|color" />
     <attr name="colorSwitcherBottom" format="reference|color" />
+    <attr name="colorTextInputFont" format="reference|color" />
+    <attr name="colorTextInputBackground" format="reference|color" />
 </resources>
