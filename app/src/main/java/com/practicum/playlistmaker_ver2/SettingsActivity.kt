@@ -9,15 +9,19 @@ import androidx.appcompat.app.AppCompatDelegate
 import androidx.appcompat.widget.SwitchCompat
 
 class SettingsActivity : AppCompatActivity() {
+    companion object {
+        const val NIGHT_MODE_KEY = "NightMode"
+        const val SETTINGS_KEY = "Settings"
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
+
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_settings)
-
         val switchTheme = findViewById<SwitchCompat>(R.id.switchTheme)
-        val prefs = getSharedPreferences("Settings", MODE_PRIVATE)
+        val prefs = getSharedPreferences(SETTINGS_KEY, MODE_PRIVATE)
         val isNightModeOn = prefs.getBoolean(
-            "NightMode",
+            NIGHT_MODE_KEY,
             AppCompatDelegate.getDefaultNightMode() == AppCompatDelegate.MODE_NIGHT_YES
         )
         switchTheme.isChecked = isNightModeOn
@@ -26,7 +30,7 @@ class SettingsActivity : AppCompatActivity() {
             AppCompatDelegate.setDefaultNightMode(
                 if (isChecked) AppCompatDelegate.MODE_NIGHT_YES else AppCompatDelegate.MODE_NIGHT_NO
             )
-            prefs.edit().putBoolean("NightMode", isChecked).apply()
+            prefs.edit().putBoolean(NIGHT_MODE_KEY, isChecked).apply()
         }
 
         val onPressBackToMain = findViewById<ImageView>(R.id.buttonBackToMain)
@@ -59,21 +63,5 @@ class SettingsActivity : AppCompatActivity() {
                 Intent(Intent.ACTION_VIEW, Uri.parse(getString(R.string.linkToAgreement)))
             startActivity(agreementIntent)
         }
-    }
-
-    override fun onPause() {
-        super.onPause()
-    }
-
-    override fun onResume() {
-        super.onResume()
-    }
-
-    override fun onStop() {
-        super.onStop()
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
     }
 }

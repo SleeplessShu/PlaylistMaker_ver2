@@ -17,10 +17,18 @@
         <ImageView
             style="@style/PM2_Header_Image"
             android:id="@+id/buttonBackToMain"
-            android:src="@drawable/icon_arrow" />
+            android:src="@drawable/icon_arrow"
+            android:layout_width="@dimen/dim_24dp"
+            android:layout_height="@dimen/dim_24dp"
+            android:layout_gravity="center_vertical"
+            android:layout_margin="@dimen/dim_16dp" />
 
         <TextView
             style="@style/PM2_Header_Text"
-            android:text="@string/Mediateka" />
+            android:text="@string/Mediateka"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:padding="@dimen/dim_16dp" />
     </LinearLayout>
 </LinearLayout>

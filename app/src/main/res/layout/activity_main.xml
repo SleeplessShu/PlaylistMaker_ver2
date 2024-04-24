@@ -17,9 +17,7 @@
         android:paddingTop="@dimen/dim_16dp"
         android:layout_marginBottom="@dimen/dim_24dp"
         android:text="@string/titleScreenName"
-        android:textColor="?attr/colorSecondaryVariant"
-        android:textSize="@dimen/text_size_Header"
-        android:fontFamily="@font/ys_display_medium" />
+        style="@style/AppName" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -30,18 +28,35 @@
             style="@style/ButtonsStyle"
             android:id="@+id/buttonSearch"
             android:text="@string/Search"
-            app:icon="@drawable/icon_search" />
+            app:icon="@drawable/icon_search"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            app:iconGravity="textStart"
+            app:iconPadding="@dimen/dim_08dp" />
 
         <Button
             style="@style/ButtonsStyle"
             android:id="@+id/buttonMediateka"
             android:text="@string/Mediateka"
-            app:icon="@drawable/icon_mediateka" />
+            app:icon="@drawable/icon_mediateka"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            app:iconGravity="textStart"
+            app:iconPadding="@dimen/dim_08dp" />
 
         <Button
             style="@style/ButtonsStyle"
             android:id="@+id/buttonSettings"
             android:text="@string/Settings"
-            app:icon="@drawable/icon_settings" />
+            app:icon="@drawable/icon_settings"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            app:iconGravity="textStart"
+            app:iconPadding="@dimen/dim_08dp" />
     </LinearLayout>
 </LinearLayout>
+
+
