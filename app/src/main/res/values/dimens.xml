@@ -1,8 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <dimen name="dim_40dp">40dp</dimen>
+    <dimen name="dim_32dp">32dp</dimen>
     <dimen name="dim_24dp">24dp</dimen>
     <dimen name="dim_16dp">16dp</dimen>
     <dimen name="dim_08dp">8dp</dimen>
+    <dimen name="dim_00dp">0dp</dimen>
     <dimen name="text_size_Base">16sp</dimen>
     <dimen name="text_size_Header">22sp</dimen>
     <dimen name="block_weight_1">1</dimen>

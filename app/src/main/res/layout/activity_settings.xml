@@ -1,11 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-
     android:orientation="vertical"
-
-    android:background="@color/white">
+    android:background="?attr/colorPrimary">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -13,18 +12,23 @@
         android:orientation="horizontal"
         android:paddingBottom="@dimen/dim_16dp">
 
-        <TextView
+
+        <ImageView
             android:id="@+id/buttonBackToMain"
+            style="@style/PM2_Header_Image"
+            android:src="@drawable/icon_arrow"
+            android:layout_width="@dimen/dim_24dp"
+            android:layout_height="@dimen/dim_24dp"
+            android:layout_gravity="center_vertical"
+            android:layout_margin="@dimen/dim_16dp" />
+
+        <TextView
+            style="@style/PM2_Header_Text"
+            android:text="@string/Settings"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:gravity="center_vertical"
             android:layout_gravity="center_vertical"
-            android:padding="@dimen/dim_16dp"
-            android:drawableStart="@drawable/icon_arrow"
-            android:drawablePadding="@dimen/dim_24dp"
-            android:text="@string/Settings"
-            android:textColor="@color/black"
-            android:textSize="@dimen/text_size_Header" />
+            android:padding="@dimen/dim_16dp" />
 
     </LinearLayout>
 
@@ -38,23 +42,17 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:layout_gravity="center"
             android:paddingVertical="@dimen/dim_24dp"
             android:paddingHorizontal="@dimen/dim_16dp">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="start"
-                android:text="@string/switchDarkTheme"
-                android:textSize="@dimen/text_size_Base"
-                android:textColor="@color/black" />
 
             <androidx.appcompat.widget.SwitchCompat
-                android:layout_width="wrap_content"
-                android:layout_height="0dp"
-                android:layout_gravity="end"
-                android:backgroundTint="@color/black" />
+                style="@style/ThemeSwitch"
+                android:id="@+id/switchTheme"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/switchDarkTheme"
+                app:layout_constraintStart_toStartOf="@+id/textBlack"
+                app:layout_constraintTop_toTopOf="@+id/textBlack" />
         </FrameLayout>
 
         <FrameLayout
@@ -66,19 +64,21 @@
             android:paddingHorizontal="@dimen/dim_16dp">
 
             <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="start"
+                style="@style/SettingsStyle"
                 android:text="@string/shareApp"
-                android:textSize="@dimen/text_size_Base"
-                android:textColor="@color/black" />
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:gravity="center_vertical"
+                android:layout_gravity="start" />
 
             <ImageView
+                android:id="@+id/shareApp"
+                style="@style/SettingsStyle"
+                android:src="@drawable/icon_share"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="end"
-                android:backgroundTint="@color/iconsColor"
-                android:src="@drawable/icon_share" />
+                android:layout_height="match_parent"
+                android:gravity="center_vertical"
+                android:layout_gravity="end" />
         </FrameLayout>
 
         <FrameLayout
@@ -90,19 +90,21 @@
             android:paddingHorizontal="@dimen/dim_16dp">
 
             <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="start"
+                style="@style/SettingsStyle"
                 android:text="@string/support"
-                android:textSize="@dimen/text_size_Base"
-                android:textColor="@color/black" />
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:gravity="center_vertical"
+                android:layout_gravity="start" />
 
             <ImageView
+                android:id="@+id/mailToSupport"
+                style="@style/SettingsStyle"
+                android:src="@drawable/icon_support"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="end"
-                android:backgroundTint="@color/iconsColor"
-                android:src="@drawable/icon_support" />
+                android:layout_height="match_parent"
+                android:gravity="center_vertical"
+                android:layout_gravity="end" />
         </FrameLayout>
 
         <FrameLayout
@@ -114,19 +116,21 @@
             android:paddingHorizontal="@dimen/dim_16dp">
 
             <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="start"
+                style="@style/SettingsStyle"
                 android:text="@string/agreement"
-                android:textSize="@dimen/text_size_Base"
-                android:textColor="@color/black" />
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:gravity="center_vertical"
+                android:layout_gravity="start" />
 
             <ImageView
+                android:id="@+id/toAgreementWeb"
+                style="@style/SettingsStyle"
+                android:src="@drawable/icon_agreement"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="end"
-                android:backgroundTint="@color/black"
-                android:src="@drawable/icon_agreement" />
+                android:layout_height="match_parent"
+                android:gravity="center_vertical"
+                android:layout_gravity="end" />
         </FrameLayout>
     </LinearLayout>
 </LinearLayout>

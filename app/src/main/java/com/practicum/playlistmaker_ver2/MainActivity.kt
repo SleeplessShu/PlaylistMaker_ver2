@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import android.widget.Button
+import androidx.appcompat.app.AppCompatDelegate
 import com.practicum.playlistmaker_ver2.MediatekaActivity
 import com.practicum.playlistmaker_ver2.SearchActivity
 import com.practicum.playlistmaker_ver2.SettingsActivity
@@ -26,11 +27,14 @@ class MainActivity : AppCompatActivity() {
             startActivity(intentMediateka)
         }
         val onPressSearch = findViewById<Button>(R.id.buttonSearch)
-        onPressSearch.setOnClickListener(object : View.OnClickListener {
-            override fun onClick(v: View?) {
-                val intentSearch = Intent(this@MainActivity, SearchActivity::class.java)
-                startActivity(intentSearch)
-            }
-        })
+        onPressSearch.setOnClickListener {
+            val intentSearch = Intent(this, SearchActivity::class.java)
+            startActivity(intentSearch)
+        }
+        val prefs = getSharedPreferences("Settings", MODE_PRIVATE)
+        val isNightModeOn = prefs.getBoolean("NightMode", false)
+        AppCompatDelegate.setDefaultNightMode(
+            if (isNightModeOn) AppCompatDelegate.MODE_NIGHT_YES else AppCompatDelegate.MODE_NIGHT_NO
+        )
     }
 }

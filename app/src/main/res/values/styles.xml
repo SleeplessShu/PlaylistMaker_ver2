@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<resources>
+
+    <style name="PageHeaderStyle">
+        <!-- <item name=""></item>*/ -->
+    </style>
+
+    <style name="AppName">
+        <item name="android:textColor">?attr/colorSecondaryVariant</item>
+        <item name="android:textSize">@dimen/text_size_Header</item>
+        <item name="android:fontFamily">@font/ys_display_medium</item>>
+    </style>
+
+    <style name="ButtonsStyle" parent="Widget.MaterialComponents.Button.UnelevatedButton">
+        <item name="android:backgroundTint">?attr/colorSecondaryVariant</item>
+        <item name="android:textSize">@dimen/text_size_Header</item>
+        <item name="android:textColor">?attr/colorOnSecondary</item>
+        <item name="textAllCaps">false</item>
+        <item name="android:foreground">?attr/selectableItemBackground</item>
+        <item name="cornerRadius">@dimen/dim_16dp</item>
+        <item name="iconTint">?attr/colorOnSecondary</item>
+        <item name="android:fontFamily">@font/ys_display_medium</item>
+    </style>
+
+    <style name="PM2_Header_Image">
+        <item name="android:tint">?attr/colorOnPrimary</item>
+    </style>
+
+    <style name="PM2_Header_Text">
+        <item name="android:textColor">?attr/colorOnPrimary</item>
+        <item name="android:textSize">@dimen/text_size_Header</item>
+        <item name="android:fontFamily">@font/ys_display_medium</item>
+    </style>
+
+    <style name="SettingsStyle">
+        <item name="android:textSize">@dimen/text_size_Base</item>
+        <item name="android:textColor">?attr/colorOnPrimary</item>
+        <item name="iconTint">?attr/colorOnPrimary</item>
+        <item name="android:fontFamily">@font/ys_display_regular</item>
+    </style>
+
+    <style name="ThemeSwitch">
+        <item name="android:fontFamily">@font/ys_display_regular</item>
+        <item name="android:textSize">@dimen/text_size_Base</item>
+        <item name="layout_constraintEnd_toEndOf">parent</item>
+        <item name="thumbTint">?attr/colorSwitcherBottom</item>
+        <item name="trackTint">?attr/colorSwitcherTop</item>
+    </style>
+
+
+</resources>

@@ -1,7 +1,19 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Base application theme. -->
-    <style name="Base.Theme.PlaylistMaker_ver2" parent="Theme.MaterialComponents.DayNight.NoActionBar">
-        <!-- Customize your dark theme here. -->
-        <!-- <item name="colorPrimary">@color/my_dark_primary</item> -->
+    <style name="PlaylistMaker" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+        <!-- Primary brand color. -->
+        <item name="colorPrimary">@color/black</item> <!-- Кнопки -->
+        <item name="colorPrimaryVariant">@color/white</item>  <!-- Иконки -->
+        <item name="colorOnPrimary">@color/white</item> <!-- Текст -->
+        <!-- Secondary brand color. -->
+        <item name="colorSecondary">@color/black</item>
+        <item name="colorSecondaryVariant">@color/white</item>
+        <item name="colorOnSecondary">@color/black</item>
+
+        <item name="colorSwitcherTop">@color/blue</item>
+        <item name="colorSwitcherBottom">@color/blueLight</item>
+
+        <item name="colorTextInputFont">@color/black</item>
+        <item name="colorTextInputBackground">@color/white</item>
     </style>
 </resources>
