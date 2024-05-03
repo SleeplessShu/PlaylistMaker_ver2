@@ -7,6 +7,10 @@ import android.text.TextWatcher
 import android.view.View
 import android.widget.EditText
 import android.widget.ImageView
+import android.widget.LinearLayout
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import kotlin.random.Random
 
 class SearchActivity : AppCompatActivity() {
     companion object {
@@ -19,7 +23,7 @@ class SearchActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_search)
 
-        val onPressBackToMain = findViewById<ImageView>(R.id.buttonBackToMain)
+        val onPressBackToMain = findViewById<LinearLayout>(R.id.buttonBackToMain)
         onPressBackToMain.setOnClickListener {
             finish()
         }
@@ -44,7 +48,15 @@ class SearchActivity : AppCompatActivity() {
         clearButton.setOnClickListener {
             editText.text.clear()
         }
+
+        val recyclerView = findViewById<RecyclerView>(R.id.searchResult)
+        recyclerView.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
+
+
+        val trackAdapter = TrackAdapter(trackList)
+        recyclerView.adapter = trackAdapter
     }
+
 
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
