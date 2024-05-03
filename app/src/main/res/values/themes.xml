@@ -1,6 +1,7 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Base application theme. -->
     <style name="PlaylistMaker" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+        <item name="android:statusBarColor">@color/blue</item>
         <!-- Primary brand color. -->
         <item name="colorPrimary">@color/white</item> <!-- Кнопки -->
         <item name="colorPrimaryVariant">@color/grey</item>  <!-- Иконки -->
