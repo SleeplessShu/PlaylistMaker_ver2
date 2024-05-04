@@ -10,7 +10,7 @@ import com.practicum.playlistmaker_ver2.MediatekaActivity
 import com.practicum.playlistmaker_ver2.SearchActivity
 import com.practicum.playlistmaker_ver2.SettingsActivity
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : BaseActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

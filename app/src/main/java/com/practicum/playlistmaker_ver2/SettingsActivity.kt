@@ -14,7 +14,7 @@ import androidx.appcompat.app.AppCompatDelegate
 import androidx.appcompat.widget.SwitchCompat
 import androidx.core.content.ContextCompat
 
-class SettingsActivity : AppCompatActivity() {
+class SettingsActivity : BaseActivity() {
     companion object {
         const val NIGHT_MODE_KEY = "NightMode"
         const val SETTINGS_KEY = "Settings"
@@ -32,13 +32,7 @@ class SettingsActivity : AppCompatActivity() {
             AppCompatDelegate.getDefaultNightMode() == AppCompatDelegate.MODE_NIGHT_YES
         )
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP && AppCompatDelegate.getDefaultNightMode() != AppCompatDelegate.MODE_NIGHT_YES) {
-            val window = window
-            window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS)
-            window.statusBarColor = ContextCompat.getColor(this, R.color.white)
-            window.decorView.systemUiVisibility =
-                window.decorView.systemUiVisibility or View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
-        }
+        setupStatusBar(androidx.appcompat.R.attr.colorPrimary)
 
         switcherTheme.isChecked = isNightModeOn
         switcherTheme.setOnCheckedChangeListener { _, isChecked ->

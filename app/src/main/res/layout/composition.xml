@@ -12,7 +12,7 @@
         android:layout_width="@dimen/dim_46dp"
         android:layout_height="@dimen/dim_46dp"
         android:background="?attr/colorPrimary"
-        android:src="@drawable/icon_nointernet"
+        android:src="@drawable/placeholder"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent" />
