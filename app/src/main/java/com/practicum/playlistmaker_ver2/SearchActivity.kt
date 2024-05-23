@@ -1,71 +1,136 @@
 package com.practicum.playlistmaker_ver2
 
-import android.os.Build
-import androidx.appcompat.app.AppCompatActivity
+import android.content.Context
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.View
-import android.view.WindowManager
+import android.view.inputmethod.EditorInfo
+import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
 import android.widget.ImageView
 import android.widget.LinearLayout
-import androidx.appcompat.app.AppCompatDelegate
-import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import kotlin.random.Random
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
+import retrofit2.Retrofit
+import retrofit2.converter.gson.GsonConverterFactory
 
 class SearchActivity : BaseActivity() {
     companion object {
         const val SEARCH_TEXT_KEY = "SEARCH_TEXT"
     }
 
-    private lateinit var editText: EditText
+    private val iTunesBaseUrl = "https://itunes.apple.com"
+    private val retrofit: Retrofit = Retrofit.Builder()
+        .baseUrl(iTunesBaseUrl)
+        .addConverterFactory(GsonConverterFactory.create())
+        .build()
+
+    private val iTunesService: iTunesApi = retrofit.create(iTunesApi::class.java)
+    private lateinit var queue: String
+
+    private lateinit var searchButton: EditText
     private lateinit var clearButton: ImageView
+    private lateinit var trackList: RecyclerView
+    private lateinit var trackAdapter: TrackAdapter
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_search)
 
+        trackList = findViewById(R.id.searchResult)
+        trackList.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
+
+        trackAdapter = TrackAdapter(emptyList(), TrackAdapter.VIEW_TYPE_EMPTY) {
+            trackAdapter.updateTracks(emptyList(), TrackAdapter.VIEW_TYPE_EMPTY)
+            searchTracks(queue)
+        }
+        trackList.adapter = trackAdapter
+
         setupStatusBar(androidx.appcompat.R.attr.colorPrimary)
 
-        val onPressBackToMain = findViewById<LinearLayout>(R.id.buttonBackToMain)
+        val onPressBackToMain: LinearLayout = findViewById(R.id.buttonBackToMain)
         onPressBackToMain.setOnClickListener {
             finish()
         }
-        editText = findViewById(R.id.text_SearchInput)
+        searchButton = findViewById(R.id.text_SearchInput)
         clearButton = findViewById(R.id.clear_text)
 
         savedInstanceState?.getString(SEARCH_TEXT_KEY)?.let {
-            editText.setText(it)
+            searchButton.setText(it)
             if (it.isNotEmpty()) clearButton.visibility = View.VISIBLE
         }
 
-        editText.addTextChangedListener(object : TextWatcher {
+        searchButton.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {}
-
             override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {}
-
             override fun afterTextChanged(s: Editable) {
                 clearButton.visibility = if (s.isNotEmpty()) View.VISIBLE else View.GONE
             }
         })
 
-        clearButton.setOnClickListener {
-            editText.text.clear()
+        searchButton.setOnEditorActionListener { v, actionId, _ ->
+            if (actionId == EditorInfo.IME_ACTION_DONE) {
+                if (searchButton.text.isNotEmpty()) {
+
+                    val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+                    imm.hideSoftInputFromWindow(v.windowToken, 0)
+
+                    searchTracks(searchButton.text.toString())
+                }
+                true
+            } else {
+                false
+            }
         }
 
-        val recyclerView = findViewById<RecyclerView>(R.id.searchResult)
-        recyclerView.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
+        clearButton.setOnClickListener {
+            searchButton.text.clear()
+            trackAdapter.updateTracks(emptyList(), TrackAdapter.VIEW_TYPE_EMPTY)
+            // Hide the keyboard
+            val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+            imm.hideSoftInputFromWindow(it.windowToken, 0)
+        }
 
 
-        val trackAdapter = TrackAdapter(trackList)
-        recyclerView.adapter = trackAdapter
+        trackAdapter.updateTracks(emptyList(), TrackAdapter.VIEW_TYPE_EMPTY)
     }
-
 
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
-        outState.putString(SEARCH_TEXT_KEY, editText.text.toString())
+        outState.putString(SEARCH_TEXT_KEY, searchButton.text.toString())
+    }
+
+    private fun searchTracks(query: String) {
+        queue = query
+        iTunesService.searchTrack(query).enqueue(object : Callback<iTunesResponse> {
+            override fun onResponse(
+                call: Call<iTunesResponse>,
+                response: Response<iTunesResponse>
+            ) {
+                if (response.code() == 200) {
+                    val results: List<TrackData> = response.body()?.results.orEmpty()
+                    val viewType: Int = if (results.isEmpty()) {
+                        TrackAdapter.VIEW_TYPE_NOTHING_FOUND
+                    } else {
+                        TrackAdapter.VIEW_TYPE_ITEM
+                    }
+                    trackAdapter.updateTracks(results, viewType)
+                } else {
+                    handleNoInternet()
+                }
+            }
+
+            override fun onFailure(call: Call<iTunesResponse>, t: Throwable) {
+                handleNoInternet()
+            }
+        })
+    }
+
+    private fun handleNoInternet() {
+        trackAdapter.updateTracks(emptyList(), TrackAdapter.VIEW_TYPE_NO_INTERNET)
     }
 }

@@ -4,6 +4,8 @@
     <string name="Search">Поиск</string>
     <string name="Settings">Настройки</string>
     <string name="Mediateka">Медиатека</string>
+    <string name="Refresh">Обновить</string>
+
     <string name="switchDarkTheme">Тёмная тема</string>
     <string name="shareApp">Поделиться приложением</string>
     <string name="support">Написать в поддержку</string>
@@ -19,4 +21,11 @@
     <string name="supportEmail">di.burmistrov@yandex.ru</string>
     <!--HINTS-->
     <string name="hint_Search">Поиск</string>
+
+    <!--Messeges-->
+
+    <string name="something_went_wrong">something_went_wrong</string>
+    <string name="nothing_found">Ничего не нашлось</string>
+    <string name="network_error1">Проблемы со связью\n\nЗагрузка не удалась. Проверьте подключение к интернету</string>
+    <string name="network_error2">Загрузка не удалась. Проверьте подключение к интернету</string>
 </resources>
