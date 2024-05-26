@@ -20,7 +20,7 @@ class TrackViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
     private val trackTime: TextView = itemView.findViewById(R.id.compDuration)
     private val artwork: ImageView = itemView.findViewById(R.id.compTrackIcon)
     fun bind(track: TrackData) {
-        val context = trackName.context
+        val context = itemView.context
         val radiusPx = dpToPx(context, 2)
         trackName.text = track.trackName
         artistName.text = track.artistName
