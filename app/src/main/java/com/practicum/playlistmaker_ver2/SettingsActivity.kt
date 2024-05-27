@@ -13,6 +13,7 @@ import android.widget.LinearLayout
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.appcompat.widget.SwitchCompat
 import androidx.core.content.ContextCompat
+import com.google.android.material.switchmaterial.SwitchMaterial
 
 class SettingsActivity : BaseActivity() {
     companion object {
@@ -25,7 +26,7 @@ class SettingsActivity : BaseActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_settings)
         val switchTheme = findViewById<FrameLayout>(R.id.switchTheme)
-        val switcherTheme = findViewById<SwitchCompat>(R.id.switcherTheme)
+        val switcherTheme = findViewById<SwitchMaterial>(R.id.switcherTheme)
         val prefs = getSharedPreferences(SETTINGS_KEY, MODE_PRIVATE)
         val isNightModeOn = prefs.getBoolean(
             NIGHT_MODE_KEY,
@@ -41,6 +42,7 @@ class SettingsActivity : BaseActivity() {
             )
             prefs.edit().putBoolean(NIGHT_MODE_KEY, isChecked).apply()
         }
+
 
         switchTheme.setOnClickListener {
             switcherTheme.isChecked = !switcherTheme.isChecked
