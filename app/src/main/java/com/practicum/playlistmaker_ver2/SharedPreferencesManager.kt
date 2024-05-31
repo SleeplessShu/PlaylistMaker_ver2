@@ -4,13 +4,16 @@ import android.content.Context
 import android.content.SharedPreferences
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
+import com.practicum.playlistmaker_ver2.SearchActivity.Companion.sharedPreferencesKey
+import com.practicum.playlistmaker_ver2.SearchActivity.Companion.sharedPreferencesName
 
 class SharedPreferencesManager(context: Context) {
-    private val sharedPreferencesName: String = "previous_search_result"
+
+
     private val sharedPreferences: SharedPreferences = context.getSharedPreferences(
         sharedPreferencesName, Context.MODE_PRIVATE
     )
-    private val sharedPreferencesKey: String = "clicked_tracks"
+
 
     fun saveData(key: String, track: TrackData) {
         val previousSearchList: ArrayList<TrackData> = getData(sharedPreferencesKey)
