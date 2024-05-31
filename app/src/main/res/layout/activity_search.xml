@@ -76,24 +76,51 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/searchResult"
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical"
-            android:paddingBottom="@dimen/dim_24dp"
-            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/searchResult"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dim_00dp"
+                android:layout_weight="1"
+                android:orientation="vertical"
+                android:paddingBottom="@dimen/dim_24dp"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
+
+            <Button
+                style="@style/ButtonsStyle"
+                app:cornerRadius="56dp"
+                android:id="@+id/bClearHistory"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="12dp"
+                android:layout_marginBottom="@dimen/dim_24dp"
+                android:backgroundTint="?attr/colorOnPrimary"
+                android:fontFamily="@font/ys_display_medium"
+                android:paddingHorizontal="12dp"
+                android:paddingVertical="10dp"
+                android:text="@string/Clear_history"
+                android:textAllCaps="false"
+                android:visibility="invisible"
+                android:textColor="?attr/colorPrimary"
+                android:textSize="14sp" />
+        </LinearLayout>
 
         <TextView
             android:id="@+id/phMessage"
-            android:layout_marginVertical="250dp"
             android:layout_width="300dp"
             android:layout_height="200dp"
             android:layout_gravity="center"
+            android:layout_marginVertical="250dp"
             android:textAlignment="center"
-            android:textStyle="bold"
+            android:textColor="@color/white"
             android:textSize="32sp"
-            tools:text="ЗАГЛУШКА"
-            android:textColor="@color/white" />
+            android:textStyle="bold"
+            tools:text="ЗАГЛУШКА" />
     </FrameLayout>
+
 </LinearLayout>

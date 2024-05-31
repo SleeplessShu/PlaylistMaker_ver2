@@ -1,15 +1,18 @@
 package com.practicum.playlistmaker_ver2
 
 import android.content.Context
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.View
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
+import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageView
 import android.widget.LinearLayout
+import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import retrofit2.Call
@@ -21,6 +24,8 @@ import retrofit2.converter.gson.GsonConverterFactory
 class SearchActivity : BaseActivity() {
     companion object {
         const val SEARCH_TEXT_KEY = "SEARCH_TEXT"
+        const val sharedPreferencesKey: String = "clicked_tracks"
+        const val sharedPreferencesName: String = "previous_search_result"
     }
 
     private val iTunesBaseUrl = "https://itunes.apple.com"
@@ -30,24 +35,29 @@ class SearchActivity : BaseActivity() {
         .build()
 
     private val iTunesService: iTunesApi = retrofit.create(iTunesApi::class.java)
-    private lateinit var queue: String
-
     private lateinit var searchButton: EditText
     private lateinit var clearButton: ImageView
+    private lateinit var clearHistoryButton: Button
     private lateinit var trackList: RecyclerView
     private lateinit var trackAdapter: TrackAdapter
+    private lateinit var sharedPreferencesManager: SharedPreferencesManager
+    private lateinit var listener: SharedPreferences.OnSharedPreferenceChangeListener
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_search)
 
+        sharedPreferencesManager = SharedPreferencesManager(applicationContext)
+
         trackList = findViewById(R.id.searchResult)
         trackList.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
 
-        trackAdapter = TrackAdapter(emptyList(), TrackAdapter.VIEW_TYPE_EMPTY) {
-            trackAdapter.updateTracks(emptyList(), TrackAdapter.VIEW_TYPE_EMPTY)
-            searchTracks(queue)
-        }
+        trackAdapter =
+            TrackAdapter(sharedPreferencesManager, emptyList(), TrackAdapter.VIEW_TYPE_EMPTY) {
+                trackAdapter.updateTracks(emptyList(), TrackAdapter.VIEW_TYPE_EMPTY)
+                searchTracks(searchButton.text.toString())
+            }
         trackList.adapter = trackAdapter
 
         setupStatusBar(androidx.appcompat.R.attr.colorPrimary)
@@ -56,12 +66,13 @@ class SearchActivity : BaseActivity() {
         onPressBackToMain.setOnClickListener {
             finish()
         }
+
         searchButton = findViewById(R.id.text_SearchInput)
         clearButton = findViewById(R.id.clear_text)
+        clearHistoryButton = findViewById(R.id.bClearHistory)
 
         savedInstanceState?.getString(SEARCH_TEXT_KEY)?.let {
-            searchButton.setText(it)
-            if (it.isNotEmpty()) clearButton.visibility = View.VISIBLE
+            updateButtonVisibility(it)
         }
 
         searchButton.addTextChangedListener(object : TextWatcher {
@@ -73,30 +84,47 @@ class SearchActivity : BaseActivity() {
         })
 
         searchButton.setOnEditorActionListener { v, actionId, _ ->
-            if (actionId == EditorInfo.IME_ACTION_DONE) {
+            val imeActionDone = actionId == EditorInfo.IME_ACTION_DONE
+            if (imeActionDone) {
                 if (searchButton.text.isNotEmpty()) {
-
                     val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
                     imm.hideSoftInputFromWindow(v.windowToken, 0)
-
                     searchTracks(searchButton.text.toString())
                 }
-                true
-            } else {
-                false
             }
+            imeActionDone
         }
+
 
         clearButton.setOnClickListener {
             searchButton.text.clear()
             trackAdapter.updateTracks(emptyList(), TrackAdapter.VIEW_TYPE_EMPTY)
-            // Hide the keyboard
             val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
             imm.hideSoftInputFromWindow(it.windowToken, 0)
         }
 
+        clearHistoryButton.setOnClickListener {
+            sharedPreferencesManager.removeData(sharedPreferencesKey)
+            updateTrackList()
 
-        trackAdapter.updateTracks(emptyList(), TrackAdapter.VIEW_TYPE_EMPTY)
+        }
+
+        listener = SharedPreferences.OnSharedPreferenceChangeListener { _, key ->
+            if (sharedPreferencesKey == key && searchButton.text.isEmpty()) {
+
+                updateTrackList()
+
+            }
+        }
+
+        sharedPreferencesManager.registerOnSharedPreferenceChangeListener(listener)
+
+        updateTrackList()
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        sharedPreferencesManager.unregisterOnSharedPreferenceChangeListener(listener)
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
@@ -105,15 +133,14 @@ class SearchActivity : BaseActivity() {
     }
 
     private fun searchTracks(query: String) {
-        queue = query
         iTunesService.searchTrack(query).enqueue(object : Callback<iTunesResponse> {
             override fun onResponse(
                 call: Call<iTunesResponse>,
                 response: Response<iTunesResponse>
             ) {
-                if (response.code() == 200) {
+                if (response.isSuccessful) {
                     val results: List<TrackData> = response.body()?.results.orEmpty()
-                    val viewType: Int = if (results.isEmpty()) {
+                    val viewType = if (results.isEmpty()) {
                         TrackAdapter.VIEW_TYPE_NOTHING_FOUND
                     } else {
                         TrackAdapter.VIEW_TYPE_ITEM
@@ -132,5 +159,22 @@ class SearchActivity : BaseActivity() {
 
     private fun handleNoInternet() {
         trackAdapter.updateTracks(emptyList(), TrackAdapter.VIEW_TYPE_NO_INTERNET)
+    }
+
+    private fun updateTrackList() {
+        val previousSearchList = sharedPreferencesManager.getData(sharedPreferencesKey)
+        if (previousSearchList.isNotEmpty()) {
+            trackAdapter.updateTracks(previousSearchList, TrackAdapter.VIEW_TYPE_ITEM)
+            clearHistoryButton.isVisible = true
+        } else {
+            trackAdapter.updateTracks(emptyList(), TrackAdapter.VIEW_TYPE_EMPTY)
+            clearHistoryButton.isVisible = false
+        }
+    }
+
+    private fun updateButtonVisibility(searchText: String) {
+        searchButton.setText(searchText)
+        clearButton.isVisible = searchText.isNotEmpty()
+        clearHistoryButton.isVisible = searchText.isEmpty()
     }
 }

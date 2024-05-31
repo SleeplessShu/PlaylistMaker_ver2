@@ -49,7 +49,7 @@
             android:paddingHorizontal="@dimen/dim_16dp"
             android:foreground="?attr/selectableItemBackground">
 
-            <androidx.appcompat.widget.SwitchCompat
+            <com.google.android.material.switchmaterial.SwitchMaterial
                 style="@style/ThemeSwitch"
                 android:id="@+id/switcherTheme"
                 android:layout_width="match_parent"

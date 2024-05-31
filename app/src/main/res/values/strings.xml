@@ -5,6 +5,8 @@
     <string name="Settings">Настройки</string>
     <string name="Mediateka">Медиатека</string>
     <string name="Refresh">Обновить</string>
+    <string name="Clear_history">Очистить историю</string>
+
 
     <string name="switchDarkTheme">Тёмная тема</string>
     <string name="shareApp">Поделиться приложением</string>

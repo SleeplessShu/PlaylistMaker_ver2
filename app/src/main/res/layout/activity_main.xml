@@ -25,24 +25,24 @@
         android:orientation="vertical">
 
         <Button
-            style="@style/ButtonsStyle"
             android:id="@+id/buttonSearch"
-            android:text="@string/Search"
-            app:icon="@drawable/icon_search"
+            style="@style/ButtonsStyle"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="1"
+            android:text="@string/Search"
+            app:icon="@drawable/ic_search_v2"
             app:iconGravity="textStart"
             app:iconPadding="@dimen/dim_08dp" />
 
         <Button
-            style="@style/ButtonsStyle"
             android:id="@+id/buttonMediateka"
-            android:text="@string/Mediateka"
-            app:icon="@drawable/icon_mediateka"
+            style="@style/ButtonsStyle"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="1"
+            android:text="@string/Mediateka"
+            app:icon="@drawable/icon_mediateka"
             app:iconGravity="textStart"
             app:iconPadding="@dimen/dim_08dp" />
 
