@@ -1,15 +1,11 @@
 package com.practicum.playlistmaker_ver2
 
-import android.content.Context
-import android.content.Context.MODE_PRIVATE
-import android.content.SharedPreferences
+import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
-import android.widget.Toast
+import androidx.core.content.ContextCompat.startActivity
 import androidx.recyclerview.widget.RecyclerView
-import com.google.gson.Gson
 
 class TrackAdapter(
     private val sharedPreferencesManager: SharedPreferencesManager,
@@ -33,25 +29,25 @@ class TrackAdapter(
             VIEW_TYPE_EMPTY -> {
                 val view: View =
                     LayoutInflater.from(parent.context).inflate(R.layout.empty_view, parent, false)
-                EmptyViewHolder(view)
+                ViewHolder_Empty(view)
             }
 
             VIEW_TYPE_NOTHING_FOUND -> {
                 val view: View = LayoutInflater.from(parent.context)
                     .inflate(R.layout.error_nothing_found, parent, false)
-                NothingFoundViewHolder(view)
+                ViewHolder_NothingFound(view)
             }
 
             VIEW_TYPE_NO_INTERNET -> {
                 val view: View = LayoutInflater.from(parent.context)
                     .inflate(R.layout.error_network_connection, parent, false)
-                NoInternetViewHolder(view, onRetry)
+                ViewHolder_NoInternet(view, onRetry)
             }
 
             VIEW_TYPE_ITEM -> {
                 val view: View =
                     LayoutInflater.from(parent.context).inflate(R.layout.track, parent, false)
-                TrackViewHolder(view)
+                ViewHolder_Track(view)
             }
 
             else -> throw IllegalArgumentException("Invalid view type")
@@ -61,19 +57,21 @@ class TrackAdapter(
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         when (holder) {
-            is TrackViewHolder ->
+            is ViewHolder_Track ->
                 if (trackData.isNotEmpty()) {
                     holder.bind(trackData[position])
                     holder.itemView.setOnClickListener {
-
+                        val context = holder.itemView.context
+                        val intentPlayer = Intent(context, Activity_Player::class.java)
+                        intentPlayer.putExtra("trackData", trackData[position])
                         sharedPreferencesManager.saveData(sharedPreferencesKey, trackData[position])
-
+                        context.startActivity(intentPlayer)
                     }
                 }
 
-            is NothingFoundViewHolder -> holder.bind()
-            is NoInternetViewHolder -> holder.bind()
-            is EmptyViewHolder -> holder.bind()
+            is ViewHolder_NothingFound -> holder.bind()
+            is ViewHolder_NoInternet -> holder.bind()
+            is ViewHolder_Empty -> holder.bind()
         }
     }
 

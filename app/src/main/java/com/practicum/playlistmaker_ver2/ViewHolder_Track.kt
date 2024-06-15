@@ -13,7 +13,7 @@ import java.util.Date
 import java.util.Locale
 
 
-class TrackViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+class ViewHolder_Track(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
     private val trackName: TextView = itemView.findViewById(R.id.compTrackName)
     private val artistName: TextView = itemView.findViewById(R.id.compArtistName)

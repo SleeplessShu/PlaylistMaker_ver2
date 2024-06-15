@@ -21,7 +21,7 @@ import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
-class SearchActivity : BaseActivity() {
+class Activity_Search : Activity_Base() {
     companion object {
         const val SEARCH_TEXT_KEY = "SEARCH_TEXT"
         const val sharedPreferencesKey: String = "clicked_tracks"
@@ -34,7 +34,7 @@ class SearchActivity : BaseActivity() {
         .addConverterFactory(GsonConverterFactory.create())
         .build()
 
-    private val iTunesService: iTunesApi = retrofit.create(iTunesApi::class.java)
+    private val iTunesService: Api_iTunes = retrofit.create(Api_iTunes::class.java)
     private lateinit var searchButton: EditText
     private lateinit var clearButton: ImageView
     private lateinit var clearHistoryButton: Button
@@ -133,10 +133,10 @@ class SearchActivity : BaseActivity() {
     }
 
     private fun searchTracks(query: String) {
-        iTunesService.searchTrack(query).enqueue(object : Callback<iTunesResponse> {
+        iTunesService.searchTrack(query).enqueue(object : Callback<Api_Response_iTunes> {
             override fun onResponse(
-                call: Call<iTunesResponse>,
-                response: Response<iTunesResponse>
+                call: Call<Api_Response_iTunes>,
+                response: Response<Api_Response_iTunes>
             ) {
                 if (response.isSuccessful) {
                     val results: List<TrackData> = response.body()?.results.orEmpty()
@@ -151,7 +151,7 @@ class SearchActivity : BaseActivity() {
                 }
             }
 
-            override fun onFailure(call: Call<iTunesResponse>, t: Throwable) {
+            override fun onFailure(call: Call<Api_Response_iTunes>, t: Throwable) {
                 handleNoInternet()
             }
         })

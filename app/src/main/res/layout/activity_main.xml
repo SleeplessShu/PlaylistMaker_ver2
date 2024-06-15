@@ -8,7 +8,7 @@
     android:orientation="vertical"
     android:paddingHorizontal="16dp"
     android:paddingBottom="28dp"
-    tools:context=".MainActivity">
+    tools:context=".Activity_Main">
 
 
     <TextView
@@ -16,7 +16,7 @@
         android:layout_height="wrap_content"
         android:paddingTop="@dimen/dim_16dp"
         android:layout_marginBottom="@dimen/dim_24dp"
-        android:text="@string/titleScreenName"
+        android:text="@string/title_screen_name"
         style="@style/AppName" />
 
     <LinearLayout
@@ -42,7 +42,7 @@
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:text="@string/Mediateka"
-            app:icon="@drawable/icon_mediateka"
+            app:icon="@drawable/ic_mediateka"
             app:iconGravity="textStart"
             app:iconPadding="@dimen/dim_08dp" />
 
@@ -50,7 +50,7 @@
             style="@style/ButtonsStyle"
             android:id="@+id/buttonSettings"
             android:text="@string/Settings"
-            app:icon="@drawable/icon_settings"
+            app:icon="@drawable/ic_settings"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="1"

@@ -2,20 +2,13 @@ package com.practicum.playlistmaker_ver2
 
 import android.content.Intent
 import android.net.Uri
-import android.os.Build
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.view.View
-import android.view.WindowManager
 import android.widget.FrameLayout
-import android.widget.ImageView
 import android.widget.LinearLayout
 import androidx.appcompat.app.AppCompatDelegate
-import androidx.appcompat.widget.SwitchCompat
-import androidx.core.content.ContextCompat
 import com.google.android.material.switchmaterial.SwitchMaterial
 
-class SettingsActivity : BaseActivity() {
+class Activity_Settings : Activity_Base() {
     companion object {
         const val NIGHT_MODE_KEY = "NightMode"
         const val SETTINGS_KEY = "Settings"

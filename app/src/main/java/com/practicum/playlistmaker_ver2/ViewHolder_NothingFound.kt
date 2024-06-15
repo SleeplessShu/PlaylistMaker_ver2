@@ -5,7 +5,7 @@ import android.widget.ImageView
 
 import androidx.recyclerview.widget.RecyclerView
 
-class NothingFoundViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+class ViewHolder_NothingFound(itemView: View) : RecyclerView.ViewHolder(itemView) {
     private val imageView: ImageView = itemView.findViewById(R.id.ivNothingFound)
 
 

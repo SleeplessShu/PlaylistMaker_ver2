@@ -4,9 +4,8 @@ import android.view.View
 import android.widget.Button
 import android.widget.ImageView
 import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.Glide.init
 
-class NoInternetViewHolder(itemView: View, private val onRetry: (() -> Unit)?) :
+class ViewHolder_NoInternet(itemView: View, private val onRetry: (() -> Unit)?) :
     RecyclerView.ViewHolder(itemView) {
     private val retryButton: Button = itemView.findViewById(R.id.bRefresh)
     private val imageView: ImageView = itemView.findViewById(R.id.ivNoInternet)
