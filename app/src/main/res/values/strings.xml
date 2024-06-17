@@ -1,6 +1,12 @@
 <resources>
-    <string name="app_name">PlaylistMaker</string>
-    <string name="titleScreenName">Playlist Maker</string>
+    <!-- TITLES -->
+    <string name="title_application_name">PlaylistMaker</string>
+    <string name="title_screen_name">Playlist Maker</string>
+    <string name="title_activity_search">SearchActivity</string>
+    <string name="title_activity_settings">SettingsActivity</string>
+    <string name="title_activity_mediateka">MediatekaActivity</string>
+    <string name="title_activity_player">PlayerActivity</string>
+
     <string name="Search">Поиск</string>
     <string name="Settings">Настройки</string>
     <string name="Mediateka">Медиатека</string>
@@ -12,9 +18,7 @@
     <string name="shareApp">Поделиться приложением</string>
     <string name="support">Написать в поддержку</string>
     <string name="agreement">Пользовательское соглашение</string>
-    <string name="title_activity_search">SearchActivity</string>
-    <string name="title_activity_settings">SettingsActivity</string>
-    <string name="title_activity_mediateka">MediatekaActivity</string>
+
     <string name="mailToSupportSubject">Сообщение разработчикам и разработчицам приложения Playlist Maker</string>
     <string name="mailToSupportText">Спасибо разработчикам и разработчицам за крутое приложение!</string>
     <!--LINKS-->
@@ -30,4 +34,11 @@
     <string name="nothing_found">Ничего не нашлось</string>
     <string name="network_error1">Проблемы со связью\n\nЗагрузка не удалась. Проверьте подключение к интернету</string>
     <string name="network_error2">Загрузка не удалась. Проверьте подключение к интернету</string>
+
+    <!--Player-->
+    <string name="sDuration">Длительность</string>
+    <string name="sAlbum">Альбом</string>
+    <string name="sYear">Год</string>
+    <string name="sGenre">Жанр</string>
+    <string name="sCountry">Страна</string>
 </resources>

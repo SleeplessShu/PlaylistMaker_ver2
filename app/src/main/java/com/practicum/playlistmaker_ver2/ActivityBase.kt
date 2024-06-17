@@ -1,6 +1,5 @@
 package com.practicum.playlistmaker_ver2
 
-import android.content.Context
 import android.content.res.Configuration
 import android.os.Build
 import android.util.TypedValue
@@ -9,7 +8,7 @@ import android.view.WindowManager
 import androidx.annotation.AttrRes
 import androidx.appcompat.app.AppCompatActivity
 
-open class BaseActivity : AppCompatActivity() {
+open class ActivityBase : AppCompatActivity() {
 
     fun setupStatusBar(@AttrRes colorAttribute: Int) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {

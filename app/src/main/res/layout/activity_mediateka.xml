@@ -12,13 +12,13 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:paddingBottom="@dimen/dim_16dp"
-        android:id="@+id/buttonBackToMain"
+        android:id="@+id/b_back_to_main"
         android:foreground="?attr/selectableItemBackground">
 
 
         <ImageView
             style="@style/PM2_Header_Image"
-            android:src="@drawable/icon_arrow"
+            android:src="@drawable/ic_arrow"
             android:layout_width="@dimen/dim_24dp"
             android:layout_height="@dimen/dim_24dp"
             android:layout_gravity="center_vertical"

@@ -4,4 +4,5 @@
     <attr name="colorSwitcherBottom" format="reference|color" />
     <attr name="colorTextInputFont" format="reference|color" />
     <attr name="colorTextInputBackground" format="reference|color" />
+    <attr name="colorButtonPlayerBackground" format="reference|color" />
 </resources>

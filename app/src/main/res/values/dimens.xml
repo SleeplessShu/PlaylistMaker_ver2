@@ -1,16 +1,34 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <!---DP-->
+
+    <dimen name="dim_82dp">82dp</dimen>
+    <dimen name="dim_56dp">56dp</dimen>
     <dimen name="dim_46dp">46dp</dimen>
     <dimen name="dim_44dp">44dp</dimen>
+    <dimen name="dim_42dp">42dp</dimen>
     <dimen name="dim_40dp">40dp</dimen>
     <dimen name="dim_32dp">32dp</dimen>
+    <dimen name="dim_30dp">30dp</dimen>
+    <dimen name="dim_26dp">24dp</dimen>
     <dimen name="dim_24dp">24dp</dimen>
+    <dimen name="dim_20dp">20dp</dimen>
     <dimen name="dim_16dp">16dp</dimen>
+    <dimen name="dim_14dp">14dp</dimen>
+    <dimen name="dim_12dp">12dp</dimen>
     <dimen name="dim_08dp">8dp</dimen>
     <dimen name="dim_02dp">2dp</dimen>
     <dimen name="dim_00dp">0dp</dimen>
-    <dimen name="text_size_Small">11sp</dimen>
-    <dimen name="text_size_Base">16sp</dimen>
-    <dimen name="text_size_Header">22sp</dimen>
+
+    <!---SP-->
+    <dimen name="ts_11sp">11sp</dimen>
+
+    <dimen name="ts_13sp">13sp</dimen>
+    <dimen name="ts_14sp">14sp</dimen>
+    <dimen name="ts_16sp">16sp</dimen>
+    <dimen name="ts_22sp">22sp</dimen>
+
+    <!---OTHER-->
     <dimen name="block_weight_1">1</dimen>
+    <dimen name="bias_0.5">0.5</dimen>
 </resources>
