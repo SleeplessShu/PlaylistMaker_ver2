@@ -11,7 +11,7 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:paddingBottom="@dimen/dim_16dp"
-        android:id="@+id/buttonBackToMain"
+        android:id="@+id/b_back_to_main"
         android:foreground="?attr/selectableItemBackground">
 
 
@@ -41,7 +41,7 @@
         android:orientation="vertical">
 
         <FrameLayout
-            android:id="@+id/switchTheme"
+            android:id="@+id/b_switch_theme"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
@@ -60,7 +60,7 @@
         </FrameLayout>
 
         <FrameLayout
-            android:id="@+id/shareApp"
+            android:id="@+id/b_share_app"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
@@ -88,7 +88,7 @@
         </FrameLayout>
 
         <FrameLayout
-            android:id="@+id/mailToSupport"
+            android:id="@+id/b_mail_to_support"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
@@ -116,7 +116,7 @@
         </FrameLayout>
 
         <FrameLayout
-            android:id="@+id/toAgreementWeb"
+            android:id="@+id/b_open_agreement_web"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"

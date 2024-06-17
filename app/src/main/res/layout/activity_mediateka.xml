@@ -12,7 +12,7 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:paddingBottom="@dimen/dim_16dp"
-        android:id="@+id/buttonBackToMain"
+        android:id="@+id/b_back_to_main"
         android:foreground="?attr/selectableItemBackground">
 
 

@@ -14,19 +14,19 @@
         android:theme="@style/PlaylistMaker"
         tools:targetApi="31">
         <activity
-            android:name=".Activity_Settings"
+            android:name=".ActivitySettings"
             android:exported="false"
             android:label="@string/title_activity_settings" />
         <activity
-            android:name=".Activity_Mediateka"
+            android:name=".ActivityMediateka"
             android:exported="false"
             android:label="@string/title_activity_mediateka" />
         <activity
-            android:name=".Activity_Search"
+            android:name=".ActivitySearch"
             android:exported="false"
             android:label="@string/title_activity_search" />
         <activity
-            android:name=".Activity_Main"
+            android:name=".ActivityMain"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -35,7 +35,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".Activity_Player"
+            android:name=".ActivityPlayer"
             android:exported="false"
             android:label="@string/title_activity_player" />
     </application>

@@ -8,7 +8,7 @@ import android.view.WindowManager
 import androidx.annotation.AttrRes
 import androidx.appcompat.app.AppCompatActivity
 
-open class Activity_Base : AppCompatActivity() {
+open class ActivityBase : AppCompatActivity() {
 
     fun setupStatusBar(@AttrRes colorAttribute: Int) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {

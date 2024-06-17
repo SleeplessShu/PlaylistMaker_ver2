@@ -9,7 +9,7 @@
     android:orientation="vertical">
 
     <LinearLayout
-        android:id="@+id/buttonBackToMain"
+        android:id="@+id/b_back_to_main"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:foreground="?attr/selectableItemBackground"
@@ -42,7 +42,7 @@
         android:paddingVertical="@dimen/dim_08dp">
 
         <EditText
-            android:id="@+id/text_SearchInput"
+            android:id="@+id/tiSearch"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@drawable/bkg_rounded_rectungle"
@@ -62,7 +62,7 @@
             android:textSize="@dimen/ts_16sp" />
 
         <ImageView
-            android:id="@+id/clear_text"
+            android:id="@+id/bEraseText"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_gravity="end"
@@ -93,7 +93,7 @@
             <Button
                 style="@style/ButtonsStyle"
                 app:cornerRadius="56dp"
-                android:id="@+id/bClearHistory"
+                android:id="@+id/b_erase_history"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"

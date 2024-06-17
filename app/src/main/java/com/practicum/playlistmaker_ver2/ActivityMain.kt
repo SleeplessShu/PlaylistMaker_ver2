@@ -2,28 +2,26 @@ package com.practicum.playlistmaker_ver2
 
 import android.content.Intent
 import android.os.Bundle
-import android.widget.Button
 import androidx.appcompat.app.AppCompatDelegate
+import com.practicum.playlistmaker_ver2.databinding.ActivityMainBinding
 
-class Activity_Main : Activity_Base() {
-
+class ActivityMain : ActivityBase() {
+    private lateinit var binding: ActivityMainBinding
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        binding = ActivityMainBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
-        val onPressSettings = findViewById<Button>(R.id.buttonSettings)
-        onPressSettings.setOnClickListener {
-            val intentSettings = Intent(this, Activity_Settings::class.java)
+        binding.bSettings.setOnClickListener {
+            val intentSettings = Intent(this, ActivitySettings::class.java)
             startActivity(intentSettings)
         }
-        val onPressMediateka = findViewById<Button>(R.id.buttonMediateka)
-        onPressMediateka.setOnClickListener {
-            val intentMediateka = Intent(this, Activity_Mediateka::class.java)
+        binding.bMediateka.setOnClickListener {
+            val intentMediateka = Intent(this, ActivityMediateka::class.java)
             startActivity(intentMediateka)
         }
-        val onPressSearch = findViewById<Button>(R.id.buttonSearch)
-        onPressSearch.setOnClickListener {
-            val intentSearch = Intent(this, Activity_Search::class.java)
+        binding.bSearch.setOnClickListener {
+            val intentSearch = Intent(this, ActivitySearch::class.java)
             startActivity(intentSearch)
         }
         val prefs = getSharedPreferences("Settings", MODE_PRIVATE)
