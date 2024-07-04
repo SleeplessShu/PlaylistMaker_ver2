@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -8,7 +9,7 @@
     android:paddingVertical="@dimen/dim_08dp">
 
     <ImageView
-        android:id="@+id/compTrackIcon"
+        android:id="@+id/iv_collection_image"
         android:layout_width="@dimen/dim_46dp"
         android:layout_height="@dimen/dim_46dp"
         android:background="?attr/colorPrimary"
@@ -23,18 +24,18 @@
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:layout_marginStart="@dimen/dim_08dp"
-        app:layout_constraintStart_toEndOf="@id/compTrackIcon"
+        app:layout_constraintStart_toEndOf="@id/iv_collection_image"
         app:layout_constraintEnd_toStartOf="@id/buttonForward"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent">
 
         <TextView
-            android:id="@+id/compTrackName"
+            android:id="@+id/tv_track_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             tools:text="TrackNaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaame"
             android:fontFamily="@font/ys_display_regular"
-            android:textSize="@dimen/text_size_Base"
+            android:textSize="@dimen/ts_16sp"
             android:textColor="?attr/colorOnPrimary"
             android:ellipsize="end"
             android:singleLine="true" />
@@ -45,12 +46,12 @@
             android:orientation="horizontal">
 
             <TextView
-                android:id="@+id/compArtistName"
+                android:id="@+id/tv_artist_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 tools:text="BandNameeeeeeeeeeeeeeeeeeeeeeeee"
                 android:fontFamily="@font/ys_display_regular"
-                android:textSize="@dimen/text_size_Small"
+                android:textSize="@dimen/ts_11sp"
                 android:textColor="?attr/colorPrimaryVariant"
                 android:maxLength="20"
                 android:ellipsize="end"
@@ -63,12 +64,12 @@
                 app:tint="?attr/colorPrimaryVariant" />
 
             <TextView
-                android:id="@+id/compDuration"
+                android:id="@+id/tv_duration"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 tools:text="Duration"
                 android:fontFamily="@font/ys_display_regular"
-                android:textSize="@dimen/text_size_Small"
+                android:textSize="@dimen/ts_11sp"
                 android:textColor="?attr/colorPrimaryVariant"
                 android:ellipsize="end"
                 android:singleLine="true" />
@@ -79,7 +80,7 @@
         android:id="@+id/buttonForward"
         android:layout_width="@dimen/dim_24dp"
         android:layout_height="@dimen/dim_24dp"
-        android:src="@drawable/icon_forward"
+        android:src="@drawable/ic_forward"
         app:tint="?attr/colorPrimaryVariant"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"

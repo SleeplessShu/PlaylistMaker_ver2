@@ -2,20 +2,14 @@ package com.practicum.playlistmaker_ver2
 
 import android.content.Intent
 import android.net.Uri
-import android.os.Build
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.view.View
-import android.view.WindowManager
-import android.widget.FrameLayout
-import android.widget.ImageView
-import android.widget.LinearLayout
 import androidx.appcompat.app.AppCompatDelegate
-import androidx.appcompat.widget.SwitchCompat
-import androidx.core.content.ContextCompat
 import com.google.android.material.switchmaterial.SwitchMaterial
+import com.practicum.playlistmaker_ver2.databinding.ActivitySettingsBinding
 
-class SettingsActivity : BaseActivity() {
+class ActivitySettings : ActivityBase() {
+    private lateinit var binding: ActivitySettingsBinding
+
     companion object {
         const val NIGHT_MODE_KEY = "NightMode"
         const val SETTINGS_KEY = "Settings"
@@ -24,9 +18,9 @@ class SettingsActivity : BaseActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
 
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_settings)
-        val switchTheme = findViewById<FrameLayout>(R.id.switchTheme)
-        val switcherTheme = findViewById<SwitchMaterial>(R.id.switcherTheme)
+        binding = ActivitySettingsBinding.inflate(layoutInflater)
+        setContentView(binding.root)
+
         val prefs = getSharedPreferences(SETTINGS_KEY, MODE_PRIVATE)
         val isNightModeOn = prefs.getBoolean(
             NIGHT_MODE_KEY,
@@ -35,8 +29,8 @@ class SettingsActivity : BaseActivity() {
 
         setupStatusBar(androidx.appcompat.R.attr.colorPrimary)
 
-        switcherTheme.isChecked = isNightModeOn
-        switcherTheme.setOnCheckedChangeListener { _, isChecked ->
+        binding.switcherTheme.isChecked = isNightModeOn
+        binding.switcherTheme.setOnCheckedChangeListener { _, isChecked ->
             AppCompatDelegate.setDefaultNightMode(
                 if (isChecked) AppCompatDelegate.MODE_NIGHT_YES else AppCompatDelegate.MODE_NIGHT_NO
             )
@@ -44,17 +38,15 @@ class SettingsActivity : BaseActivity() {
         }
 
 
-        switchTheme.setOnClickListener {
-            switcherTheme.isChecked = !switcherTheme.isChecked
+        binding.bSwitchTheme.setOnClickListener {
+            binding.switcherTheme.isChecked = !binding.switcherTheme.isChecked
         }
 
-        val onPressBackToMain = findViewById<LinearLayout>(R.id.buttonBackToMain)
-        onPressBackToMain.setOnClickListener {
+        binding.bBackToMain.setOnClickListener {
             finish()
         }
 
-        val supportApp = findViewById<FrameLayout>(R.id.mailToSupport)
-        supportApp.setOnClickListener {
+        binding.bMailToSupport.setOnClickListener {
             val supportIntent = Intent(Intent.ACTION_SENDTO)
             supportIntent.data = Uri.parse("mailto:")
             supportIntent.putExtra(Intent.EXTRA_EMAIL, arrayOf(getString(R.string.supportEmail)))
@@ -63,8 +55,7 @@ class SettingsActivity : BaseActivity() {
             startActivity(supportIntent)
         }
 
-        val shareApp = findViewById<FrameLayout>(R.id.shareApp)
-        shareApp.setOnClickListener {
+        binding.bShareApp.setOnClickListener {
 
             val shareIntent = Intent(Intent.ACTION_SEND)
             shareIntent.type = "text/plain"
@@ -72,8 +63,7 @@ class SettingsActivity : BaseActivity() {
             startActivity(shareIntent)
         }
 
-        val toAgreementWeb = findViewById<FrameLayout>(R.id.toAgreementWeb)
-        toAgreementWeb.setOnClickListener {
+        binding.bOpenAgreementWeb.setOnClickListener {
             val agreementIntent =
                 Intent(Intent.ACTION_VIEW, Uri.parse(getString(R.string.linkToAgreement)))
             startActivity(agreementIntent)

@@ -4,8 +4,8 @@ import android.content.Context
 import android.content.SharedPreferences
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
-import com.practicum.playlistmaker_ver2.SearchActivity.Companion.sharedPreferencesKey
-import com.practicum.playlistmaker_ver2.SearchActivity.Companion.sharedPreferencesName
+import com.practicum.playlistmaker_ver2.ActivitySearch.Companion.sharedPreferencesKey
+import com.practicum.playlistmaker_ver2.ActivitySearch.Companion.sharedPreferencesName
 
 class SharedPreferencesManager(context: Context) {
 
