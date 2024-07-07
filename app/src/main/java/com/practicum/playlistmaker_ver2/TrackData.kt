@@ -13,5 +13,6 @@ data class TrackData(
     val country: String,
     val artistName: String,
     val trackTimeMillis: Long,
+    val previewUrl: String,
     val artworkUrl100: String
 ) : Parcelable

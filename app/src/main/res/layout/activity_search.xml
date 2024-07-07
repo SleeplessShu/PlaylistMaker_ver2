@@ -40,9 +40,8 @@
         android:layout_marginBottom="@dimen/dim_16dp"
         android:paddingHorizontal="@dimen/dim_16dp"
         android:paddingVertical="@dimen/dim_08dp">
-
         <EditText
-            android:id="@+id/tiSearch"
+            android:id="@+id/queryInput"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@drawable/bkg_rounded_rectungle"
@@ -72,6 +71,14 @@
             app:tint="?attr/colorTextInputFont" />
     </FrameLayout>
 
+    <ProgressBar
+        android:id="@+id/progressBar"
+        android:layout_width="@dimen/dim_44dp"
+        android:layout_height="@dimen/dim_44dp"
+        android:layout_gravity="center"
+        android:layout_marginTop="@dimen/dim_140dp"
+        android:indeterminateTint="@color/blue"
+        android:visibility="gone" />
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
