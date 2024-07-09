@@ -27,14 +27,12 @@ class ActivitySearch : ActivityBase() {
         const val sharedPreferencesKey: String = "clicked_tracks"
         const val sharedPreferencesName: String = "previous_search_result"
         const val ITUNES_BASE_URL: String = "https://itunes.apple.com"
-        private const val CLICK_DEBOUNCE_DELAY = 1000L
         private const val SEARCH_DEBOUNCE_DELAY = 1000L
     }
 
     private val searchRunnable = Runnable { searchRequest() }
-
-    private var isClickAllowed = true
     private val handler = Handler(Looper.getMainLooper())
+    private var isSearchRequestedManually = false
 
     private val retrofit: Retrofit = Retrofit.Builder()
         .baseUrl(ITUNES_BASE_URL)
@@ -62,18 +60,16 @@ class ActivitySearch : ActivityBase() {
 
         trackAdapter =
             TrackAdapter(sharedPreferencesManager, emptyList(), TrackAdapter.VIEW_TYPE_EMPTY) {
-                if (clickDebounce()) {
-                    trackAdapter.updateTracks(emptyList(), TrackAdapter.VIEW_TYPE_EMPTY)
-                    searchRequest()
-                }
+                trackAdapter.updateTracks(emptyList(), TrackAdapter.VIEW_TYPE_EMPTY)
+                searchRequest()
             }
         binding.searchResult.adapter = trackAdapter
 
         setupStatusBar(androidx.appcompat.R.attr.colorPrimary)
 
-        binding.bBackToMain.setOnClickListener {
+        binding.bBackToMain.setOnClickListener(DebounceClickListener {
             finish()
-        }
+        })
 
         savedInstanceState?.getString(SEARCH_TEXT_KEY)?.let {
             updateButtonVisibility(it)
@@ -97,6 +93,7 @@ class ActivitySearch : ActivityBase() {
                 if (binding.queryInput.text.isNotEmpty()) {
                     val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
                     imm.hideSoftInputFromWindow(v.windowToken, 0)
+                    isSearchRequestedManually = true
                     searchRequest()
                 }
             }
@@ -106,22 +103,18 @@ class ActivitySearch : ActivityBase() {
 
         binding.bEraseText.setOnClickListener {
             binding.queryInput.text.clear()
-            trackAdapter.updateTracks(emptyList(), TrackAdapter.VIEW_TYPE_EMPTY)
+            //trackAdapter.updateTracks(emptyList(), TrackAdapter.VIEW_TYPE_EMPTY)
             val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
             imm.hideSoftInputFromWindow(it.windowToken, 0)
         }
 
         binding.bEraseHistory.setOnClickListener {
-            sharedPreferencesManager.removeData(sharedPreferencesKey)
-            updateTrackList()
-
+            clearSearchHistory()
         }
 
         listener = SharedPreferences.OnSharedPreferenceChangeListener { _, key ->
             if (sharedPreferencesKey == key && binding.queryInput.text.isEmpty()) {
-
                 updateTrackList()
-
             }
         }
 
@@ -143,6 +136,7 @@ class ActivitySearch : ActivityBase() {
     private fun searchRequest() {
         if (binding.queryInput.text.isNotEmpty()) {
             binding.searchResult.visibility = View.GONE
+            binding.bEraseHistory.isVisible = false
             binding.progressBar.visibility = View.VISIBLE
 
             iTunesService.searchTrack(binding.queryInput.text.toString())
@@ -170,7 +164,10 @@ class ActivitySearch : ActivityBase() {
                         handleNoInternet()
                     }
                 })
+        } else {
+            updateTrackList()
         }
+        isSearchRequestedManually = false
     }
 
 
@@ -192,20 +189,18 @@ class ActivitySearch : ActivityBase() {
     private fun updateButtonVisibility(searchText: String) {
         binding.queryInput.setText(searchText)
         binding.bEraseText.isVisible = searchText.isNotEmpty()
-        binding.bEraseHistory.isVisible = searchText.isEmpty()
     }
 
     private fun searchDebounce() {
-        handler.removeCallbacks(searchRunnable)
-        handler.postDelayed(searchRunnable, SEARCH_DEBOUNCE_DELAY)
+        if (!isSearchRequestedManually) {
+            handler.removeCallbacks(searchRunnable)
+            handler.postDelayed(searchRunnable, SEARCH_DEBOUNCE_DELAY)
+        }
     }
 
-    private fun clickDebounce(): Boolean {
-        val current = isClickAllowed
-        if (isClickAllowed) {
-            isClickAllowed = false
-            handler.postDelayed({ isClickAllowed = true }, CLICK_DEBOUNCE_DELAY)
-        }
-        return current
+    private fun clearSearchHistory() {
+        sharedPreferencesManager.removeData(sharedPreferencesKey)
+        binding.bEraseHistory.isVisible = false
+        updateTrackList()
     }
 }

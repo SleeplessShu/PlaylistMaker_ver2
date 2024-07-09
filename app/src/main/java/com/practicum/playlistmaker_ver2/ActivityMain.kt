@@ -12,18 +12,19 @@ class ActivityMain : ActivityBase() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        binding.bSettings.setOnClickListener {
+        binding.bSettings.setOnClickListener(DebounceClickListener {
             val intentSettings = Intent(this, ActivitySettings::class.java)
             startActivity(intentSettings)
-        }
-        binding.bMediateka.setOnClickListener {
+        })
+        binding.bMediateka.setOnClickListener(DebounceClickListener {
             val intentMediateka = Intent(this, ActivityMediateka::class.java)
             startActivity(intentMediateka)
-        }
-        binding.bSearch.setOnClickListener {
+        })
+        binding.bSearch.setOnClickListener(DebounceClickListener {
             val intentSearch = Intent(this, ActivitySearch::class.java)
             startActivity(intentSearch)
-        }
+        })
+
         val prefs = getSharedPreferences("Settings", MODE_PRIVATE)
         val isNightModeOn = prefs.getBoolean("NightMode", false)
         AppCompatDelegate.setDefaultNightMode(

@@ -8,7 +8,7 @@ import com.practicum.playlistmaker_ver2.databinding.TrackBinding
 
 class ViewHolderTrack(private val binding: TrackBinding) : RecyclerView.ViewHolder(binding.root) {
 
-    fun bind(track: TrackData) {
+    fun bind(track: TrackData, onItemClick: (TrackData) -> Unit) {
         val context = itemView.context
         val radiusPx = formatDpToPx(context, 2)
         binding.tvTrackName.text = track.trackName
@@ -21,5 +21,8 @@ class ViewHolderTrack(private val binding: TrackBinding) : RecyclerView.ViewHold
             .fitCenter()
             .transform(RoundedCorners(radiusPx))
             .into(binding.ivCollectionImage)
+        itemView.setOnClickListener(
+            DebounceClickListener { onItemClick(track) }
+        )
     }
 }
