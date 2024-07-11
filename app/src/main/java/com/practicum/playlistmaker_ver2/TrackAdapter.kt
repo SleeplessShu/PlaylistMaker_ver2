@@ -14,6 +14,7 @@ class TrackAdapter(
     private var trackData: List<TrackData> = emptyList(),
     private var viewType: Int = VIEW_TYPE_EMPTY,
     private val onRetry: (() -> Unit)? = null,
+    private val onItemClick: (TrackData) -> Unit
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     companion object {
@@ -64,7 +65,7 @@ class TrackAdapter(
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         when (holder) {
             is ViewHolderTrack -> if (trackData.isNotEmpty()) {
-                holder.bind(trackData[position])
+                holder.bind(trackData[position], onItemClick)
                 holder.itemView.setOnClickListener {
                     val context = holder.itemView.context
                     val intentPlayer = Intent(context, ActivityPlayer::class.java)

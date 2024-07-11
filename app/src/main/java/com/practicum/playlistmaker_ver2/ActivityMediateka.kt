@@ -12,8 +12,8 @@ class ActivityMediateka : ActivityBase() {
 
         setupStatusBar(androidx.appcompat.R.attr.colorPrimary)
 
-        binding.bBackToMain.setOnClickListener {
+        binding.bBackToMain.setOnClickListener(DebounceClickListener {
             finish()
-        }
+        })
     }
 }

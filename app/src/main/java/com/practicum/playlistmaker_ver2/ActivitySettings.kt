@@ -42,31 +42,31 @@ class ActivitySettings : ActivityBase() {
             binding.switcherTheme.isChecked = !binding.switcherTheme.isChecked
         }
 
-        binding.bBackToMain.setOnClickListener {
+        binding.bBackToMain.setOnClickListener(DebounceClickListener {
             finish()
-        }
+        })
 
-        binding.bMailToSupport.setOnClickListener {
+        binding.bMailToSupport.setOnClickListener(DebounceClickListener {
             val supportIntent = Intent(Intent.ACTION_SENDTO)
             supportIntent.data = Uri.parse("mailto:")
             supportIntent.putExtra(Intent.EXTRA_EMAIL, arrayOf(getString(R.string.supportEmail)))
             supportIntent.putExtra(Intent.EXTRA_SUBJECT, getString(R.string.mailToSupportSubject))
             supportIntent.putExtra(Intent.EXTRA_TEXT, getString(R.string.mailToSupportText))
             startActivity(supportIntent)
-        }
+        })
 
-        binding.bShareApp.setOnClickListener {
+        binding.bShareApp.setOnClickListener(DebounceClickListener {
 
             val shareIntent = Intent(Intent.ACTION_SEND)
             shareIntent.type = "text/plain"
             shareIntent.putExtra(Intent.EXTRA_TEXT, getString(R.string.linkToAndroidCourse))
             startActivity(shareIntent)
-        }
+        })
 
-        binding.bOpenAgreementWeb.setOnClickListener {
+        binding.bOpenAgreementWeb.setOnClickListener(DebounceClickListener {
             val agreementIntent =
                 Intent(Intent.ACTION_VIEW, Uri.parse(getString(R.string.linkToAgreement)))
             startActivity(agreementIntent)
-        }
+        })
     }
 }

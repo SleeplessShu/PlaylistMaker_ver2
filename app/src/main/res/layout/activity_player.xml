@@ -93,7 +93,7 @@
                 android:layout_height="@dimen/dim_56dp"
                 android:background="@drawable/bkg_circule"
                 android:backgroundTint="?attr/colorButtonPlayerBackground"
-                android:foreground="?attr/selectableItemBackground"
+                android:foreground="@drawable/ripple_circular"
                 android:src="@drawable/ic_add_to_playlist"
                 app:layout_constraintBottom_toBottomOf="@id/bLike"
                 app:layout_constraintEnd_toStartOf="@+id/bPlay"
@@ -109,7 +109,7 @@
                 android:layout_width="@dimen/dim_82dp"
                 android:layout_height="@dimen/dim_82dp"
                 android:layout_marginTop="@dimen/dim_30dp"
-                android:foreground="?attr/selectableItemBackground"
+                android:foreground="@drawable/ripple_circular"
                 android:src="@drawable/ic_play"
                 app:layout_constraintBottom_toBottomOf="@+id/bAddToPlaylist"
                 app:layout_constraintEnd_toStartOf="@+id/bLike"
@@ -122,7 +122,7 @@
                 android:layout_height="@dimen/dim_56dp"
                 android:background="@drawable/bkg_circule"
                 android:backgroundTint="?attr/colorButtonPlayerBackground"
-                android:foreground="?attr/selectableItemBackground"
+                android:foreground="@drawable/ripple_circular"
                 android:src="@drawable/ic_like_track"
                 app:layout_constraintBottom_toBottomOf="@+id/bPlay"
                 app:layout_constraintEnd_toStartOf="@id/rightBorder"
@@ -141,7 +141,7 @@
                 app:layout_constraintEnd_toStartOf="@id/rightBorder"
                 app:layout_constraintStart_toEndOf="@id/leftBorder"
                 app:layout_constraintTop_toBottomOf="@id/bPlay"
-                tools:text="0:30" />
+                android:text="00:00" />
 
             <TextView
                 android:id="@+id/trackDuration"
