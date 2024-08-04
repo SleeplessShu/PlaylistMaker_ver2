@@ -1,11 +1,13 @@
-package com.practicum.playlistmaker_ver2
+package com.practicum.playlistmaker_ver2.ui.settings
 
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatDelegate
-import com.google.android.material.switchmaterial.SwitchMaterial
+import com.practicum.playlistmaker_ver2.util.DebounceClickListener
+import com.practicum.playlistmaker_ver2.R
 import com.practicum.playlistmaker_ver2.databinding.ActivitySettingsBinding
+import com.practicum.playlistmaker_ver2.ui.base.ActivityBase
 
 class ActivitySettings : ActivityBase() {
     private lateinit var binding: ActivitySettingsBinding

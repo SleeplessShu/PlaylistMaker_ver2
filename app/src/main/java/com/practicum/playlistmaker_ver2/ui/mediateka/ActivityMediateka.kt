@@ -1,7 +1,9 @@
-package com.practicum.playlistmaker_ver2
+package com.practicum.playlistmaker_ver2.ui.mediateka
 
 import android.os.Bundle
+import com.practicum.playlistmaker_ver2.util.DebounceClickListener
 import com.practicum.playlistmaker_ver2.databinding.ActivityMediatekaBinding
+import com.practicum.playlistmaker_ver2.ui.base.ActivityBase
 
 class ActivityMediateka : ActivityBase() {
     private lateinit var binding: ActivityMediatekaBinding

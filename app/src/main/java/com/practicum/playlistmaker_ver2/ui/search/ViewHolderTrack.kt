@@ -1,9 +1,14 @@
-package com.practicum.playlistmaker_ver2
+package com.practicum.playlistmaker_ver2.ui.search
 
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
+import com.practicum.playlistmaker_ver2.util.DebounceClickListener
+import com.practicum.playlistmaker_ver2.R
+import com.practicum.playlistmaker_ver2.data.dto.TrackData
 import com.practicum.playlistmaker_ver2.databinding.TrackBinding
+import com.practicum.playlistmaker_ver2.util.formatDpToPx
+import com.practicum.playlistmaker_ver2.util.formatLnToStr
 
 
 class ViewHolderTrack(private val binding: TrackBinding) : RecyclerView.ViewHolder(binding.root) {

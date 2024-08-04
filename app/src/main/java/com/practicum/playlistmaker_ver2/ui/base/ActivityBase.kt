@@ -1,4 +1,4 @@
-package com.practicum.playlistmaker_ver2
+package com.practicum.playlistmaker_ver2.ui.base
 
 import android.content.res.Configuration
 import android.os.Build

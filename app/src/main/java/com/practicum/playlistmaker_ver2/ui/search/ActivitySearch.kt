@@ -1,4 +1,4 @@
-package com.practicum.playlistmaker_ver2
+package com.practicum.playlistmaker_ver2.ui.search
 
 import android.content.Context
 import android.content.SharedPreferences
@@ -10,10 +10,16 @@ import android.text.TextWatcher
 import android.view.View
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
-import android.widget.ProgressBar
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.practicum.playlistmaker_ver2.data.network.ApiResponseITunes
+import com.practicum.playlistmaker_ver2.data.network.ApiITunes
+import com.practicum.playlistmaker_ver2.util.DebounceClickListener
+import com.practicum.playlistmaker_ver2.R
+import com.practicum.playlistmaker_ver2.util.SharedPreferencesManager
+import com.practicum.playlistmaker_ver2.data.dto.TrackData
 import com.practicum.playlistmaker_ver2.databinding.ActivitySearchBinding
+import com.practicum.playlistmaker_ver2.ui.base.ActivityBase
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -39,7 +45,7 @@ class ActivitySearch : ActivityBase() {
         .addConverterFactory(GsonConverterFactory.create())
         .build()
 
-    private val iTunesService: Api_iTunes = retrofit.create(Api_iTunes::class.java)
+    private val iTunesService: ApiITunes = retrofit.create(ApiITunes::class.java)
     private lateinit var binding: ActivitySearchBinding
     private lateinit var trackAdapter: TrackAdapter
     private lateinit var sharedPreferencesManager: SharedPreferencesManager
@@ -140,10 +146,10 @@ class ActivitySearch : ActivityBase() {
             binding.progressBar.visibility = View.VISIBLE
 
             iTunesService.searchTrack(binding.queryInput.text.toString())
-                .enqueue(object : Callback<Api_Response_iTunes> {
+                .enqueue(object : Callback<ApiResponseITunes> {
                     override fun onResponse(
-                        call: Call<Api_Response_iTunes>,
-                        response: Response<Api_Response_iTunes>
+                        call: Call<ApiResponseITunes>,
+                        response: Response<ApiResponseITunes>
                     ) {
                         binding.progressBar.visibility = View.GONE
                         if (response.isSuccessful) {
@@ -160,7 +166,7 @@ class ActivitySearch : ActivityBase() {
                         }
                     }
 
-                    override fun onFailure(call: Call<Api_Response_iTunes>, t: Throwable) {
+                    override fun onFailure(call: Call<ApiResponseITunes>, t: Throwable) {
                         handleNoInternet()
                     }
                 })

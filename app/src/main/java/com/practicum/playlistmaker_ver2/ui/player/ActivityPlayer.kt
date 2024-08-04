@@ -1,4 +1,4 @@
-package com.practicum.playlistmaker_ver2
+package com.practicum.playlistmaker_ver2.ui.player
 
 import android.media.MediaPlayer
 import android.os.Bundle
@@ -7,7 +7,15 @@ import android.os.Looper
 import android.widget.Toast
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
+import com.practicum.playlistmaker_ver2.util.DebounceClickListener
+import com.practicum.playlistmaker_ver2.R
+import com.practicum.playlistmaker_ver2.data.dto.TrackData
 import com.practicum.playlistmaker_ver2.databinding.ActivityPlayerBinding
+import com.practicum.playlistmaker_ver2.util.formatDpToPx
+import com.practicum.playlistmaker_ver2.util.formatMillisToMinutesSeconds
+import com.practicum.playlistmaker_ver2.util.getHiResCoverArtwork
+import com.practicum.playlistmaker_ver2.util.serializable
+import com.practicum.playlistmaker_ver2.ui.base.ActivityBase
 import kotlinx.coroutines.Runnable
 
 class ActivityPlayer : ActivityBase() {

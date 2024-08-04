@@ -1,13 +1,16 @@
-package com.practicum.playlistmaker_ver2
+package com.practicum.playlistmaker_ver2.ui.search
 
 import android.content.Intent
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.practicum.playlistmaker_ver2.data.dto.TrackData
 import com.practicum.playlistmaker_ver2.databinding.EmptyViewBinding
 import com.practicum.playlistmaker_ver2.databinding.ErrorNetworkConnectionBinding
 import com.practicum.playlistmaker_ver2.databinding.ErrorNothingFoundBinding
 import com.practicum.playlistmaker_ver2.databinding.TrackBinding
+import com.practicum.playlistmaker_ver2.ui.player.ActivityPlayer
+import com.practicum.playlistmaker_ver2.util.SharedPreferencesManager
 
 class TrackAdapter(
     private val sharedPreferencesManager: SharedPreferencesManager,

@@ -1,10 +1,7 @@
-package com.practicum.playlistmaker_ver2
-
-import android.view.View
-import android.widget.ImageView
+package com.practicum.playlistmaker_ver2.ui.search
 
 import androidx.recyclerview.widget.RecyclerView
-import com.practicum.playlistmaker_ver2.databinding.ErrorNetworkConnectionBinding
+import com.practicum.playlistmaker_ver2.R
 import com.practicum.playlistmaker_ver2.databinding.ErrorNothingFoundBinding
 
 class ViewHolderNothingFound(private val binding: ErrorNothingFoundBinding) :

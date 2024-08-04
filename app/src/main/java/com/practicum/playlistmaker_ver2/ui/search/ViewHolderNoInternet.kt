@@ -1,9 +1,7 @@
-package com.practicum.playlistmaker_ver2
+package com.practicum.playlistmaker_ver2.ui.search
 
-import android.view.View
-import android.widget.Button
-import android.widget.ImageView
 import androidx.recyclerview.widget.RecyclerView
+import com.practicum.playlistmaker_ver2.R
 import com.practicum.playlistmaker_ver2.databinding.ErrorNetworkConnectionBinding
 
 class ViewHolderNoInternet(

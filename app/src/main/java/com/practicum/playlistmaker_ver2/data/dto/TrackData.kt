@@ -1,4 +1,4 @@
-package com.practicum.playlistmaker_ver2
+package com.practicum.playlistmaker_ver2.data.dto
 
 import android.os.Parcelable
 import kotlinx.parcelize.Parcelize
