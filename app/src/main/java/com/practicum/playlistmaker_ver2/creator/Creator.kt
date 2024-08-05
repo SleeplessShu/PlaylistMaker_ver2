@@ -1,39 +1,37 @@
 package com.practicum.playlistmaker_ver2.creator
 
 import android.content.Context
-import com.practicum.playlistmaker_ver2.data.repository.NightModeRepositoryInSharedPreferencesImpl
-import com.practicum.playlistmaker_ver2.data.repository.TracksRepositoryInSharedPreferencesImpl
-import com.practicum.playlistmaker_ver2.domain.repository.NightModeRepositoryInSharedPreferences
-import com.practicum.playlistmaker_ver2.domain.repository.TracksRepositoryInSharedPreferences
-import com.practicum.playlistmaker_ver2.domain.use_case.GetNightModeStatusFromSharedPreferencesUseCase
-import com.practicum.playlistmaker_ver2.domain.use_case.SetNightModeStatusInSharedPreferencesUseCase
+import com.practicum.playlistmaker_ver2.data.repository.NightModeRepositoryImpl
+import com.practicum.playlistmaker_ver2.domain.repository.NightModeRepository
+import com.practicum.playlistmaker_ver2.domain.use_case.GetNightModeStatusUseCase
+import com.practicum.playlistmaker_ver2.domain.use_case.SetNightModeStatusUseCase
 
 object Creator {
 
     //SHARED PREFERENCES
 
     //NightMode
-    private fun provideNightModeRepositoryInSharedPreferences(context: Context): NightModeRepositoryInSharedPreferences {
-        return NightModeRepositoryInSharedPreferencesImpl(context = context)
+    private fun provideNightModeRepositoryUseCase(context: Context): NightModeRepository {
+        return NightModeRepositoryImpl(context = context)
     }
 
-    private fun provideSetNightModeStatusInSharedPreferencesUseCase(context: Context): SetNightModeStatusInSharedPreferencesUseCase {
-        return SetNightModeStatusInSharedPreferencesUseCase(
-            provideNightModeRepositoryInSharedPreferences(context)
+    fun provideSetNightModeStatusUseCase(context: Context): SetNightModeStatusUseCase {
+        return SetNightModeStatusUseCase(
+            provideNightModeRepositoryUseCase(context)
         )
     }
 
-    private fun provideGetNightModeStatusInSharedPreferencesUseCase(context: Context): GetNightModeStatusFromSharedPreferencesUseCase {
-        return GetNightModeStatusFromSharedPreferencesUseCase(
-            provideNightModeRepositoryInSharedPreferences(context)
+    fun provideGetNightModeStatusUseCase(context: Context): GetNightModeStatusUseCase {
+        return GetNightModeStatusUseCase(
+            provideNightModeRepositoryUseCase(context)
         )
     }
+    /*
 
+        //Clicked tracks
+        private fun provideTracksRepositoryInSharedPreferences(context: Context): TracksRepositoryInSharedPreferences {
+            return TracksRepositoryInSharedPreferencesImpl(context = context)
+        }
 
-    //Clicked tracks
-    private fun provideTracksRepositoryInSharedPreferences(context: Context): TracksRepositoryInSharedPreferences {
-        return TracksRepositoryInSharedPreferencesImpl(context = context)
-    }
-
-
+    */
 }

@@ -6,10 +6,10 @@ import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import com.practicum.playlistmaker_ver2.data.dto.TrackData
 import com.practicum.playlistmaker_ver2.domain.models.Track
-import com.practicum.playlistmaker_ver2.domain.repository.TracksRepositoryInSharedPreferences
+import com.practicum.playlistmaker_ver2.domain.repository.TracksRepositorySharedPreferences
 
-class TracksRepositoryInSharedPreferencesImpl(context: Context) :
-    TracksRepositoryInSharedPreferences {
+class TracksRepositorySharedPreferencesImpl(context: Context) :
+    TracksRepositorySharedPreferences {
 
     companion object {
         const val TRACK_REPOSITORY_SHARED_PREFERENCES_KEY: String = "clicked_tracks"

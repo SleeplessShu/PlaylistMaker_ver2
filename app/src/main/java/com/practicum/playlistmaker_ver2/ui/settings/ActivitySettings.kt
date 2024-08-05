@@ -6,15 +6,20 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatDelegate
 import com.practicum.playlistmaker_ver2.util.DebounceClickListener
 import com.practicum.playlistmaker_ver2.R
+import com.practicum.playlistmaker_ver2.creator.Creator
 import com.practicum.playlistmaker_ver2.databinding.ActivitySettingsBinding
+import com.practicum.playlistmaker_ver2.domain.use_case.GetNightModeStatusUseCase
+import com.practicum.playlistmaker_ver2.domain.use_case.SetNightModeStatusUseCase
 import com.practicum.playlistmaker_ver2.ui.base.ActivityBase
 
 class ActivitySettings : ActivityBase() {
     private lateinit var binding: ActivitySettingsBinding
+    private lateinit var setNightModeStatusUseCase: SetNightModeStatusUseCase
+    private lateinit var getNightModeStatusUseCase: GetNightModeStatusUseCase
 
     companion object {
-        const val NIGHT_MODE_KEY = "NightMode"
-        const val SETTINGS_KEY = "Settings"
+        //const val NIGHT_MODE_KEY = "NightMode"
+        //const val SETTINGS_KEY = "Settings"
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -22,12 +27,16 @@ class ActivitySettings : ActivityBase() {
         super.onCreate(savedInstanceState)
         binding = ActivitySettingsBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        setNightModeStatusUseCase = Creator.provideSetNightModeStatusUseCase(this)
+        getNightModeStatusUseCase = Creator.provideGetNightModeStatusUseCase(this)
 
-        val prefs = getSharedPreferences(SETTINGS_KEY, MODE_PRIVATE)
-        val isNightModeOn = prefs.getBoolean(
+        //val prefs = getSharedPreferences(SETTINGS_KEY, MODE_PRIVATE)
+        val isNightModeOn = getNightModeStatusUseCase.execute()
+        /*val isNightModeOn = prefs.getBoolean(
             NIGHT_MODE_KEY,
             AppCompatDelegate.getDefaultNightMode() == AppCompatDelegate.MODE_NIGHT_YES
         )
+        */
 
         setupStatusBar(androidx.appcompat.R.attr.colorPrimary)
 
@@ -36,13 +45,16 @@ class ActivitySettings : ActivityBase() {
             AppCompatDelegate.setDefaultNightMode(
                 if (isChecked) AppCompatDelegate.MODE_NIGHT_YES else AppCompatDelegate.MODE_NIGHT_NO
             )
-            prefs.edit().putBoolean(NIGHT_MODE_KEY, isChecked).apply()
+            setNightModeStatusUseCase.execute(isChecked)
+            //prefs.edit().putBoolean(NIGHT_MODE_KEY, isChecked).apply()
         }
 
+        /*
+                binding.bSwitchTheme.setOnClickListener {
+                    binding.switcherTheme.toggle()
+                }
 
-        binding.bSwitchTheme.setOnClickListener {
-            binding.switcherTheme.isChecked = !binding.switcherTheme.isChecked
-        }
+         */
 
         binding.bBackToMain.setOnClickListener(DebounceClickListener {
             finish()
