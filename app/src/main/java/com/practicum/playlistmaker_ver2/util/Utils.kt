@@ -9,6 +9,7 @@ import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
 
+
 fun formatDpToPx(context: Context, dp: Int): Int {
     return TypedValue.applyDimension(
         TypedValue.COMPLEX_UNIT_DIP,
@@ -23,6 +24,7 @@ fun formatMillisToMinutesSeconds(trackTimeMillis: Long): String {
     return String.format("%02d:%02d", minutes, seconds)
 }
 
+/*
 fun getHiResCoverArtwork(link: String): String {
     return link.replaceAfterLast('/', "512x512bb.jpg")
 }
@@ -32,7 +34,7 @@ fun formatLnToStr(long: Long): String {
     val format = SimpleDateFormat("mm:ss", Locale.getDefault())
     return format.format(date)
 }
-
+*/
 inline fun <reified T : Serializable> Intent.serializable(key: String): T? = when {
     Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU -> getSerializableExtra(
         key,

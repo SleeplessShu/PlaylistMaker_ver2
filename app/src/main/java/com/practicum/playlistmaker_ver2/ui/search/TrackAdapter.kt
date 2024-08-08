@@ -1,23 +1,28 @@
 package com.practicum.playlistmaker_ver2.ui.search
 
+import android.content.Context
 import android.content.Intent
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.practicum.playlistmaker_ver2.data.dto.TrackData
+import com.practicum.playlistmaker_ver2.util.Creator
+import com.practicum.playlistmaker_ver2.data.dto.TrackDto
 import com.practicum.playlistmaker_ver2.databinding.EmptyViewBinding
 import com.practicum.playlistmaker_ver2.databinding.ErrorNetworkConnectionBinding
 import com.practicum.playlistmaker_ver2.databinding.ErrorNothingFoundBinding
 import com.practicum.playlistmaker_ver2.databinding.TrackBinding
+import com.practicum.playlistmaker_ver2.domain.models.Track
 import com.practicum.playlistmaker_ver2.ui.player.ActivityPlayer
-import com.practicum.playlistmaker_ver2.util.SharedPreferencesManager
+import com.practicum.playlistmaker_ver2.util.Intent.PlayerIntent
+
 
 class TrackAdapter(
-    private val sharedPreferencesManager: SharedPreferencesManager,
-    private var trackData: List<TrackData> = emptyList(),
+    private val context: Context,
+    private var trackData: List<Track> = emptyList(),
     private var viewType: Int = VIEW_TYPE_EMPTY,
     private val onRetry: (() -> Unit)? = null,
-    private val onItemClick: (TrackData) -> Unit
+    private val onItemClick: (Track) -> Unit
+
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     companion object {
@@ -27,7 +32,7 @@ class TrackAdapter(
         const val VIEW_TYPE_ITEM = 2
     }
 
-    private val sharedPreferencesKey: String = "clicked_tracks"
+    private var addClickedTrackUseCase = Creator.provideAddClickedTracksUseCase(context)
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         return when (viewType) {
@@ -70,11 +75,9 @@ class TrackAdapter(
             is ViewHolderTrack -> if (trackData.isNotEmpty()) {
                 holder.bind(trackData[position], onItemClick)
                 holder.itemView.setOnClickListener {
-                    val context = holder.itemView.context
-                    val intentPlayer = Intent(context, ActivityPlayer::class.java)
-                    intentPlayer.putExtra("trackData", trackData[position])
-                    sharedPreferencesManager.saveData(sharedPreferencesKey, trackData[position])
-                    context.startActivity(intentPlayer)
+                    startPlayer(holder.itemView.context, trackData[position])
+                    addClickedTrackUseCase.execute(trackData[position])
+
                 }
             }
 
@@ -100,9 +103,15 @@ class TrackAdapter(
         }
     }
 
-    fun updateTracks(newTracks: List<TrackData>, newViewType: Int) {
+    fun updateTracks(newTracks: List<Track>, newViewType: Int) {
         this.trackData = newTracks
         this.viewType = newViewType
         notifyDataSetChanged()
     }
+
+    private fun startPlayer(context: Context, track: Track) {
+        val playerIntent = PlayerIntent.startPlayer(context, track)
+        context.startActivity(playerIntent)
+    }
+
 }

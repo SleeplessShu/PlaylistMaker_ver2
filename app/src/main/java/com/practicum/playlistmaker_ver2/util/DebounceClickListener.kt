@@ -5,7 +5,7 @@ import android.os.Looper
 import android.view.View
 
 class DebounceClickListener(
-    private val interval: Long = 500L,
+    private val interval: Long = 1000L,
     private val onDebounceClick: (View) -> Unit
 ) : View.OnClickListener {
     private var canClick = true

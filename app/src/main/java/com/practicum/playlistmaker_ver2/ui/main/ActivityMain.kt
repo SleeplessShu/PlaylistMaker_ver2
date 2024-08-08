@@ -3,7 +3,7 @@ package com.practicum.playlistmaker_ver2.ui.main
 import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatDelegate
-import com.practicum.playlistmaker_ver2.creator.Creator
+import com.practicum.playlistmaker_ver2.util.Creator
 import com.practicum.playlistmaker_ver2.ui.mediateka.ActivityMediateka
 import com.practicum.playlistmaker_ver2.ui.search.ActivitySearch
 import com.practicum.playlistmaker_ver2.ui.settings.ActivitySettings

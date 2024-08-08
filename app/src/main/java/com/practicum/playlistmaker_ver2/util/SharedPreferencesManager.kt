@@ -2,61 +2,16 @@ package com.practicum.playlistmaker_ver2.util
 
 import android.content.Context
 import android.content.SharedPreferences
-import com.google.gson.Gson
-import com.google.gson.reflect.TypeToken
-import com.practicum.playlistmaker_ver2.data.dto.TrackData
-import com.practicum.playlistmaker_ver2.ui.search.ActivitySearch.Companion.sharedPreferencesKey
-import com.practicum.playlistmaker_ver2.ui.search.ActivitySearch.Companion.sharedPreferencesName
+
 
 class SharedPreferencesManager(context: Context) {
-
+    companion object {
+        const val CLICKED_TRACKS_REPOSITORY_NAME: String = "previous_search_result"
+    }
 
     private val sharedPreferences: SharedPreferences = context.getSharedPreferences(
-        sharedPreferencesName, Context.MODE_PRIVATE
+        CLICKED_TRACKS_REPOSITORY_NAME, Context.MODE_PRIVATE
     )
-
-
-    fun saveData(key: String, track: TrackData) {
-        val previousSearchList: ArrayList<TrackData> = getData(sharedPreferencesKey)
-        val iterator = previousSearchList.iterator()
-        var found = false
-
-        while (iterator.hasNext()) {
-            val t = iterator.next()
-            if (t.trackId == track.trackId) {
-                iterator.remove()
-                found = true
-                break
-            }
-        }
-
-        previousSearchList.add(0, track)
-
-        if (!found && previousSearchList.size > 10) {
-            previousSearchList.removeAt(previousSearchList.size - 1)
-        }
-
-        val value = Gson().toJson(previousSearchList)
-        val editor = sharedPreferences.edit()
-        editor.putString(key, value)
-        editor.apply()
-    }
-
-    fun getData(key: String): ArrayList<TrackData> {
-        val json = sharedPreferences.getString(key, null)
-        return if (json != null) {
-            val type = object : TypeToken<ArrayList<TrackData>>() {}.type
-            Gson().fromJson(json, type)
-        } else {
-            ArrayList()
-        }
-    }
-
-    fun removeData(key: String) {
-        val editor = sharedPreferences.edit()
-        editor.remove(key)
-        editor.apply()
-    }
 
     fun registerOnSharedPreferenceChangeListener(listener: SharedPreferences.OnSharedPreferenceChangeListener) {
         sharedPreferences.registerOnSharedPreferenceChangeListener(listener)
@@ -64,5 +19,9 @@ class SharedPreferencesManager(context: Context) {
 
     fun unregisterOnSharedPreferenceChangeListener(listener: SharedPreferences.OnSharedPreferenceChangeListener) {
         sharedPreferences.unregisterOnSharedPreferenceChangeListener(listener)
+    }
+
+    fun getSharedPreferences(): SharedPreferences {
+        return sharedPreferences
     }
 }

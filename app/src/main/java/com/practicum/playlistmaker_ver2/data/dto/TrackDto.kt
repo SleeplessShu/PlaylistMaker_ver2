@@ -1,11 +1,9 @@
 package com.practicum.playlistmaker_ver2.data.dto
 
-import android.os.Parcelable
-import kotlinx.parcelize.Parcelize
 import java.io.Serializable
 
 
-data class TrackData(
+data class TrackDto(
     val trackId: Int,
     val trackName: String,
     val collectionName: String,

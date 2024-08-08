@@ -4,24 +4,24 @@ import android.content.Context
 import android.content.SharedPreferences
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
-import com.practicum.playlistmaker_ver2.data.dto.TrackData
+import com.practicum.playlistmaker_ver2.data.dto.TrackDto
 import com.practicum.playlistmaker_ver2.domain.models.Track
-import com.practicum.playlistmaker_ver2.domain.repository.TracksRepositorySharedPreferences
+import com.practicum.playlistmaker_ver2.domain.repository.ClickedTracksRepository
 
-class TracksRepositorySharedPreferencesImpl(context: Context) :
-    TracksRepositorySharedPreferences {
+class ClickedTracksRepositoryImpl(context: Context) :
+    ClickedTracksRepository {
 
     companion object {
-        const val TRACK_REPOSITORY_SHARED_PREFERENCES_KEY: String = "clicked_tracks"
-        const val TRACK_REPOSITORY_SHARED_PREFERENCES_NAME: String = "previous_search_result"
+        const val CLICKED_TRACKS_REPOSITORY_KEY: String = "clicked_tracks"
+        const val CLICKED_TRACKS_REPOSITORY_NAME: String = "previous_search_result"
     }
 
     private val sharedPreferences: SharedPreferences = context.getSharedPreferences(
-        TRACK_REPOSITORY_SHARED_PREFERENCES_NAME, Context.MODE_PRIVATE
+        CLICKED_TRACKS_REPOSITORY_NAME, Context.MODE_PRIVATE
     )
 
-    override fun putDataToSharedPreferences(track: Track) {
-        val previousSearchList: ArrayList<Track> = getDataFromSharedPreferences()
+    override fun addClickedTrack(track: Track) {
+        val previousSearchList: ArrayList<Track> = getClickedTracks()
         val iterator = previousSearchList.iterator()
         var found = false
 
@@ -42,24 +42,24 @@ class TracksRepositorySharedPreferencesImpl(context: Context) :
 
         val value = Gson().toJson(previousSearchList)
         val editor = sharedPreferences.edit()
-        editor.putString(TRACK_REPOSITORY_SHARED_PREFERENCES_KEY, value)
+        editor.putString(CLICKED_TRACKS_REPOSITORY_KEY, value)
         editor.apply()
     }
 
 
-    override fun getDataFromSharedPreferences(): ArrayList<Track> {
-        val json = sharedPreferences.getString(TRACK_REPOSITORY_SHARED_PREFERENCES_KEY, null)
+    override fun getClickedTracks(): ArrayList<Track> {
+        val json = sharedPreferences.getString(CLICKED_TRACKS_REPOSITORY_KEY, null)
         return if (json != null) {
-            val type = object : TypeToken<ArrayList<TrackData>>() {}.type
+            val type = object : TypeToken<ArrayList<TrackDto>>() {}.type
             Gson().fromJson(json, type)
         } else {
             ArrayList()
         }
     }
 
-    override fun eraseDataInSharedPreferences() {
+    override fun eraseClickedTracks() {
         val editor = sharedPreferences.edit()
-        editor.remove(TRACK_REPOSITORY_SHARED_PREFERENCES_KEY)
+        editor.remove(CLICKED_TRACKS_REPOSITORY_KEY)
         editor.apply()
     }
 }
