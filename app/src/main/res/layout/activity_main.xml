@@ -8,7 +8,7 @@
     android:orientation="vertical"
     android:paddingHorizontal="16dp"
     android:paddingBottom="28dp"
-    tools:context=".ActivityMain">
+    tools:context=".ui.main.ActivityMain">
 
 
     <TextView
