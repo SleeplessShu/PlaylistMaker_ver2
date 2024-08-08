@@ -120,7 +120,7 @@ class PlayerController(
             setOnCompletionListener {
                 binding.bPlay.setImageResource(R.drawable.ic_play)
                 playerState = STATE_STOPPED
-                playingTimeCounter?.let { mainThreadHandler.removeCallbacks(it) }
+                playingTimeCounter?.let { it1 -> mainThreadHandler?.removeCallbacks(it1) }
                 binding.tvPlayTime.text = "00:00"
             }
             setOnErrorListener { _, what, extra ->

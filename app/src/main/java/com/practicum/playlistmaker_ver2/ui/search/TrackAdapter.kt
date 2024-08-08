@@ -104,6 +104,7 @@ class TrackAdapter(
     }
 
     fun updateTracks(newTracks: List<Track>, newViewType: Int) {
+
         this.trackData = newTracks
         this.viewType = newViewType
         notifyDataSetChanged()

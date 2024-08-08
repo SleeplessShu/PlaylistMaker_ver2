@@ -8,6 +8,7 @@ import android.os.Handler
 import android.os.Looper
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Log
 import android.view.View
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
@@ -133,21 +134,29 @@ class SearchController(
                 binding.queryInput.text.toString(),
                 object : TracksInteractor.TrackConsumer {
                     override fun consume(foundTracks: List<Track>?, errorMessage: String?) {
+                        Log.d("shu", "consume")
                         handler.post {
                             binding.progressBar.visibility = View.GONE
-                            if (foundTracks != null) {
-                                tracks.clear()
-                                tracks.addAll(foundTracks)
-                                binding.trackList.visibility = View.VISIBLE
-                                trackAdapter.updateTracks(tracks, TrackAdapter.VIEW_TYPE_ITEM)
-                            }
-                            if (errorMessage != null) {
-                                handleNoInternet()
-                            } else if (tracks.isEmpty()) {
-                                trackAdapter.updateTracks(
-                                    emptyList(),
-                                    TrackAdapter.VIEW_TYPE_NOTHING_FOUND
-                                )
+                            when {
+                                foundTracks != null /*&& foundTracks.isNotEmpty()*/ -> {
+                                    Log.d("shu", "handler.post main")
+                                    tracks.clear()
+                                    tracks.addAll(foundTracks)
+                                    binding.trackList.visibility = View.VISIBLE
+                                    trackAdapter.updateTracks(tracks, TrackAdapter.VIEW_TYPE_ITEM)
+                                }
+
+                                errorMessage != null -> {
+                                    handleNoInternet()
+                                }
+
+                                else -> {
+                                    Log.d("shu", "handler.post else")
+                                    trackAdapter.updateTracks(
+                                        emptyList(),
+                                        TrackAdapter.VIEW_TYPE_NOTHING_FOUND
+                                    )
+                                }
                             }
                         }
                     }

@@ -3,6 +3,7 @@ package com.practicum.playlistmaker_ver2.data.network
 import android.content.Context
 import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
+import android.util.Log
 import com.practicum.playlistmaker_ver2.data.NetworkClient
 import com.practicum.playlistmaker_ver2.data.dto.Response
 import com.practicum.playlistmaker_ver2.data.dto.TrackSearchRequest
@@ -22,18 +23,14 @@ class RetrofitNetworkClient(private val context: Context) : NetworkClient {
 
     private val iTunesService: ITunesApiService = retrofit.create(ITunesApiService::class.java)
     override fun doRequest(dto: Any): Response {
-        if (isConnected() == false)
-            return Response().apply { resultCode = -1 }
-        if (dto !is TrackSearchRequest) {
-            return Response().apply { resultCode = 400 }
-        }
+        Log.d("shu", "RetrofitNetworkClient")
+        if (!isConnected()) return Response().apply { resultCode = -1 }
+        if (dto !is TrackSearchRequest) return Response().apply { resultCode = 400 }
+
         val response = iTunesService.searchTrack(dto.expression).execute()
-        val body = response.body() ?: Response()
-        return if (body != null) {
-            body.apply { resultCode = response.code() }
-        } else {
-            Response().apply { resultCode = response.code() }
-        }
+        val body = response.body() ?: return Response().apply { resultCode = response.code() }
+        Log.d("Retrofit", "Response code: ${response.code()}, Body: ${response.body()}")
+        return body.apply { resultCode = response.code() }
     }
 
     private fun isConnected(): Boolean {

@@ -50,7 +50,7 @@ class ClickedTracksRepositoryImpl(context: Context) :
     override fun getClickedTracks(): ArrayList<Track> {
         val json = sharedPreferences.getString(CLICKED_TRACKS_REPOSITORY_KEY, null)
         return if (json != null) {
-            val type = object : TypeToken<ArrayList<TrackDto>>() {}.type
+            val type = object : TypeToken<ArrayList<Track>>() {}.type
             Gson().fromJson(json, type)
         } else {
             ArrayList()

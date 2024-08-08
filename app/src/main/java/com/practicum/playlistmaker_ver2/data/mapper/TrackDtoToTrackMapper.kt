@@ -1,10 +1,12 @@
 package com.practicum.playlistmaker_ver2.data.mapper
 
+import android.util.Log
 import com.practicum.playlistmaker_ver2.data.dto.TrackDto
 import com.practicum.playlistmaker_ver2.domain.models.Track
 
 object TrackDtoToTrackMapper {
     fun map(trackDto: List<TrackDto>): List<Track> {
+        Log.d("shu", "TrackDtoToTrackMapper")
         return trackDto.map {
             Track(
                 it.trackId,
