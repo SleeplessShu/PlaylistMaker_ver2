@@ -1,23 +1,22 @@
 package com.practicum.playlistmaker_ver2.ui.search
 
-import android.content.Context
-import android.content.Intent
+
+import android.content.SharedPreferences
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.practicum.playlistmaker_ver2.util.Creator
-import com.practicum.playlistmaker_ver2.data.dto.TrackDto
+import com.google.gson.Gson
 import com.practicum.playlistmaker_ver2.databinding.EmptyViewBinding
 import com.practicum.playlistmaker_ver2.databinding.ErrorNetworkConnectionBinding
 import com.practicum.playlistmaker_ver2.databinding.ErrorNothingFoundBinding
 import com.practicum.playlistmaker_ver2.databinding.TrackBinding
 import com.practicum.playlistmaker_ver2.domain.models.Track
-import com.practicum.playlistmaker_ver2.ui.player.ActivityPlayer
-import com.practicum.playlistmaker_ver2.util.Intent.PlayerIntent
 
 
 class TrackAdapter(
-    private val context: Context,
+
+
     private var trackData: List<Track> = emptyList(),
     private var viewType: Int = VIEW_TYPE_EMPTY,
     private val onRetry: (() -> Unit)? = null,
@@ -32,9 +31,10 @@ class TrackAdapter(
         const val VIEW_TYPE_ITEM = 2
     }
 
-    private var addClickedTrackUseCase = Creator.provideAddClickedTracksUseCase(context)
+
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
+        Log.d("DEBUG_SHU", "onCreateViewHolder: viewType = $viewType")
         return when (viewType) {
             VIEW_TYPE_EMPTY -> {
                 val binding =
@@ -66,18 +66,27 @@ class TrackAdapter(
                 ViewHolderTrack(binding)
             }
 
-            else -> throw IllegalArgumentException("Invalid view type")
+            else -> {
+                val binding = ErrorNetworkConnectionBinding.inflate(
+                    LayoutInflater.from(parent.context),
+                    parent,
+                    false
+                )
+                ViewHolderNoInternet(binding, onRetry)
+            }
         }
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
+        Log.d(
+            "DEBUG_SHU",
+            "onBindViewHolder: position = $position, viewType = ${getItemViewType(position)}"
+        )
         when (holder) {
             is ViewHolderTrack -> if (trackData.isNotEmpty()) {
                 holder.bind(trackData[position], onItemClick)
                 holder.itemView.setOnClickListener {
-                    startPlayer(holder.itemView.context, trackData[position])
-                    addClickedTrackUseCase.execute(trackData[position])
-
+                    onItemClick(trackData[position])
                 }
             }
 
@@ -105,14 +114,10 @@ class TrackAdapter(
 
     fun updateTracks(newTracks: List<Track>, newViewType: Int) {
 
-        this.trackData = newTracks
-        this.viewType = newViewType
+        trackData = newTracks
+        viewType = newViewType
+        Log.d("DEBUG_SHU", "updateTracks: $newViewType")
         notifyDataSetChanged()
-    }
 
-    private fun startPlayer(context: Context, track: Track) {
-        val playerIntent = PlayerIntent.startPlayer(context, track)
-        context.startActivity(playerIntent)
     }
-
 }

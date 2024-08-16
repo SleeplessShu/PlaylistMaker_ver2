@@ -4,12 +4,13 @@ import android.content.Context
 import android.content.SharedPreferences
 
 
-class SharedPreferencesManager(context: Context) {
-    companion object {
+class SharedPreferencesManager(appContext: Context) {
+    private companion object {
         const val CLICKED_TRACKS_REPOSITORY_NAME: String = "previous_search_result"
     }
 
-    private val sharedPreferences: SharedPreferences = context.getSharedPreferences(
+
+    private val sharedPreferences: SharedPreferences = appContext.getSharedPreferences(
         CLICKED_TRACKS_REPOSITORY_NAME, Context.MODE_PRIVATE
     )
 
@@ -19,9 +20,5 @@ class SharedPreferencesManager(context: Context) {
 
     fun unregisterOnSharedPreferenceChangeListener(listener: SharedPreferences.OnSharedPreferenceChangeListener) {
         sharedPreferences.unregisterOnSharedPreferenceChangeListener(listener)
-    }
-
-    fun getSharedPreferences(): SharedPreferences {
-        return sharedPreferences
     }
 }

@@ -1,100 +1,89 @@
 package com.practicum.playlistmaker_ver2.util
 
-import android.app.Activity
+import PlayerController
 import android.content.Context
+import android.content.SharedPreferences
+import android.net.ConnectivityManager
 import android.os.Handler
+
+import com.google.gson.Gson
 import com.practicum.playlistmaker_ver2.data.dto.TracksRepositoryImpl
 import com.practicum.playlistmaker_ver2.data.network.RetrofitNetworkClient
 import com.practicum.playlistmaker_ver2.data.repository.ClickedTracksRepositoryImpl
-import com.practicum.playlistmaker_ver2.data.repository.NightModeRepositoryImpl
-import com.practicum.playlistmaker_ver2.databinding.ActivityPlayerBinding
-import com.practicum.playlistmaker_ver2.databinding.ActivitySearchBinding
-import com.practicum.playlistmaker_ver2.domain.api.TracksInteractor
+import com.practicum.playlistmaker_ver2.data.repository.ThemeStatusRepositoryImpl
+import com.practicum.playlistmaker_ver2.data.network.NetworkClient
 import com.practicum.playlistmaker_ver2.domain.api.TracksRepository
+import com.practicum.playlistmaker_ver2.domain.impl.ClickedTracksInteractorImpl
+import com.practicum.playlistmaker_ver2.domain.impl.ThemeStatusInteractorImpl
+import com.practicum.playlistmaker_ver2.domain.impl.TracksInteractorImpl
+import com.practicum.playlistmaker_ver2.domain.interactor.ClickedTracksInteractor
+import com.practicum.playlistmaker_ver2.domain.interactor.ThemeStatusInteractor
 import com.practicum.playlistmaker_ver2.domain.repository.ClickedTracksRepository
-import com.practicum.playlistmaker_ver2.domain.repository.NightModeRepository
-import com.practicum.playlistmaker_ver2.domain.use_case.AddClickedTrackUseCase
-import com.practicum.playlistmaker_ver2.domain.use_case.EraseClickedTracksUseCase
-import com.practicum.playlistmaker_ver2.domain.use_case.GetClickedTracksUseCase
-import com.practicum.playlistmaker_ver2.domain.use_case.GetNightModeStatusUseCase
-import com.practicum.playlistmaker_ver2.domain.use_case.ProvidePlayerControllerUseCase
-import com.practicum.playlistmaker_ver2.domain.use_case.GetSearchControllerUseCase
-import com.practicum.playlistmaker_ver2.domain.use_case.GetSharedPreferencesManagerUseCase
-import com.practicum.playlistmaker_ver2.domain.use_case.GetTracksInteractorUseCase
+import com.practicum.playlistmaker_ver2.domain.repository.ThemeStatusRepository
+import com.practicum.playlistmaker_ver2.presentation.mapper.TrackToPlayerTrackMapper
+import java.util.concurrent.ExecutorService
 
-import com.practicum.playlistmaker_ver2.domain.use_case.SetNightModeStatusUseCase
-import com.practicum.playlistmaker_ver2.presentation.PlayerController
-
-
-import com.practicum.playlistmaker_ver2.presentation.SearchController
-import com.practicum.playlistmaker_ver2.ui.search.TrackAdapter
 
 object Creator {
+    const val THEME_SHARED_PREFERENCES_KEY = "NightMode"
+    const val THEME_SHARED_PREFERENCES_NAME: String = "Settings"
 
     // SEARCH ACTIVITY
-    private fun provideTracksRepository(context: Context): TracksRepository {
-        return TracksRepositoryImpl(RetrofitNetworkClient(context))
+    private fun provideTracksRepository(connectivityManager: ConnectivityManager): TracksRepository {
+        return TracksRepositoryImpl(RetrofitNetworkClient(connectivityManager))
     }
 
-    fun provideTracksInteractor(context: Context): TracksInteractor {
-        val tracksRepository = provideTracksRepository(context)
-        return GetTracksInteractorUseCase(tracksRepository).execute(context)
+    fun provideTracksInteractor(
+        connectivityManager: ConnectivityManager,
+        executor: ExecutorService
+    ): NetworkClient {
+        val tracksRepository = provideTracksRepository(connectivityManager)
+        return TracksInteractorImpl(tracksRepository, executor)
     }
 
-    fun provideTrackSearchController(
-        activity: Activity,
-        binding: ActivitySearchBinding
-    ): SearchController {
-        return GetSearchControllerUseCase().execute(activity, binding)
-    }
-
-    fun provideSharedPreferencesManager(context: Context): SharedPreferencesManager {
-        return GetSharedPreferencesManagerUseCase().execute(context)
-    }
 
     // PLAYER ACTIVITY
-    fun providePlayerControllerUseCase(
-        activity: Activity,
-        binding: ActivityPlayerBinding,
-        mainThreadHandler: Handler
+    fun providePlayerController(
+        mainThreadHandler: Handler,
+        playerListener: PlayerController.PlayerListener,
+        trackToPlayerTrackMapper: TrackToPlayerTrackMapper
     ): PlayerController {
-        return ProvidePlayerControllerUseCase().execute(activity, binding, mainThreadHandler)
+        return PlayerController(
+            mainThreadHandler = mainThreadHandler,
+            playerListener = playerListener,
+            trackToPlayerTrackMapper = trackToPlayerTrackMapper
+        )
     }
 
 
     //SHARED PREFERENCES
-    //NightMode
-    private fun provideNightModeRepositoryUseCase(context: Context): NightModeRepository {
-        return NightModeRepositoryImpl(context)
+
+    fun provideSharedPreferencesManager(appContext: Context): SharedPreferencesManager {
+        return SharedPreferencesManager(appContext)
     }
 
-    fun provideSetNightModeStatusUseCase(context: Context): SetNightModeStatusUseCase {
-        return SetNightModeStatusUseCase(
-            provideNightModeRepositoryUseCase(context)
-        )
+    fun provideThemeStatusInteractor(sharedPreferences: SharedPreferences): ThemeStatusInteractor {
+        return ThemeStatusInteractorImpl(provideThemeStatusRepository(sharedPreferences))
     }
 
-    fun provideGetNightModeStatusUseCase(context: Context): GetNightModeStatusUseCase {
-        return GetNightModeStatusUseCase(
-            provideNightModeRepositoryUseCase(context)
-        )
+    private fun provideThemeStatusRepository(sharedPreferences: SharedPreferences): ThemeStatusRepository {
+        return ThemeStatusRepositoryImpl(sharedPreferences)
     }
 
-    //Clicked tracks
-    private fun provideClickedTracksRepository(context: Context): ClickedTracksRepository {
-        return ClickedTracksRepositoryImpl(context)
+
+    fun provideClickedTracksInteractor(
+        sharedPreferences: SharedPreferences,
+        gson: Gson
+    ): ClickedTracksInteractor {
+        return ClickedTracksInteractorImpl(provideClickedTracksRepository(sharedPreferences, gson))
     }
 
-    fun provideGetClickedTracksUseCase(context: Context): GetClickedTracksUseCase {
-        return GetClickedTracksUseCase(provideClickedTracksRepository(context))
+    private fun provideClickedTracksRepository(
+        sharedPreferences: SharedPreferences,
+        gson: Gson
+    ): ClickedTracksRepository {
+        return ClickedTracksRepositoryImpl(sharedPreferences, gson)
     }
 
-    fun provideAddClickedTracksUseCase(context: Context): AddClickedTrackUseCase {
-        return AddClickedTrackUseCase(provideClickedTracksRepository(context))
-    }
-
-    fun provideEraseClickedTracksUseCase(context: Context): EraseClickedTracksUseCase {
-        return EraseClickedTracksUseCase(provideClickedTracksRepository(context))
-    }
 
 }

@@ -1,41 +1,36 @@
 package com.practicum.playlistmaker_ver2.data.network
 
-import android.content.Context
 import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
-import android.util.Log
+
 import com.practicum.playlistmaker_ver2.data.NetworkClient
 import com.practicum.playlistmaker_ver2.data.dto.Response
 import com.practicum.playlistmaker_ver2.data.dto.TrackSearchRequest
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
-class RetrofitNetworkClient(private val context: Context) : NetworkClient {
+class RetrofitNetworkClient(private val connectivityManager: ConnectivityManager) : NetworkClient {
 
-    companion object {
+    private companion object {
         const val ITUNES_BASE_URL = "https://itunes.apple.com"
     }
 
-    private val retrofit: Retrofit = Retrofit.Builder()
-        .baseUrl(ITUNES_BASE_URL)
-        .addConverterFactory(GsonConverterFactory.create())
-        .build()
+    private val retrofit: Retrofit = Retrofit.Builder().baseUrl(ITUNES_BASE_URL)
+        .addConverterFactory(GsonConverterFactory.create()).build()
 
-    private val iTunesService: ITunesApiService = retrofit.create(ITunesApiService::class.java)
+    private val iTunesApiService = retrofit.create(ITunesApiService::class.java)
     override fun doRequest(dto: Any): Response {
-        Log.d("shu", "RetrofitNetworkClient")
-        if (!isConnected()) return Response().apply { resultCode = -1 }
-        if (dto !is TrackSearchRequest) return Response().apply { resultCode = 400 }
-
-        val response = iTunesService.searchTrack(dto.expression).execute()
-        val body = response.body() ?: return Response().apply { resultCode = response.code() }
-        Log.d("Retrofit", "Response code: ${response.code()}, Body: ${response.body()}")
-        return body.apply { resultCode = response.code() }
+        if (!isConnected()) return Response(resultCode = -1)
+        if (dto !is TrackSearchRequest) return Response(resultCode = 400)
+        else {
+            val response = iTunesApiService.search(dto.expression).execute()
+            val body = response.body() ?: Response()
+            return body.apply { resultCode = response.code() }
+        }
     }
 
     private fun isConnected(): Boolean {
-        val connectivityManager =
-            context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+
         val capabilities =
             connectivityManager.getNetworkCapabilities(connectivityManager.activeNetwork)
         if (capabilities != null) {

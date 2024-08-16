@@ -1,26 +1,14 @@
-package com.practicum.playlistmaker_ver2.presentation
-
-import android.app.Activity
-import android.content.Context
 import android.media.MediaPlayer
 import android.os.Handler
-import android.widget.Toast
-import com.bumptech.glide.Glide
-import com.bumptech.glide.load.resource.bitmap.RoundedCorners
-import com.practicum.playlistmaker_ver2.R
-import com.practicum.playlistmaker_ver2.databinding.ActivityPlayerBinding
 import com.practicum.playlistmaker_ver2.domain.models.PlayerTrack
 import com.practicum.playlistmaker_ver2.domain.models.Track
 import com.practicum.playlistmaker_ver2.domain.repository.PlayerControllerInterface
 import com.practicum.playlistmaker_ver2.presentation.mapper.TrackToPlayerTrackMapper
-import com.practicum.playlistmaker_ver2.util.DebounceClickListener
-import com.practicum.playlistmaker_ver2.util.formatDpToPx
-import com.practicum.playlistmaker_ver2.util.formatMillisToMinutesSeconds
 
 class PlayerController(
-    private val activity: Activity,
-    private val binding: ActivityPlayerBinding,
-    private val mainThreadHandler: Handler
+    private val mainThreadHandler: Handler,
+    private val playerListener: PlayerListener,
+    private val trackToPlayerTrackMapper: TrackToPlayerTrackMapper
 ) : PlayerControllerInterface {
 
     companion object {
@@ -40,51 +28,11 @@ class PlayerController(
     private lateinit var playerTrack: PlayerTrack
 
     override fun onCreate(currentTrack: Track) {
-        var isPressed_bLike = false
-        var isPressed_bAddtoPlaylist = false
-
-        binding.bBack.setOnClickListener(DebounceClickListener {
-            activity.finish()
-        })
-        playerTrack = TrackToPlayerTrackMapper.map(currentTrack)
-        playerTrack.let { track ->
-            binding.tvTrackName.text = track.trackName
-            binding.tvArtistName.text = track.artistName
-            binding.tvPrimaryGenreName.text = track.primaryGenreName
-            binding.tvCollectionName.text = track.collectionName
-            binding.tvCountry.text = track.country
-            binding.tvReleaseDate.text = track.releaseDate
-            binding.tvTrackDuration.text = track.trackTime
-            trackTime = track.trackTime
-            previewUrl = track.previewUrl
-            val radiusPx = formatDpToPx(activity, 8)
-            Glide.with(activity)
-                .load(track.artworkUrl500)
-                .placeholder(R.drawable.placeholder)
-                .fitCenter()
-                .transform(RoundedCorners(radiusPx))
-                .into(binding.ivCollectionImage)
-        }
-
+        playerTrack = trackToPlayerTrackMapper.map(currentTrack)
+        trackTime = playerTrack.trackTime
+        previewUrl = playerTrack.previewUrl
         initializePlayer()
-
-        binding.bLike.setOnClickListener(DebounceClickListener {
-            isPressed_bLike = !isPressed_bLike
-            binding.bLike.setImageResource(
-                if (isPressed_bLike) R.drawable.ic_like_track_pushed else R.drawable.ic_like_track
-            )
-        })
-
-        binding.bAddToPlaylist.setOnClickListener(DebounceClickListener {
-            isPressed_bAddtoPlaylist = !isPressed_bAddtoPlaylist
-            binding.bAddToPlaylist.setImageResource(
-                if (isPressed_bAddtoPlaylist) R.drawable.ic_add_to_playlist_pushed else R.drawable.ic_add_to_playlist
-            )
-        })
-
-        binding.bPlay.setOnClickListener(DebounceClickListener {
-            playbackControl()
-        })
+        playerListener.onTrackLoaded(playerTrack)
     }
 
     override fun onPause() {
@@ -100,7 +48,6 @@ class PlayerController(
         playingTimeCounter?.let {
             mainThreadHandler.removeCallbacks(it)
         }
-        binding.tvPlayTime.text = "00:00"
     }
 
     override fun playbackControl() {
@@ -116,19 +63,15 @@ class PlayerController(
             prepareAsync()
             setOnPreparedListener {
                 playerState = STATE_PREPARED
+                playerListener.onPlayerPrepared()
             }
             setOnCompletionListener {
-                binding.bPlay.setImageResource(R.drawable.ic_play)
                 playerState = STATE_STOPPED
-                playingTimeCounter?.let { it1 -> mainThreadHandler?.removeCallbacks(it1) }
-                binding.tvPlayTime.text = "00:00"
+                playerListener.onPlayerStopped()
+                playingTimeCounter?.let { mainThreadHandler.removeCallbacks(it) }
             }
             setOnErrorListener { _, what, extra ->
-                Toast.makeText(
-                    activity,
-                    "Error occurred: $what, $extra",
-                    Toast.LENGTH_LONG
-                ).show()
+                playerListener.onPlayerError("Error occurred: $what, $extra")
                 true
             }
         }
@@ -136,30 +79,25 @@ class PlayerController(
 
     private fun startPlayer() {
         mediaPlayer.start()
-        binding.bPlay.setImageResource(R.drawable.ic_pause)
         playerState = STATE_PLAYING
         startPlayingTimeCounter()
+        playerListener.onPlayerStarted()
     }
 
     private fun pausePlayer() {
         if (mediaPlayer.isPlaying) {
             mediaPlayer.pause()
-            binding.bPlay.setImageResource(R.drawable.ic_play)
             playerState = STATE_PAUSED
-            playingTimeCounter?.let {
-                mainThreadHandler.removeCallbacks(it)
-            }
+            playingTimeCounter?.let { mainThreadHandler.removeCallbacks(it) }
+            playerListener.onPlayerPaused()
         }
     }
 
     private fun stopPlayer() {
         mediaPlayer.stop()
-        binding.bPlay.setImageResource(R.drawable.ic_play)
         playerState = STATE_STOPPED
-        playingTimeCounter?.let {
-            mainThreadHandler.removeCallbacks(it)
-        }
-        binding.tvPlayTime.text = "00:00"
+        playingTimeCounter?.let { mainThreadHandler.removeCallbacks(it) }
+        playerListener.onPlayerStopped()
     }
 
     private fun startPlayingTimeCounter() {
@@ -170,10 +108,20 @@ class PlayerController(
     private fun createPlayingTimeCounterTask(): Runnable {
         return object : Runnable {
             override fun run() {
-                binding.tvPlayTime.text =
-                    formatMillisToMinutesSeconds(mediaPlayer.currentPosition.toLong())
+                val currentTime = mediaPlayer.currentPosition.toLong()
+                playerListener.onPlayTimeUpdate(currentTime)
                 mainThreadHandler.postDelayed(this, DELAY)
             }
         }
+    }
+
+    interface PlayerListener {
+        fun onTrackLoaded(track: PlayerTrack)
+        fun onPlayerPrepared()
+        fun onPlayerStarted()
+        fun onPlayerPaused()
+        fun onPlayerStopped()
+        fun onPlayTimeUpdate(currentTime: Long)
+        fun onPlayerError(errorMessage: String)
     }
 }

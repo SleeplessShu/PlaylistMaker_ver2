@@ -4,7 +4,7 @@ import com.practicum.playlistmaker_ver2.domain.models.Track
 
 
 interface ClickedTracksRepository {
-    fun addClickedTrack(track: Track)
-    fun getClickedTracks(): List<Track>
-    fun eraseClickedTracks()
+    fun addTrack(track: Track)
+    fun getTracks(): List<Track>
+    fun eraseTracks()
 }

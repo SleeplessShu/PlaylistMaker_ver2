@@ -1,40 +1,40 @@
 package com.practicum.playlistmaker_ver2.ui.settings
 
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatDelegate
 import com.practicum.playlistmaker_ver2.util.DebounceClickListener
 import com.practicum.playlistmaker_ver2.R
 import com.practicum.playlistmaker_ver2.util.Creator
 import com.practicum.playlistmaker_ver2.databinding.ActivitySettingsBinding
-import com.practicum.playlistmaker_ver2.domain.use_case.GetNightModeStatusUseCase
-import com.practicum.playlistmaker_ver2.domain.use_case.SetNightModeStatusUseCase
 import com.practicum.playlistmaker_ver2.ui.base.ActivityBase
-import com.practicum.playlistmaker_ver2.util.Intent.AgreementIntentHelper
-import com.practicum.playlistmaker_ver2.util.Intent.EmailIntentHelper
-import com.practicum.playlistmaker_ver2.util.Intent.ShareIntentHelper
+
 
 class ActivitySettings : ActivityBase() {
+    private companion object {
+        const val THEME_SHARED_PREFERENCES_KEY = "NightMode"
+    }
+
     private lateinit var binding: ActivitySettingsBinding
-    private lateinit var setNightModeStatusUseCase: SetNightModeStatusUseCase
-    private lateinit var getNightModeStatusUseCase: GetNightModeStatusUseCase
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
 
         super.onCreate(savedInstanceState)
         binding = ActivitySettingsBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        setNightModeStatusUseCase = Creator.provideSetNightModeStatusUseCase(this)
-        getNightModeStatusUseCase = Creator.provideGetNightModeStatusUseCase(this)
-        val isNightModeOn = getNightModeStatusUseCase.execute()
+        val sharedPreferences = getSharedPreferences(THEME_SHARED_PREFERENCES_KEY, MODE_PRIVATE)
+        val themeInteractor = Creator.provideThemeStatusInteractor(sharedPreferences)
 
         setupStatusBar(androidx.appcompat.R.attr.colorPrimary)
 
-        binding.switcherTheme.isChecked = isNightModeOn
+        binding.switcherTheme.isChecked = themeInteractor.getThemeStatus()
         binding.switcherTheme.setOnCheckedChangeListener { _, isChecked ->
             AppCompatDelegate.setDefaultNightMode(
                 if (isChecked) AppCompatDelegate.MODE_NIGHT_YES else AppCompatDelegate.MODE_NIGHT_NO
             )
-            setNightModeStatusUseCase.execute(isChecked)
+            themeInteractor.setThemeStatus(isChecked)
         }
 
         binding.bBackToMain.setOnClickListener(DebounceClickListener {
@@ -55,27 +55,24 @@ class ActivitySettings : ActivityBase() {
     }
 
     private fun sendSupportEmail() {
-        val mailToSupportIntent = EmailIntentHelper.createSupportEmailIntent(
-            getString(R.string.supportEmail),
-            getString(R.string.mailToSupportSubject),
-            getString(R.string.mailToSupportText)
-        )
-        startActivity(mailToSupportIntent)
+        val supportIntent = Intent(Intent.ACTION_SENDTO)
+        supportIntent.data = Uri.parse("mailto:")
+        supportIntent.putExtra(Intent.EXTRA_EMAIL, arrayOf(getString(R.string.supportEmail)))
+        supportIntent.putExtra(Intent.EXTRA_SUBJECT, getString(R.string.mailToSupportSubject))
+        supportIntent.putExtra(Intent.EXTRA_TEXT, getString(R.string.mailToSupportText))
+        startActivity(supportIntent)
     }
 
     private fun shareApp() {
-        val shareIntent = ShareIntentHelper.createShareAppIntent(
-            context = this,
-            shareText = getString(R.string.linkToAndroidCourse)
-        )
+        val shareIntent = Intent(Intent.ACTION_SEND)
+        shareIntent.type = "text/plain"
+        shareIntent.putExtra(Intent.EXTRA_TEXT, getString(R.string.linkToAndroidCourse))
         startActivity(shareIntent)
     }
 
     private fun openAgreementWeb() {
-        val agreementWebIntent = AgreementIntentHelper.createAgreementWebIntent(
-            context = this,
-            link = getString(R.string.linkToAgreement)
-        )
-        startActivity(agreementWebIntent)
+        val agreementIntent =
+            Intent(Intent.ACTION_VIEW, Uri.parse(getString(R.string.linkToAgreement)))
+        startActivity(agreementIntent)
     }
 }

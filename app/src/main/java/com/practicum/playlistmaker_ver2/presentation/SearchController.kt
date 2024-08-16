@@ -1,59 +1,72 @@
-package com.practicum.playlistmaker_ver2.presentation
+/*package com.practicum.playlistmaker_ver2.presentation
 
-import android.app.Activity
 import android.content.Context
 import android.content.SharedPreferences
+import android.net.ConnectivityManager
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.text.Editable
 import android.text.TextWatcher
-import android.util.Log
-import android.view.View
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.gson.Gson
 import com.practicum.playlistmaker_ver2.databinding.ActivitySearchBinding
-import com.practicum.playlistmaker_ver2.domain.api.TracksInteractor
 import com.practicum.playlistmaker_ver2.domain.models.Track
-import com.practicum.playlistmaker_ver2.domain.use_case.EraseClickedTracksUseCase
-import com.practicum.playlistmaker_ver2.domain.use_case.GetClickedTracksUseCase
 import com.practicum.playlistmaker_ver2.util.Creator
 import com.practicum.playlistmaker_ver2.ui.search.TrackAdapter
 import com.practicum.playlistmaker_ver2.util.DebounceClickListener
-import com.practicum.playlistmaker_ver2.util.SharedPreferencesManager
+import java.util.concurrent.Executors
 
 class SearchController(
-    private val activity: Activity,
+    private val appContext: Context,
     private val binding: ActivitySearchBinding
 ) {
-    private val trackInteractor = Creator.provideTracksInteractor(context = activity)
+    private val connectivityManager =
+        appContext.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+    private val executors = Executors.newCachedThreadPool()
+    private val trackInteractor = Creator.provideTracksInteractor(connectivityManager, executors)
     private lateinit var trackAdapter: TrackAdapter
     private lateinit var getClickedTracksUseCase: GetClickedTracksUseCase
     private lateinit var eraseClickedTracksUseCase: EraseClickedTracksUseCase
     private lateinit var listener: SharedPreferences.OnSharedPreferenceChangeListener
 
-    companion object {
+    private companion object {
         const val SEARCH_TEXT_KEY = "SEARCH_TEXT"
-        private const val SEARCH_DEBOUNCE_DELAY = 1000L
+        const val SEARCH_DEBOUNCE_DELAY = 1000L
+        const val CLICKED_TRACKS_REPOSITORY_NAME: String = "previous_search_result"
     }
 
     private val tracks = ArrayList<Track>()
     private val handler = Handler(Looper.getMainLooper())
     private val searchRunnable = Runnable { searchRequest() }
     private var isSearchRequestedManually = false
-    private var sharedPreferencesManager = Creator.provideSharedPreferencesManager(activity)
+
+
+    //ВОТ ТУТ НАДО ПОДУМАТЬ, ЗАЧЕМ МНЕ ЭТО
+    private val sharedPreferences: SharedPreferences = appContext.getSharedPreferences(
+        CLICKED_TRACKS_REPOSITORY_NAME, Context.MODE_PRIVATE
+    )
+    private val gson = Gson()
+    private var sharedPreferencesManager =
+        Creator.provideSharedPreferencesManager(appContext)
+    //ВОТ ТУТ НАДО ПОДУМАТЬ, ЗАЧЕМ МНЕ ЭТО
+
 
     fun onCreate(savedInstanceState: Bundle?) {
-        getClickedTracksUseCase = Creator.provideGetClickedTracksUseCase(activity)
-        eraseClickedTracksUseCase = Creator.provideEraseClickedTracksUseCase(activity)
+        getClickedTracksUseCase =
+            Creator.provideGetClickedTracksUseCase(sharedPreferences, gson = gson)
+        eraseClickedTracksUseCase =
+            Creator.provideEraseClickedTracksUseCase(sharedPreferences, gson = gson)
         binding.trackList.layoutManager =
-            LinearLayoutManager(activity, LinearLayoutManager.VERTICAL, false)
+            LinearLayoutManager(appContext, LinearLayoutManager.VERTICAL, false)
 
         trackAdapter =
             TrackAdapter(
-                context = activity,
+                sharedPreferences = sharedPreferences,
+                gson = gson,
                 emptyList(),
                 TrackAdapter.VIEW_TYPE_EMPTY
             ) {
@@ -63,7 +76,7 @@ class SearchController(
         binding.trackList.adapter = trackAdapter
 
         binding.bBackToMain.setOnClickListener(DebounceClickListener {
-            activity.finish()
+            appContext.finish()
         })
 
         binding.queryInput.addTextChangedListener(object : TextWatcher {
@@ -74,7 +87,7 @@ class SearchController(
             }
 
             override fun afterTextChanged(s: Editable) {
-                binding.bEraseText.visibility = if (s.isNotEmpty()) View.VISIBLE else View.GONE
+                binding.bEraseText.isVisible = s.isNotEmpty()
             }
         })
 
@@ -83,7 +96,7 @@ class SearchController(
             if (imeActionDone) {
                 if (binding.queryInput.text.isNotEmpty()) {
                     val imm =
-                        activity.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+                        appContext.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
                     imm.hideSoftInputFromWindow(v.windowToken, 0)
                     isSearchRequestedManually = true
                     searchRequest()
@@ -94,7 +107,7 @@ class SearchController(
 
         binding.bEraseText.setOnClickListener {
             binding.queryInput.text.clear()
-            val imm = activity.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+            val imm = appContext.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
             imm.hideSoftInputFromWindow(it.windowToken, 0)
         }
 
@@ -127,41 +140,30 @@ class SearchController(
 
     private fun searchRequest() {
         if (binding.queryInput.text.isNotEmpty()) {
-            binding.trackList.visibility = View.GONE
+            binding.trackList.isVisible = false
             binding.bEraseHistory.isVisible = false
-            binding.progressBar.visibility = View.VISIBLE
-            trackInteractor.searchTrack(
-                binding.queryInput.text.toString(),
-                object : TracksInteractor.TrackConsumer {
-                    override fun consume(foundTracks: List<Track>?, errorMessage: String?) {
-                        Log.d("shu", "consume")
-                        handler.post {
-                            binding.progressBar.visibility = View.GONE
-                            when {
-                                foundTracks != null /*&& foundTracks.isNotEmpty()*/ -> {
-                                    Log.d("shu", "handler.post main")
-                                    tracks.clear()
-                                    tracks.addAll(foundTracks)
-                                    binding.trackList.visibility = View.VISIBLE
-                                    trackAdapter.updateTracks(tracks, TrackAdapter.VIEW_TYPE_ITEM)
-                                }
+            binding.progressBar.isVisible = true
 
-                                errorMessage != null -> {
-                                    handleNoInternet()
-                                }
+            trackInteractor.searchTrack(binding.queryInput.text.toString()) { foundTracks, errorMessage ->
 
-                                else -> {
-                                    Log.d("shu", "handler.post else")
-                                    trackAdapter.updateTracks(
-                                        emptyList(),
-                                        TrackAdapter.VIEW_TYPE_NOTHING_FOUND
-                                    )
-                                }
-                            }
+                handler.post {
+                    binding.progressBar.isVisible = false
+                    when {
+                        foundTracks != null -> {
+                            tracks.clear()
+                            tracks.addAll(foundTracks)
+                            binding.trackList.isVisible = true
+                            trackAdapter.updateTracks(tracks, TrackAdapter.VIEW_TYPE_ITEM)
                         }
+
+                        errorMessage != null -> handleNoInternet()
+                        else -> trackAdapter.updateTracks(
+                            emptyList(),
+                            TrackAdapter.VIEW_TYPE_NOTHING_FOUND
+                        )
                     }
                 }
-            )
+            }
         } else {
             updateTrackList()
         }
@@ -200,4 +202,4 @@ class SearchController(
         binding.bEraseHistory.isVisible = false
         updateTrackList()
     }
-}
+}*/

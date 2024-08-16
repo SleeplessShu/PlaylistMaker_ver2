@@ -1,6 +1,5 @@
 package com.practicum.playlistmaker_ver2.presentation.mapper
 
-import com.practicum.playlistmaker_ver2.data.mapper.TrackDtoToTrackMapper
 import com.practicum.playlistmaker_ver2.domain.models.PlayerTrack
 import com.practicum.playlistmaker_ver2.domain.models.Track
 
@@ -20,7 +19,7 @@ object TrackToPlayerTrackMapper {
         )
     }
 
-    fun getHiResCoverArtwork(link: String): String {
+    private fun getHiResCoverArtwork(link: String): String {
         return link.replaceAfterLast('/', "512x512bb.jpg")
     }
 }

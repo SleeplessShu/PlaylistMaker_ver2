@@ -10,12 +10,11 @@ import com.practicum.playlistmaker_ver2.domain.models.Track
 import com.practicum.playlistmaker_ver2.util.formatDpToPx
 
 
-
 class ViewHolderTrack(private val binding: TrackBinding) : RecyclerView.ViewHolder(binding.root) {
 
     fun bind(track: Track, onItemClick: (Track) -> Unit) {
         val context = itemView.context
-        val radiusPx = formatDpToPx(context, 2)
+        val radiusPx = context.formatDpToPx(2)
         binding.tvTrackName.text = track.trackName
         binding.tvArtistName.text = track.artistName
         binding.tvDuration.text = track.trackTime

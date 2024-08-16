@@ -9,39 +9,37 @@ import com.practicum.playlistmaker_ver2.ui.search.ActivitySearch
 import com.practicum.playlistmaker_ver2.ui.settings.ActivitySettings
 import com.practicum.playlistmaker_ver2.util.DebounceClickListener
 import com.practicum.playlistmaker_ver2.databinding.ActivityMainBinding
-import com.practicum.playlistmaker_ver2.domain.use_case.GetNightModeStatusUseCase
 import com.practicum.playlistmaker_ver2.ui.base.ActivityBase
 
 class ActivityMain : ActivityBase() {
-    private lateinit var binding: ActivityMainBinding
+    private companion object {
+        const val THEME_SHARED_PREFERENCES_KEY = "NightMode"
+    }
 
-    private lateinit var getNightModeStatusUseCase: GetNightModeStatusUseCase
+    private lateinit var binding: ActivityMainBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
-
-        getNightModeStatusUseCase = Creator.provideGetNightModeStatusUseCase(this)
+        val appContext = applicationContext
+        val sharedPreferences = getSharedPreferences(THEME_SHARED_PREFERENCES_KEY, MODE_PRIVATE)
+        val themeInteractor = Creator.provideThemeStatusInteractor(sharedPreferences)
 
         binding.bSettings.setOnClickListener(DebounceClickListener {
-            val intentSettings = Intent(this, ActivitySettings::class.java)
+            val intentSettings = Intent(appContext, ActivitySettings::class.java)
             startActivity(intentSettings)
         })
         binding.bMediateka.setOnClickListener(DebounceClickListener {
-            val intentMediateka = Intent(this, ActivityMediateka::class.java)
+            val intentMediateka = Intent(appContext, ActivityMediateka::class.java)
             startActivity(intentMediateka)
         })
         binding.bSearch.setOnClickListener(DebounceClickListener {
-            val intentSearch = Intent(this, ActivitySearch::class.java)
+            val intentSearch = Intent(appContext, ActivitySearch::class.java)
             startActivity(intentSearch)
         })
 
-        //val prefs = getSharedPreferences("Settings", MODE_PRIVATE)
-
-        //val isNightModeOn = prefs.getBoolean("NightMode", false)
-        val isNightModeOn = getNightModeStatusUseCase.execute()
+        val isNightModeOn = themeInteractor.getThemeStatus()
         AppCompatDelegate.setDefaultNightMode(
             if (isNightModeOn) AppCompatDelegate.MODE_NIGHT_YES else AppCompatDelegate.MODE_NIGHT_NO
         )
