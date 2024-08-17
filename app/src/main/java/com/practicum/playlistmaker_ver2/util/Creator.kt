@@ -5,15 +5,12 @@ import android.content.Context
 import android.content.SharedPreferences
 import android.net.ConnectivityManager
 import android.os.Handler
-
 import com.google.gson.Gson
 import com.practicum.playlistmaker_ver2.data.dto.TracksRepositoryImpl
-
 import com.practicum.playlistmaker_ver2.data.network.RetrofitNetworkClient
 import com.practicum.playlistmaker_ver2.data.repository.ClickedTracksRepositoryImpl
 import com.practicum.playlistmaker_ver2.data.repository.ThemeStatusRepositoryImpl
 import com.practicum.playlistmaker_ver2.domain.api.TrackInteractor
-
 import com.practicum.playlistmaker_ver2.domain.api.TracksRepository
 import com.practicum.playlistmaker_ver2.domain.impl.ClickedTracksInteractorImpl
 import com.practicum.playlistmaker_ver2.domain.impl.ThemeStatusInteractorImpl
