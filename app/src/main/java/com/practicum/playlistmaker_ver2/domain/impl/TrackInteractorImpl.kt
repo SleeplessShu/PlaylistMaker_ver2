@@ -1,17 +1,18 @@
 package com.practicum.playlistmaker_ver2.domain.impl
 
 
+
 import com.practicum.playlistmaker_ver2.domain.api.TrackConsumer
-import com.practicum.playlistmaker_ver2.data.network.NetworkClient
+import com.practicum.playlistmaker_ver2.domain.api.TrackInteractor
 import com.practicum.playlistmaker_ver2.domain.api.TracksRepository
-import com.practicum.playlistmaker_ver2.util.Resource
+import com.practicum.playlistmaker_ver2.domain.models.Resource
 import java.util.concurrent.ExecutorService
 
 
-class TracksInteractorImpl(
+class TrackInteractorImpl(
     private val repository: TracksRepository,
     private val executor: ExecutorService
-) : NetworkClient {
+) : TrackInteractor {
 
 
     override fun doRequest(expression: String, consumer: TrackConsumer) {

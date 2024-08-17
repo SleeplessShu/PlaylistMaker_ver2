@@ -1,8 +1,8 @@
 package com.practicum.playlistmaker_ver2.data.network
 
-import com.practicum.playlistmaker_ver2.domain.api.TrackConsumer
+import com.practicum.playlistmaker_ver2.data.dto.Response
+
 
 interface NetworkClient {
-    fun doRequest(expression: String, consumer: TrackConsumer)
-
+    fun doRequest(dto: Any): Response
 }

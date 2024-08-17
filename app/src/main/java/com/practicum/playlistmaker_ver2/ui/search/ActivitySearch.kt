@@ -18,7 +18,7 @@ import com.google.gson.Gson
 import com.practicum.playlistmaker_ver2.R
 import com.practicum.playlistmaker_ver2.util.Creator
 import com.practicum.playlistmaker_ver2.databinding.ActivitySearchBinding
-import com.practicum.playlistmaker_ver2.data.network.NetworkClient
+import com.practicum.playlistmaker_ver2.domain.api.TrackInteractor
 import com.practicum.playlistmaker_ver2.domain.interactor.ClickedTracksInteractor
 import com.practicum.playlistmaker_ver2.domain.models.Track
 import com.practicum.playlistmaker_ver2.ui.base.ActivityBase
@@ -40,7 +40,7 @@ class ActivitySearch : ActivityBase() {
     private lateinit var trackAdapter: TrackAdapter
     private lateinit var listener: SharedPreferences.OnSharedPreferenceChangeListener
     private lateinit var clickedTracksInteractor: ClickedTracksInteractor
-    private lateinit var trackInteractor: NetworkClient
+    private lateinit var trackInteractor: TrackInteractor
     private lateinit var sharedPreferencesManager: SharedPreferencesManager
     private lateinit var connectivityManager: ConnectivityManager
 
@@ -52,8 +52,6 @@ class ActivitySearch : ActivityBase() {
 
     private var isSearchRequestedManually = false
     private var savedSearchText = AMOUNT_DEF
-
-
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -86,9 +84,7 @@ class ActivitySearch : ActivityBase() {
 
         binding.bEraseText.setOnClickListener {
             binding.queryInput.text.clear()
-            val imm =
-                appContext.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-            imm.hideSoftInputFromWindow(it.windowToken, 0)
+            hideKeyboard()
         }
 
         binding.bEraseHistory.setOnClickListener {
@@ -121,9 +117,6 @@ class ActivitySearch : ActivityBase() {
             val imeActionDone = actionId == EditorInfo.IME_ACTION_DONE
             if (imeActionDone) {
                 if (binding.queryInput.text.isNotEmpty()) {
-                    val imm =
-                        appContext.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-                    imm.hideSoftInputFromWindow(v.windowToken, 0)
                     isSearchRequestedManually = true
                     searchRequest()
                 }
@@ -132,13 +125,16 @@ class ActivitySearch : ActivityBase() {
         }
 
         trackAdapter = TrackAdapter(
-            emptyList(), TrackAdapter.VIEW_TYPE_EMPTY
-        ) {
-            clickedTracksInteractor.addTrack(it)
-            startPlayer(appContext = appContext, track = it)
-            trackAdapter.updateTracks(emptyList(), TrackAdapter.VIEW_TYPE_EMPTY)
-            searchRequest()
-        }
+            trackData = emptyList(),
+            viewType = TrackAdapter.VIEW_TYPE_EMPTY,
+            onRetry = { searchRequest() },
+            onItemClick = {
+                clickedTracksInteractor.addTrack(it)
+                startPlayer(appContext = appContext, track = it)
+            }
+        )
+        trackAdapter.updateTracks(emptyList(), TrackAdapter.VIEW_TYPE_EMPTY)
+
         binding.trackList.adapter = trackAdapter
         sharedPreferencesManager.registerOnSharedPreferenceChangeListener(listener)
 
@@ -180,6 +176,7 @@ class ActivitySearch : ActivityBase() {
     }
 
     private fun searchRequest() {
+        hideKeyboard()
         if (binding.queryInput.text.isNotEmpty()) {
             binding.trackList.isVisible = false
             binding.bEraseHistory.isVisible = false
@@ -189,14 +186,13 @@ class ActivitySearch : ActivityBase() {
                 Log.d("DEBUG_SHU", "tracks $foundTracks, errorMessage $errorMessage")
                 handler.post {
                     binding.progressBar.isVisible = false
-
+                    binding.trackList.isVisible = true
                     if (foundTracks != null) {
                         when {
                             foundTracks.isNotEmpty() -> {
                                 Log.d("DEBUG_SHU", "$foundTracks.isNotEmpty()")
                                 tracks.clear()
                                 tracks.addAll(foundTracks)
-                                binding.trackList.isVisible = true
                                 trackAdapter.updateTracks(tracks, TrackAdapter.VIEW_TYPE_ITEM)
 
                             }
@@ -213,26 +209,23 @@ class ActivitySearch : ActivityBase() {
                 }
             }
         } else {
-            Log.d("DEBUG_SHU", "ELSE UPD TEARS")
+
             updateTrackList()
         }
         isSearchRequestedManually = false
     }
 
     private fun handleNoInternet() {
-        Log.d("DEBUG_SHU", "handleNoInternet: ")
         trackAdapter.updateTracks(emptyList(), TrackAdapter.VIEW_TYPE_NO_INTERNET)
     }
 
     private fun handleNothingFound() {
-        Log.d("DEBUG_SHU", "handleNothingFound: ")
         trackAdapter.updateTracks(emptyList(), TrackAdapter.VIEW_TYPE_NOTHING_FOUND)
 
     }
 
 
     private fun updateTrackList() {
-        Log.d("DEBUG_SHU", " IS IT PROBLEM? ")
         val previousSearchList = clickedTracksInteractor.getTracks()
         if (previousSearchList.isNotEmpty()) {
             trackAdapter.updateTracks(previousSearchList, TrackAdapter.VIEW_TYPE_ITEM)
@@ -246,6 +239,11 @@ class ActivitySearch : ActivityBase() {
     private fun updateButtonVisibility(searchText: String) {
         binding.queryInput.setText(searchText)
         binding.bEraseText.isVisible = searchText.isNotEmpty()
+    }
+
+    private fun hideKeyboard() {
+        val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        imm.hideSoftInputFromWindow(currentFocus?.windowToken, 0)
     }
 
     private fun searchDebounce() {

@@ -8,14 +8,16 @@ import android.os.Handler
 
 import com.google.gson.Gson
 import com.practicum.playlistmaker_ver2.data.dto.TracksRepositoryImpl
+
 import com.practicum.playlistmaker_ver2.data.network.RetrofitNetworkClient
 import com.practicum.playlistmaker_ver2.data.repository.ClickedTracksRepositoryImpl
 import com.practicum.playlistmaker_ver2.data.repository.ThemeStatusRepositoryImpl
-import com.practicum.playlistmaker_ver2.data.network.NetworkClient
+import com.practicum.playlistmaker_ver2.domain.api.TrackInteractor
+
 import com.practicum.playlistmaker_ver2.domain.api.TracksRepository
 import com.practicum.playlistmaker_ver2.domain.impl.ClickedTracksInteractorImpl
 import com.practicum.playlistmaker_ver2.domain.impl.ThemeStatusInteractorImpl
-import com.practicum.playlistmaker_ver2.domain.impl.TracksInteractorImpl
+import com.practicum.playlistmaker_ver2.domain.impl.TrackInteractorImpl
 import com.practicum.playlistmaker_ver2.domain.interactor.ClickedTracksInteractor
 import com.practicum.playlistmaker_ver2.domain.interactor.ThemeStatusInteractor
 import com.practicum.playlistmaker_ver2.domain.repository.ClickedTracksRepository
@@ -25,8 +27,6 @@ import java.util.concurrent.ExecutorService
 
 
 object Creator {
-    const val THEME_SHARED_PREFERENCES_KEY = "NightMode"
-    const val THEME_SHARED_PREFERENCES_NAME: String = "Settings"
 
     // SEARCH ACTIVITY
     private fun provideTracksRepository(connectivityManager: ConnectivityManager): TracksRepository {
@@ -36,9 +36,9 @@ object Creator {
     fun provideTracksInteractor(
         connectivityManager: ConnectivityManager,
         executor: ExecutorService
-    ): NetworkClient {
+    ): TrackInteractor {
         val tracksRepository = provideTracksRepository(connectivityManager)
-        return TracksInteractorImpl(tracksRepository, executor)
+        return TrackInteractorImpl(tracksRepository, executor)
     }
 
 

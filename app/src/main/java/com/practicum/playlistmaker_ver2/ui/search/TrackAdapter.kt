@@ -1,12 +1,10 @@
 package com.practicum.playlistmaker_ver2.ui.search
 
 
-import android.content.SharedPreferences
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.google.gson.Gson
 import com.practicum.playlistmaker_ver2.databinding.EmptyViewBinding
 import com.practicum.playlistmaker_ver2.databinding.ErrorNetworkConnectionBinding
 import com.practicum.playlistmaker_ver2.databinding.ErrorNothingFoundBinding
@@ -15,7 +13,6 @@ import com.practicum.playlistmaker_ver2.domain.models.Track
 
 
 class TrackAdapter(
-
 
     private var trackData: List<Track> = emptyList(),
     private var viewType: Int = VIEW_TYPE_EMPTY,
@@ -78,10 +75,7 @@ class TrackAdapter(
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-        Log.d(
-            "DEBUG_SHU",
-            "onBindViewHolder: position = $position, viewType = ${getItemViewType(position)}"
-        )
+
         when (holder) {
             is ViewHolderTrack -> if (trackData.isNotEmpty()) {
                 holder.bind(trackData[position], onItemClick)
@@ -113,10 +107,8 @@ class TrackAdapter(
     }
 
     fun updateTracks(newTracks: List<Track>, newViewType: Int) {
-
         trackData = newTracks
         viewType = newViewType
-        Log.d("DEBUG_SHU", "updateTracks: $newViewType")
         notifyDataSetChanged()
 
     }

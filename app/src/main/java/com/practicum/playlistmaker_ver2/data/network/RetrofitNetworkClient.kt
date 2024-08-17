@@ -3,7 +3,6 @@ package com.practicum.playlistmaker_ver2.data.network
 import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
 
-import com.practicum.playlistmaker_ver2.data.NetworkClient
 import com.practicum.playlistmaker_ver2.data.dto.Response
 import com.practicum.playlistmaker_ver2.data.dto.TrackSearchRequest
 import retrofit2.Retrofit
