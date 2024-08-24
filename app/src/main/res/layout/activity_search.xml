@@ -89,7 +89,7 @@
             android:orientation="vertical">
 
             <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/searchResult"
+                android:id="@+id/track_list"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/dim_00dp"
                 android:layout_weight="1"

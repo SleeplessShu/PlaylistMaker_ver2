@@ -2,6 +2,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+
     <application
 
         android:allowBackup="true"
@@ -14,19 +16,19 @@
         android:theme="@style/PlaylistMaker"
         tools:targetApi="31">
         <activity
-            android:name=".ActivitySettings"
+            android:name=".ui.settings.ActivitySettings"
             android:exported="false"
             android:label="@string/title_activity_settings" />
         <activity
-            android:name=".ActivityMediateka"
+            android:name=".ui.mediateka.ActivityMediateka"
             android:exported="false"
             android:label="@string/title_activity_mediateka" />
         <activity
-            android:name=".ActivitySearch"
+            android:name=".ui.search.ActivitySearch"
             android:exported="false"
             android:label="@string/title_activity_search" />
         <activity
-            android:name=".ActivityMain"
+            android:name=".ui.main.ActivityMain"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -35,7 +37,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".ActivityPlayer"
+            android:name=".ui.player.ActivityPlayer"
             android:exported="false"
             android:label="@string/title_activity_player" />
     </application>
