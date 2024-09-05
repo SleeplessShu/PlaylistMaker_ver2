@@ -22,10 +22,10 @@ import com.practicum.playlistmaker_ver2.databinding.ActivitySearchBinding
 import com.practicum.playlistmaker_ver2.old.domain.api.TrackInteractor
 import com.practicum.playlistmaker_ver2.old.domain.interactor.ClickedTracksInteractor
 import com.practicum.playlistmaker_ver2.old.domain.models.Track
-import com.practicum.playlistmaker_ver2.old.ui.base.ActivityBase
-import com.practicum.playlistmaker_ver2.old.ui.player.ActivityPlayer
-import com.practicum.playlistmaker_ver2.old.util.DebounceClickListener
-import com.practicum.playlistmaker_ver2.old.util.SharedPreferencesManager
+import com.practicum.playlistmaker_ver2.base.ActivityBase
+import com.practicum.playlistmaker_ver2.player.ui.ActivityPlayer
+import com.practicum.playlistmaker_ver2.util.DebounceClickListener
+import com.practicum.playlistmaker_ver2.util.SharedPreferencesManager
 import java.util.concurrent.Executors
 
 

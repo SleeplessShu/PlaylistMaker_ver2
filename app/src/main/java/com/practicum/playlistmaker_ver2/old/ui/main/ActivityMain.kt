@@ -7,9 +7,9 @@ import com.practicum.playlistmaker_ver2.creator.Creator
 import com.practicum.playlistmaker_ver2.old.ui.mediateka.ActivityMediateka
 import com.practicum.playlistmaker_ver2.old.ui.search.ActivitySearch
 import com.practicum.playlistmaker_ver2.settings.ui.ActivitySettings
-import com.practicum.playlistmaker_ver2.old.util.DebounceClickListener
+import com.practicum.playlistmaker_ver2.util.DebounceClickListener
 import com.practicum.playlistmaker_ver2.databinding.ActivityMainBinding
-import com.practicum.playlistmaker_ver2.old.ui.base.ActivityBase
+import com.practicum.playlistmaker_ver2.base.ActivityBase
 
 class ActivityMain : ActivityBase() {
 

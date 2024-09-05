@@ -37,7 +37,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".old.ui.player.ActivityPlayer"
+            android:name=".player.ui.ActivityPlayer"
             android:exported="false"
             android:label="@string/title_activity_player" />
     </application>

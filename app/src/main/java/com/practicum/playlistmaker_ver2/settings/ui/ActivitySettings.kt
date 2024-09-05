@@ -4,11 +4,11 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatDelegate
-import com.practicum.playlistmaker_ver2.old.util.DebounceClickListener
+import com.practicum.playlistmaker_ver2.util.DebounceClickListener
 import com.practicum.playlistmaker_ver2.R
 import com.practicum.playlistmaker_ver2.creator.Creator
 import com.practicum.playlistmaker_ver2.databinding.ActivitySettingsBinding
-import com.practicum.playlistmaker_ver2.old.ui.base.ActivityBase
+import com.practicum.playlistmaker_ver2.base.ActivityBase
 import androidx.activity.viewModels
 
 class ActivitySettings : ActivityBase() {

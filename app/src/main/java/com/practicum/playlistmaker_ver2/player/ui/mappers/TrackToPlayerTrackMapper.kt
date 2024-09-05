@@ -1,6 +1,6 @@
-package com.practicum.playlistmaker_ver2.old.presentation.mapper
+package com.practicum.playlistmaker_ver2.player.ui.mappers
 
-import com.practicum.playlistmaker_ver2.old.domain.models.PlayerTrack
+import com.practicum.playlistmaker_ver2.player.domain.models.PlayerTrack
 import com.practicum.playlistmaker_ver2.old.domain.models.Track
 
 object TrackToPlayerTrackMapper {
