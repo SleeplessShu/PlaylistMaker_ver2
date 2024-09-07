@@ -3,7 +3,7 @@ package com.practicum.playlistmaker_ver2.player.ui
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import com.practicum.playlistmaker_ver2.old.domain.models.Track
+import com.practicum.playlistmaker_ver2.search.domain.models.Track
 import com.practicum.playlistmaker_ver2.player.domain.api.PlayerInteractor
 import com.practicum.playlistmaker_ver2.player.domain.models.PlayerTrack
 import com.practicum.playlistmaker_ver2.player.ui.mappers.TrackToPlayerTrackMapper

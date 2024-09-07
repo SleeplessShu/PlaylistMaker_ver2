@@ -5,10 +5,6 @@ import android.content.Intent
 import android.os.Build
 import android.util.TypedValue
 import java.io.Serializable
-import java.text.SimpleDateFormat
-import java.util.Date
-import java.util.Locale
-
 
 fun Context.formatDpToPx(dp: Int): Int {
     return TypedValue.applyDimension(

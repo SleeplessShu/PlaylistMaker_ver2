@@ -5,18 +5,22 @@ import android.app.Application
 import android.content.Context
 import android.content.SharedPreferences
 import android.net.ConnectivityManager
+import androidx.lifecycle.ViewModelProvider
 import com.google.gson.Gson
-import com.practicum.playlistmaker_ver2.old.data.dto.TracksRepositoryImpl
-import com.practicum.playlistmaker_ver2.old.data.network.RetrofitNetworkClient
-import com.practicum.playlistmaker_ver2.old.data.repository.ClickedTracksRepositoryImpl
-import com.practicum.playlistmaker_ver2.old.domain.api.TrackInteractor
-import com.practicum.playlistmaker_ver2.old.domain.api.TracksRepository
-import com.practicum.playlistmaker_ver2.old.domain.impl.ClickedTracksInteractorImpl
-import com.practicum.playlistmaker_ver2.old.domain.impl.TrackInteractorImpl
-import com.practicum.playlistmaker_ver2.old.domain.interactor.ClickedTracksInteractor
-import com.practicum.playlistmaker_ver2.old.domain.repository.ClickedTracksRepository
+import com.practicum.playlistmaker_ver2.search.data.dto.TracksRepositoryImpl
+import com.practicum.playlistmaker_ver2.search.data.network.RetrofitNetworkClient
+import com.practicum.playlistmaker_ver2.search.data.repository.ClickedTracksRepositoryImpl
+import com.practicum.playlistmaker_ver2.search.domain.api.TrackInteractor
+import com.practicum.playlistmaker_ver2.search.domain.api.TracksRepository
+import com.practicum.playlistmaker_ver2.search.domain.impl.ClickedTracksInteractorImpl
+import com.practicum.playlistmaker_ver2.search.domain.impl.TrackInteractorImpl
+import com.practicum.playlistmaker_ver2.search.domain.interactor.ClickedTracksInteractor
+import com.practicum.playlistmaker_ver2.search.domain.repository.ClickedTracksRepository
 import com.practicum.playlistmaker_ver2.player.domain.api.PlayerInteractor
 import com.practicum.playlistmaker_ver2.player.domain.interactors.PlayerInteractorImpl
+import com.practicum.playlistmaker_ver2.search.domain.api.SearchInteractor
+import com.practicum.playlistmaker_ver2.search.domain.impl.SearchInteractorImpl
+import com.practicum.playlistmaker_ver2.search.ui.SearchViewModel
 import com.practicum.playlistmaker_ver2.util.SharedPreferencesManager
 import com.practicum.playlistmaker_ver2.settings.data.repositories.ExternalNavigatorRepositoryImpl
 import com.practicum.playlistmaker_ver2.settings.data.repositories.SettingsRepositoryImpl
@@ -38,6 +42,18 @@ object Creator {
     }
 
     // SEARCH ACTIVITY
+
+    fun provideSearchInteractor(
+        trackInteractor: TrackInteractor,
+        clickedTracksInteractor: ClickedTracksInteractor
+    ): SearchInteractor {
+        return SearchInteractorImpl(trackInteractor, clickedTracksInteractor)
+    }
+
+    fun provideSearchViewModelFactory(interactor: SearchInteractor): ViewModelProvider.Factory {
+        return SearchViewModel.provideFactory(interactor)
+    }
+
     private fun provideTracksRepository(connectivityManager: ConnectivityManager): TracksRepository {
         return TracksRepositoryImpl(RetrofitNetworkClient(connectivityManager))
     }

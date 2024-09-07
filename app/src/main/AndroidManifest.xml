@@ -20,15 +20,15 @@
             android:exported="false"
             android:label="@string/title_activity_settings" />
         <activity
-            android:name=".old.ui.mediateka.ActivityMediateka"
+            android:name=".mediateka.ActivityMediateka"
             android:exported="false"
             android:label="@string/title_activity_mediateka" />
         <activity
-            android:name=".old.ui.search.ActivitySearch"
+            android:name=".search.ui.ActivitySearch"
             android:exported="false"
             android:label="@string/title_activity_search" />
         <activity
-            android:name=".old.ui.main.ActivityMain"
+            android:name=".main.ActivityMain"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

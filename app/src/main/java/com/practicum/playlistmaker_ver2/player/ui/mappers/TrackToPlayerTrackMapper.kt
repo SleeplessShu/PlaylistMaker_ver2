@@ -1,7 +1,7 @@
 package com.practicum.playlistmaker_ver2.player.ui.mappers
 
 import com.practicum.playlistmaker_ver2.player.domain.models.PlayerTrack
-import com.practicum.playlistmaker_ver2.old.domain.models.Track
+import com.practicum.playlistmaker_ver2.search.domain.models.Track
 
 object TrackToPlayerTrackMapper {
     fun map(track: Track): PlayerTrack {
