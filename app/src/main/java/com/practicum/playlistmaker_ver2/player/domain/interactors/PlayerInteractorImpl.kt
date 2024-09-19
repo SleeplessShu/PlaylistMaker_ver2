@@ -14,11 +14,8 @@ import okhttp3.internal.http2.Http2Reader
 class PlayerInteractorImpl : PlayerInteractor {
 
     private var listener: ((PlayerState, Long, String?) -> Unit)? = null
-
     private var mediaPlayer: MediaPlayer? = null
-
     private var playingTimeCounter: Runnable? = null
-
     private val mainThreadHandler = Handler(Looper.getMainLooper())
     private var isPlayerReady: Boolean = false
     private var savedTrackUrl = ""
@@ -34,9 +31,11 @@ class PlayerInteractorImpl : PlayerInteractor {
     private fun setupMediaPlayer(url: String) {
         if (mediaPlayer == null) {
             mediaPlayer = MediaPlayer()
+        } else {
+            mediaPlayer?.reset()
         }
-        mediaPlayer = MediaPlayer().apply {
-            reset()
+        mediaPlayer?.apply {
+
             setDataSource(url)
             prepareAsync()
 
@@ -123,6 +122,7 @@ class PlayerInteractorImpl : PlayerInteractor {
         isPlayerReady = false
         mediaPlayer?.release()
         mediaPlayer = null
+        stopPlayingTimeCounter()
     }
 
     companion object {

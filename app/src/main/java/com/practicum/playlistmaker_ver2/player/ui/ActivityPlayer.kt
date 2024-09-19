@@ -36,16 +36,17 @@ class ActivityPlayer : ActivityBase() {
         binding = ActivityPlayerBinding.inflate(layoutInflater)
         setContentView(binding.root)
         viewModel.initializePlayer(currentTrack)
-        binding.bBack.setOnClickListener {
-
-            finish()
-        }
+        binding.bBack.setOnClickListener { finish() }
         binding.bLike.setOnClickListener { toggleLikeButton() }
         binding.bAddToPlaylist.setOnClickListener { toggleAddToPlaylistButton() }
         binding.bPlay.setOnClickListener { viewModel.playPause() }
         setupObservers()
         initializeViews()
+    }
 
+    override fun onDestroy() {
+        super.onDestroy()
+        viewModel.releasePlayer()
     }
 
     private fun initializeViews() {
@@ -68,43 +69,27 @@ class ActivityPlayer : ActivityBase() {
     private fun setupObservers() {
         viewModel.observeViewState().observe(this) { viewState ->
             updateUi(viewState)
-
         }
-
-
     }
 
     private fun updateUi(viewState: PlayerViewState) {
+        binding.tvPlayTime.text = viewState.currentTime
         when (viewState.playerState) {
             PlayerState.DEFAULT -> {
                 binding.bPlay.isEnabled = false
-                binding.tvPlayTime.text = viewState.currentTime
             }
 
-            PlayerState.PREPARED -> {
+            PlayerState.PREPARED, PlayerState.PAUSED, PlayerState.STOPPED -> {
                 binding.bPlay.setImageResource(R.drawable.ic_play)
                 binding.bPlay.isEnabled = true
-                binding.tvPlayTime.text = viewState.currentTime
             }
 
             PlayerState.PLAYING -> {
                 binding.bPlay.setImageResource(R.drawable.ic_pause)
-                binding.tvPlayTime.text = viewState.currentTime
-            }
-
-            PlayerState.PAUSED -> {
-                binding.bPlay.setImageResource(R.drawable.ic_play)
-                binding.tvPlayTime.text = viewState.currentTime
-            }
-
-            PlayerState.STOPPED -> {
-                binding.bPlay.setImageResource(R.drawable.ic_play)
-                binding.tvPlayTime.text = viewState.currentTime
             }
 
             PlayerState.ERROR -> {
                 binding.bPlay.setImageResource(R.drawable.ic_play)
-                binding.tvPlayTime.text = viewState.currentTime
                 Toast.makeText(this, viewState.errorMessage, Toast.LENGTH_LONG).show()
             }
         }

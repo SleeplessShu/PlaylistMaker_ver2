@@ -36,6 +36,10 @@ class PlayerViewModel(
         playerInteractor.playPause()
     }
 
+    fun releasePlayer() {
+        playerInteractor.release()
+    }
+
     override fun onCleared() {
         super.onCleared()
         playerInteractor.release()
