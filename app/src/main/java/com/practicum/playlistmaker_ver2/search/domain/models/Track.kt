@@ -12,6 +12,6 @@ data class Track(
     val country: String,
     val artistName: String,
     val trackTime: String,
-    val previewUrl: String,
+    val previewUrl: String?,
     val artworkUrl100: String
 ) : Serializable

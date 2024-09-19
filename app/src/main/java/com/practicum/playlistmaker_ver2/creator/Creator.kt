@@ -5,7 +5,9 @@ import android.app.Application
 import android.content.Context
 import android.content.SharedPreferences
 import android.net.ConnectivityManager
+import android.os.Bundle
 import androidx.lifecycle.ViewModelProvider
+import androidx.savedstate.SavedStateRegistryOwner
 import com.google.gson.Gson
 import com.practicum.playlistmaker_ver2.search.data.dto.TracksRepositoryImpl
 import com.practicum.playlistmaker_ver2.search.data.network.RetrofitNetworkClient
@@ -50,8 +52,12 @@ object Creator {
         return SearchInteractorImpl(trackInteractor, clickedTracksInteractor)
     }
 
-    fun provideSearchViewModelFactory(interactor: SearchInteractor): ViewModelProvider.Factory {
-        return SearchViewModel.provideFactory(interactor)
+    fun provideSearchViewModelFactory(
+        interactor: SearchInteractor,
+        owner: SavedStateRegistryOwner,
+        defaultArgs: Bundle? = null
+    ): ViewModelProvider.Factory {
+        return SearchViewModel.provideFactory(interactor, owner, defaultArgs)
     }
 
     private fun provideTracksRepository(connectivityManager: ConnectivityManager): TracksRepository {

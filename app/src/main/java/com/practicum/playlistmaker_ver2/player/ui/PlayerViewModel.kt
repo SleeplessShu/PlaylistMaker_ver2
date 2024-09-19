@@ -29,7 +29,8 @@ class PlayerViewModel(
     fun observeViewState(): LiveData<PlayerViewState> = viewState
 
     fun initializePlayer(currentTrack: Track) {
-        playerInteractor.setTrackUrl(currentTrack.previewUrl)
+        currentTrack.previewUrl?.let { playerInteractor.setTrackUrl(it) }
+        Log.d("DEBUG", "initializePlayer: ${currentTrack.previewUrl}")
     }
 
     fun playPause() {

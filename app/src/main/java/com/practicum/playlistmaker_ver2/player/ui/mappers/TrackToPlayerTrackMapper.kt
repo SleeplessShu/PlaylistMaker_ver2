@@ -14,7 +14,7 @@ object TrackToPlayerTrackMapper {
             track.country,
             track.artistName,
             track.trackTime,
-            track.previewUrl,
+            track.previewUrl ?: "",
             getHiResCoverArtwork(track.artworkUrl100)
         )
     }

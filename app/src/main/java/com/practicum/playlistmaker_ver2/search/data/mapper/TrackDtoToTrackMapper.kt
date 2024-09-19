@@ -10,15 +10,15 @@ object TrackDtoToTrackMapper {
         return trackDto.map {
             Track(
                 it.trackId,
-                it.trackName,
-                it.collectionName,
-                it.releaseDate,
-                it.primaryGenreName,
-                it.country,
-                it.artistName,
-                formatTrackDuration(it.trackTimeMillis),
-                it.previewUrl,
-                it.artworkUrl100
+                it.trackName ?: "Unknown",
+                it.collectionName ?: "Unknown",
+                it.releaseDate ?: "Unknown",
+                it.primaryGenreName ?: "Unknown",
+                it.country ?: "Unknown",
+                it.artistName ?: "Unknown",
+                formatTrackDuration(it.trackTimeMillis) ?: "00:00",
+                it.previewUrl ?: "",
+                it.artworkUrl100 ?: ""
             )
         }
     }

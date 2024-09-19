@@ -12,6 +12,7 @@ import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.android.material.internal.ViewUtils.hideKeyboard
 import com.google.gson.Gson
 import com.practicum.playlistmaker_ver2.creator.Creator
 import com.practicum.playlistmaker_ver2.databinding.ActivitySearchBinding
@@ -19,13 +20,15 @@ import com.practicum.playlistmaker_ver2.search.domain.models.Track
 import com.practicum.playlistmaker_ver2.base.ActivityBase
 import com.practicum.playlistmaker_ver2.search.ui.adapters.TrackAdapter
 import com.practicum.playlistmaker_ver2.player.ui.ActivityPlayer
+import com.practicum.playlistmaker_ver2.search.ui.models.SearchState
 import com.practicum.playlistmaker_ver2.util.DebounceClickListener
 import java.util.concurrent.Executors
 
 class ActivitySearch : ActivityBase() {
 
+    private var savedSearchText = AMOUNT_DEF
     private lateinit var binding: ActivitySearchBinding
-    private val viewModel: SearchViewModel by viewModels {
+    private val viewModelFactory by lazy {
         Creator.provideSearchViewModelFactory(
             Creator.provideSearchInteractor(
                 Creator.provideTracksInteractor(
@@ -34,15 +37,13 @@ class ActivitySearch : ActivityBase() {
                 ),
                 Creator.provideClickedTracksInteractor(
                     sharedPreferences = getSharedPreferences(
-                        "previous_search_result",
-                        Context.MODE_PRIVATE
-                    ),
-                    gson = Gson()
+                        "previous_search_result", Context.MODE_PRIVATE
+                    ), gson = Gson()
                 )
-            )
+            ), owner = this
         )
     }
-
+    private val viewModel: SearchViewModel by viewModels { viewModelFactory }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivitySearchBinding.inflate(layoutInflater)
@@ -57,7 +58,7 @@ class ActivitySearch : ActivityBase() {
         binding.trackList.layoutManager = LinearLayoutManager(this)
         binding.trackList.adapter = TrackAdapter(
             emptyList(),
-            onRetry = { viewModel.searchTracks() },
+            onRetry = { viewModel.searchTracks(viewModel.currentQuery) },
             onItemClick = { track ->
                 viewModel.addToSearchHistory(track)
                 startPlayer(this, track)
@@ -93,7 +94,7 @@ class ActivitySearch : ActivityBase() {
         binding.queryInput.setOnEditorActionListener { _, actionId, _ ->
             if (actionId == EditorInfo.IME_ACTION_DONE && binding.queryInput.text.isNotEmpty()) {
                 hideKeyboard()
-                viewModel.searchTracks()
+                viewModel.searchTracks(viewModel.currentQuery)
                 true
             } else {
                 false
@@ -102,32 +103,75 @@ class ActivitySearch : ActivityBase() {
     }
 
     private fun setupObservers() {
-        viewModel.tracks.observe(this) { tracks ->
+        viewModel.searchViewState.observe(this) { viewState ->
             val adapter = binding.trackList.adapter as? TrackAdapter
-            adapter?.updateTracks(tracks, viewModel.viewType.value ?: TrackAdapter.VIEW_TYPE_EMPTY)
-        }
 
-        viewModel.isLoading.observe(this) { isLoading ->
-            binding.progressBar.isVisible = isLoading
-            binding.trackList.isVisible = !isLoading
-        }
+            when (viewState.state) {
+                SearchState.EMPTY -> {
+                    // Пустое состояние: очищаем список и скрываем прогресс
+                    adapter?.updateTracks(emptyList(), TrackAdapter.VIEW_TYPE_EMPTY)
+                    binding.progressBar.isVisible = false
+                    binding.trackList.isVisible = false
+                    binding.bEraseHistory.isVisible = false
+                }
 
-        viewModel.errorMessage.observe(this) { errorMessage ->
-            Toast.makeText(this, errorMessage, Toast.LENGTH_SHORT).show()
-            (binding.trackList.adapter as? TrackAdapter)?.updateTracks(
-                emptyList(),
-                TrackAdapter.VIEW_TYPE_NO_INTERNET
-            )
-        }
+                SearchState.HISTORY -> {
+                    // Показ истории поиска
+                    adapter?.updateTracks(viewState.tracks, TrackAdapter.VIEW_TYPE_ITEM)
+                    binding.progressBar.isVisible = false
+                    binding.trackList.isVisible = true
+                    binding.bEraseHistory.isVisible = true
+                }
 
-        viewModel.isHistoryVisible.observe(this) { isVisible ->
-            binding.bEraseHistory.isVisible = isVisible
+                SearchState.TRACKS -> {
+                    // Показ найденных треков
+                    adapter?.updateTracks(viewState.tracks, TrackAdapter.VIEW_TYPE_ITEM)
+                    binding.progressBar.isVisible = false
+                    binding.trackList.isVisible = true
+                    binding.bEraseHistory.isVisible = false
+                }
+
+                SearchState.SEARCHING -> {
+                    // Во время поиска показываем индикатор загрузки
+                    adapter?.updateTracks(emptyList(), TrackAdapter.VIEW_TYPE_EMPTY)
+                    binding.progressBar.isVisible = true
+                    binding.trackList.isVisible = false
+                    binding.bEraseHistory.isVisible = false
+                }
+
+                SearchState.NOTHING_FOUND -> {
+                    // Ничего не найдено: показываем пустой список с сообщением
+                    adapter?.updateTracks(emptyList(), TrackAdapter.VIEW_TYPE_NOTHING_FOUND)
+                    binding.progressBar.isVisible = false
+                    binding.trackList.isVisible = true
+                    binding.bEraseHistory.isVisible = false
+                }
+
+                SearchState.NO_INTERNET -> {
+                    // Ошибка сети: показываем сообщение и пустой список
+                    adapter?.updateTracks(emptyList(), TrackAdapter.VIEW_TYPE_NO_INTERNET)
+                    binding.progressBar.isVisible = false
+                    binding.trackList.isVisible = true
+                    binding.bEraseHistory.isVisible = false
+                    Toast.makeText(this, viewState.errorMessage, Toast.LENGTH_SHORT).show()
+                }
+            }
         }
     }
 
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        savedSearchText = binding.queryInput.text.toString()
+        outState.putString(SEARCH_TEXT_KEY, binding.queryInput.text.toString())
+
+    }
+
     private fun restoreSearchState(savedInstanceState: Bundle?) {
+        binding.queryInput.setText("")
         savedInstanceState?.getString(SEARCH_TEXT_KEY)?.let { viewModel.restoreSearchState(it) }
         binding.queryInput.setText(viewModel.currentQuery)
+
+
     }
 
     private fun startPlayer(context: Context, track: Track) {
@@ -144,5 +188,8 @@ class ActivitySearch : ActivityBase() {
 
     companion object {
         private const val SEARCH_TEXT_KEY = "SEARCH_TEXT"
+        private const val TRACKS_LIST_KEY = "TRACKS_LIST"
+        private const val ADAPTER_VIEW_TYPE_KEY = "ADAPTER_VIEW_TYPE"
+        const val AMOUNT_DEF = ""
     }
 }
