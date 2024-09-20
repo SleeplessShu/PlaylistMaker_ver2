@@ -1,50 +1,136 @@
 package com.practicum.playlistmaker_ver2.player.ui
 
 
-import android.util.Log
+import android.media.MediaPlayer
+import android.os.Handler
+import android.os.Looper
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import com.practicum.playlistmaker_ver2.player.domain.api.PlayerInteractor
+import com.practicum.playlistmaker_ver2.player.ui.models.PlayerState
 import com.practicum.playlistmaker_ver2.player.ui.models.PlayerTrack
+import com.practicum.playlistmaker_ver2.player.ui.models.PlayerViewState
 import java.util.concurrent.TimeUnit
 
 class PlayerViewModel(
-    private val track: PlayerTrack, private val playerInteractor: PlayerInteractor
+    private val track: PlayerTrack
 ) : ViewModel() {
-    init {
-        playerInteractor.setStateChangeListener { state, currentTime, errorMessage ->
-            viewState.value = viewState.value?.copy(
-                playerState = state,
-                currentTime = convertTime(currentTime),
-                errorMessage = errorMessage
-            )
-            Log.d("STATE", state.toString())
-        }
 
-    }
+    private var playingTimeCounter: Runnable? = null
+    private val mainThreadHandler = Handler(Looper.getMainLooper())
+    private var viewState = MutableLiveData(PlayerViewState())
+    private var savedTrackUrl = ""
+    private var mediaPlayer: MediaPlayer? = null
+    private var isPlayerReady: Boolean = false
 
-    private val viewState = MutableLiveData(PlayerViewState())
-    fun observeViewState(): LiveData<PlayerViewState> = viewState
+    fun getViewState(): LiveData<PlayerViewState> = viewState
 
     fun initializePlayer(currentTrack: PlayerTrack) {
-        currentTrack.previewUrl?.let { playerInteractor.setTrackUrl(it) }
-        Log.d("DEBUG", "initializePlayer: ${currentTrack.previewUrl}")
+        setupMediaPlayer(currentTrack.previewUrl)
+        savedTrackUrl = currentTrack.previewUrl
     }
 
     fun playPause() {
-        playerInteractor.playPause()
+        mediaPlayer?.let {
+            if (it.isPlaying) {
+                pausePlayer()
+            } else {
+                startPlayer()
+            }
+        }
     }
 
     fun releasePlayer() {
-        playerInteractor.release()
+        isPlayerReady = false
+        mediaPlayer?.release()
+        mediaPlayer = null
+        stopPlayingTimeCounter()
     }
 
     override fun onCleared() {
         super.onCleared()
-        playerInteractor.release()
+        releasePlayer()
     }
+
+    private fun setupMediaPlayer(url: String) {
+        if (mediaPlayer == null) {
+            mediaPlayer = MediaPlayer()
+        } else {
+            mediaPlayer?.reset()
+        }
+        mediaPlayer?.apply {
+
+            setDataSource(url)
+            prepareAsync()
+
+            setOnPreparedListener {
+                isPlayerReady = true
+                updatePlayerState(PlayerState.PREPARED, 0L, null)
+            }
+
+            setOnCompletionListener {
+                stopPlayer()
+                updatePlayerState(PlayerState.STOPPED, 0L, null)
+            }
+
+            setOnErrorListener { _, what, extra ->
+                val errorMessage = "Error occurred: $what, $extra"
+                updatePlayerState(PlayerState.ERROR, 0L, errorMessage)
+                true
+            }
+        }
+    }
+
+    private fun startPlayer() {
+        mediaPlayer?.start()
+        startPlayingTimeCounter()
+        val currentTime = getCurrentTime()
+        updatePlayerState(PlayerState.PLAYING, currentTime, null)
+    }
+
+    private fun stopPlayer() {
+        isPlayerReady = false
+        stopPlayingTimeCounter()
+        mediaPlayer?.stop()
+        updatePlayerState(PlayerState.STOPPED, 0L, null)
+        setupMediaPlayer(savedTrackUrl)
+    }
+
+    private fun pausePlayer() {
+        mediaPlayer?.pause()
+        val currentTime = getCurrentTime()
+        stopPlayingTimeCounter()
+        updatePlayerState(PlayerState.PAUSED, currentTime, null)
+    }
+
+    private fun startPlayingTimeCounter() {
+        playingTimeCounter = createPlayingTimeCounterTask()
+        mainThreadHandler.post(playingTimeCounter!!)
+    }
+
+    private fun stopPlayingTimeCounter() {
+        playingTimeCounter?.let { mainThreadHandler.removeCallbacks(it) }
+    }
+
+    private fun createPlayingTimeCounterTask(): Runnable {
+        return object : Runnable {
+            override fun run() {
+                val currentTime = getCurrentTime()
+                updatePlayerState(PlayerState.PLAYING, currentTime, null)
+                mainThreadHandler.postDelayed(this, DELAY)
+            }
+        }
+    }
+
+    private fun getCurrentTime(): Long {
+        return if (isPlayerReady && mediaPlayer != null) {
+            mediaPlayer!!.currentPosition.toLong()
+        } else {
+            0L
+        }
+    }
+
     private fun convertTime(currentTime: Long): String {
         return if (currentTime == 0L) {
             "00:00"
@@ -60,19 +146,27 @@ class PlayerViewModel(
         }
     }
 
+    private fun updatePlayerState(
+        state: PlayerState,
+        currentTime: Long,
+        errorMessage: String? = null
+    ) {
+        viewState.postValue(PlayerViewState(state, convertTime(currentTime), errorMessage))
+    }
+
     companion object {
         fun provideFactory(
-            interactor: PlayerInteractor,
             track: PlayerTrack
-        ): ViewModelProvider.Factory =
-            object : ViewModelProvider.Factory {
-                @Suppress("UNCHECKED_CAST")
-                override fun <T : ViewModel> create(modelClass: Class<T>): T {
-                    if (modelClass.isAssignableFrom(PlayerViewModel::class.java)) {
-                        return PlayerViewModel(track, interactor) as T
-                    }
-                    throw IllegalArgumentException("Unknown ViewModel class")
+        ): ViewModelProvider.Factory = object : ViewModelProvider.Factory {
+            @Suppress("UNCHECKED_CAST")
+            override fun <T : ViewModel> create(modelClass: Class<T>): T {
+                if (modelClass.isAssignableFrom(PlayerViewModel::class.java)) {
+                    return PlayerViewModel(track) as T
                 }
+                throw IllegalArgumentException("Unknown ViewModel class")
             }
+        }
+
+        private const val DELAY = 1000L
     }
 }

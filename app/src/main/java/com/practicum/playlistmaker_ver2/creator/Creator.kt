@@ -18,8 +18,6 @@ import com.practicum.playlistmaker_ver2.search.domain.impl.ClickedTracksInteract
 import com.practicum.playlistmaker_ver2.search.domain.impl.TrackInteractorImpl
 import com.practicum.playlistmaker_ver2.search.domain.interactor.ClickedTracksInteractor
 import com.practicum.playlistmaker_ver2.search.domain.repository.ClickedTracksRepository
-import com.practicum.playlistmaker_ver2.player.domain.api.PlayerInteractor
-import com.practicum.playlistmaker_ver2.player.domain.interactors.PlayerInteractorImpl
 import com.practicum.playlistmaker_ver2.search.domain.api.SearchInteractor
 import com.practicum.playlistmaker_ver2.search.domain.impl.SearchInteractorImpl
 import com.practicum.playlistmaker_ver2.search.ui.SearchViewModel
@@ -76,9 +74,6 @@ object Creator {
 
 
     // PLAYER ACTIVITY
-    fun providePlayerInteractor(): PlayerInteractor {
-        return PlayerInteractorImpl()
-    }
 
 
     //SHARED PREFERENCES

@@ -8,9 +8,9 @@ import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.practicum.playlistmaker_ver2.R
 import com.practicum.playlistmaker_ver2.databinding.ActivityPlayerBinding
 import com.practicum.playlistmaker_ver2.base.ActivityBase
-import com.practicum.playlistmaker_ver2.creator.Creator
 import com.practicum.playlistmaker_ver2.player.ui.models.PlayerState
 import com.practicum.playlistmaker_ver2.player.ui.models.PlayerTrack
+import com.practicum.playlistmaker_ver2.player.ui.models.PlayerViewState
 import com.practicum.playlistmaker_ver2.util.formatDpToPx
 import com.practicum.playlistmaker_ver2.util.serializable
 
@@ -19,7 +19,7 @@ class ActivityPlayer : ActivityBase() {
     private lateinit var binding: ActivityPlayerBinding
 
     private val viewModel: PlayerViewModel by viewModels {
-        PlayerViewModel.provideFactory(Creator.providePlayerInteractor(), currentTrack)
+        PlayerViewModel.provideFactory(currentTrack)
     }
 
     private val currentTrack: PlayerTrack by lazy {
@@ -67,7 +67,7 @@ class ActivityPlayer : ActivityBase() {
     }
 
     private fun setupObservers() {
-        viewModel.observeViewState().observe(this) { viewState ->
+        viewModel.getViewState().observe(this) { viewState ->
             updateUi(viewState)
         }
     }

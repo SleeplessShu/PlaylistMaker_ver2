@@ -1,4 +1,4 @@
-package com.practicum.playlistmaker_ver2.player.ui
+package com.practicum.playlistmaker_ver2.player.ui.models
 
 import com.practicum.playlistmaker_ver2.player.ui.models.PlayerState
 
