@@ -12,7 +12,6 @@ import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.google.android.material.internal.ViewUtils.hideKeyboard
 import com.google.gson.Gson
 import com.practicum.playlistmaker_ver2.creator.Creator
 import com.practicum.playlistmaker_ver2.databinding.ActivitySearchBinding
@@ -20,6 +19,8 @@ import com.practicum.playlistmaker_ver2.search.domain.models.Track
 import com.practicum.playlistmaker_ver2.base.ActivityBase
 import com.practicum.playlistmaker_ver2.search.ui.adapters.TrackAdapter
 import com.practicum.playlistmaker_ver2.player.ui.ActivityPlayer
+import com.practicum.playlistmaker_ver2.player.ui.mappers.TrackToPlayerTrackMapper
+import com.practicum.playlistmaker_ver2.player.ui.models.PlayerTrack
 import com.practicum.playlistmaker_ver2.search.ui.models.SearchState
 import com.practicum.playlistmaker_ver2.util.DebounceClickListener
 import java.util.concurrent.Executors
@@ -175,8 +176,9 @@ class ActivitySearch : ActivityBase() {
     }
 
     private fun startPlayer(context: Context, track: Track) {
+        val playerTrack: PlayerTrack = TrackToPlayerTrackMapper.map(track)
         val intent = Intent(context, ActivityPlayer::class.java).apply {
-            putExtra("trackData", track)
+            putExtra("trackData", playerTrack)
         }
         startActivity(intent)
     }

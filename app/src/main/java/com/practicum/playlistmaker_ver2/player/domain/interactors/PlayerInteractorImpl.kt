@@ -3,13 +3,9 @@ package com.practicum.playlistmaker_ver2.player.domain.interactors
 import android.media.MediaPlayer
 import android.os.Handler
 import android.os.Looper
-import android.util.Log
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import com.practicum.playlistmaker_ver2.player.domain.api.PlayerInteractor
-import com.practicum.playlistmaker_ver2.player.domain.models.PlayerState
-import com.practicum.playlistmaker_ver2.player.domain.models.PlayerTrack
-import okhttp3.internal.http2.Http2Reader
+import com.practicum.playlistmaker_ver2.player.ui.models.PlayerState
+
 
 class PlayerInteractorImpl : PlayerInteractor {
 
@@ -86,7 +82,7 @@ class PlayerInteractorImpl : PlayerInteractor {
         isPlayerReady = false
         stopPlayingTimeCounter()
         mediaPlayer?.stop()
-        Log.d("STATE", "stop(): ")
+
         listener?.invoke(PlayerState.STOPPED, 0L, null)
         setupMediaPlayer(savedTrackUrl)
     }

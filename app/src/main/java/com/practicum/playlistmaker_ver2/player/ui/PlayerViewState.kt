@@ -1,7 +1,6 @@
 package com.practicum.playlistmaker_ver2.player.ui
 
-import com.practicum.playlistmaker_ver2.player.domain.models.PlayerState
-import com.practicum.playlistmaker_ver2.search.domain.models.Track
+import com.practicum.playlistmaker_ver2.player.ui.models.PlayerState
 
 data class PlayerViewState(
     val playerState: PlayerState = PlayerState.DEFAULT,

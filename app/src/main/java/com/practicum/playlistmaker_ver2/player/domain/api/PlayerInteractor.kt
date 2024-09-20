@@ -1,7 +1,7 @@
 package com.practicum.playlistmaker_ver2.player.domain.api
 
 
-import com.practicum.playlistmaker_ver2.player.domain.models.PlayerState
+import com.practicum.playlistmaker_ver2.player.ui.models.PlayerState
 
 
 interface PlayerInteractor {

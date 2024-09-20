@@ -1,16 +1,13 @@
 package com.practicum.playlistmaker_ver2.settings.data.repositories
 
+import android.content.SharedPreferences
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.content.edit
-import com.practicum.playlistmaker_ver2.creator.Creator
 import com.practicum.playlistmaker_ver2.settings.domain.repositories.SettingsRepository
 
-class SettingsRepositoryImpl : SettingsRepository {
-    private companion object {
-        const val THEME_STATUS_SHARED_PREFERENCES_KEY: String = "NightMode"
-        var sharedPreferences =
-            Creator.provideSharedPreferences(THEME_STATUS_SHARED_PREFERENCES_KEY)
-    }
+class SettingsRepositoryImpl(
+    private var sharedPreferences: SharedPreferences
+) : SettingsRepository {
 
     override fun getThemeSettings(): Boolean {
         return sharedPreferences.getBoolean(THEME_STATUS_SHARED_PREFERENCES_KEY, false)
@@ -29,5 +26,7 @@ class SettingsRepositoryImpl : SettingsRepository {
         )
     }
 
-
+    companion object {
+        const val THEME_STATUS_SHARED_PREFERENCES_KEY: String = "NightMode"
+    }
 }

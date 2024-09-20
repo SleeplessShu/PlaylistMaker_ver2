@@ -38,6 +38,9 @@ import java.util.concurrent.ExecutorService
 
 
 object Creator {
+
+    const val THEME_STATUS_SHARED_PREFERENCES_KEY: String = "NightMode"
+
     private lateinit var application: Application
     fun initApplication(application: Application) {
         Creator.application = application
@@ -75,7 +78,6 @@ object Creator {
     // PLAYER ACTIVITY
     fun providePlayerInteractor(): PlayerInteractor {
         return PlayerInteractorImpl()
-
     }
 
 
@@ -109,7 +111,7 @@ object Creator {
     }
 
     private fun provideSettingsRepository(): SettingsRepository {
-        return SettingsRepositoryImpl()
+        return SettingsRepositoryImpl(provideSharedPreferences(THEME_STATUS_SHARED_PREFERENCES_KEY))
     }
 
     //SHARING

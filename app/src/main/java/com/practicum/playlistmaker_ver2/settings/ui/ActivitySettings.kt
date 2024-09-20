@@ -1,11 +1,8 @@
 package com.practicum.playlistmaker_ver2.settings.ui
 
-import android.content.Intent
-import android.net.Uri
+
 import android.os.Bundle
-import androidx.appcompat.app.AppCompatDelegate
 import com.practicum.playlistmaker_ver2.util.DebounceClickListener
-import com.practicum.playlistmaker_ver2.R
 import com.practicum.playlistmaker_ver2.creator.Creator
 import com.practicum.playlistmaker_ver2.databinding.ActivitySettingsBinding
 import com.practicum.playlistmaker_ver2.base.ActivityBase
@@ -15,7 +12,10 @@ class ActivitySettings : ActivityBase() {
 
 
     private val viewModelSettings by viewModels<SettingsViewModel> {
-        SettingsViewModel.getViewModelFactory()
+        SettingsViewModel.getViewModelFactory(
+            Creator.provideSharingInteractor(),
+            Creator.provideSettingsInteractor()
+        )
     }
     private lateinit var binding: ActivitySettingsBinding
 

@@ -1,17 +1,17 @@
 package com.practicum.playlistmaker_ver2.player.ui
 
-import android.net.wifi.rtt.CivicLocationKeys.STATE
+
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import com.practicum.playlistmaker_ver2.search.domain.models.Track
 import com.practicum.playlistmaker_ver2.player.domain.api.PlayerInteractor
+import com.practicum.playlistmaker_ver2.player.ui.models.PlayerTrack
 import java.util.concurrent.TimeUnit
 
 class PlayerViewModel(
-    private val track: Track, private val playerInteractor: PlayerInteractor
+    private val track: PlayerTrack, private val playerInteractor: PlayerInteractor
 ) : ViewModel() {
     init {
         playerInteractor.setStateChangeListener { state, currentTime, errorMessage ->
@@ -28,7 +28,7 @@ class PlayerViewModel(
     private val viewState = MutableLiveData(PlayerViewState())
     fun observeViewState(): LiveData<PlayerViewState> = viewState
 
-    fun initializePlayer(currentTrack: Track) {
+    fun initializePlayer(currentTrack: PlayerTrack) {
         currentTrack.previewUrl?.let { playerInteractor.setTrackUrl(it) }
         Log.d("DEBUG", "initializePlayer: ${currentTrack.previewUrl}")
     }
@@ -61,7 +61,10 @@ class PlayerViewModel(
     }
 
     companion object {
-        fun provideFactory(interactor: PlayerInteractor, track: Track): ViewModelProvider.Factory =
+        fun provideFactory(
+            interactor: PlayerInteractor,
+            track: PlayerTrack
+        ): ViewModelProvider.Factory =
             object : ViewModelProvider.Factory {
                 @Suppress("UNCHECKED_CAST")
                 override fun <T : ViewModel> create(modelClass: Class<T>): T {

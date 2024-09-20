@@ -7,10 +7,10 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.practicum.playlistmaker_ver2.R
 import com.practicum.playlistmaker_ver2.databinding.ActivityPlayerBinding
-import com.practicum.playlistmaker_ver2.search.domain.models.Track
 import com.practicum.playlistmaker_ver2.base.ActivityBase
 import com.practicum.playlistmaker_ver2.creator.Creator
-import com.practicum.playlistmaker_ver2.player.domain.models.PlayerState
+import com.practicum.playlistmaker_ver2.player.ui.models.PlayerState
+import com.practicum.playlistmaker_ver2.player.ui.models.PlayerTrack
 import com.practicum.playlistmaker_ver2.util.formatDpToPx
 import com.practicum.playlistmaker_ver2.util.serializable
 
@@ -22,7 +22,7 @@ class ActivityPlayer : ActivityBase() {
         PlayerViewModel.provideFactory(Creator.providePlayerInteractor(), currentTrack)
     }
 
-    private val currentTrack: Track by lazy {
+    private val currentTrack: PlayerTrack by lazy {
         requireNotNull(
             intent.serializable(
                 GET_TRACK_DATA_FROM_SEARCH
@@ -56,12 +56,12 @@ class ActivityPlayer : ActivityBase() {
             tvPrimaryGenreName.text = currentTrack?.primaryGenreName
             tvCollectionName.text = currentTrack?.collectionName
             tvCountry.text = currentTrack?.country
-            tvReleaseDate.text = currentTrack?.releaseDate?.substring(0, 4)
+            tvReleaseDate.text = currentTrack?.releaseDate
             tvTrackDuration.text = currentTrack?.trackTime
             binding.tvPlayTime.text = "00:00"
         }
         val radiusPx = formatDpToPx(8)
-        Glide.with(this).load(currentTrack?.artworkUrl100?.replaceAfterLast('/', "512x512bb.jpg"))
+        Glide.with(this).load(currentTrack?.artworkUrl500)
             .placeholder(R.drawable.placeholder).fitCenter().transform(RoundedCorners(radiusPx))
             .into(binding.ivCollectionImage)
     }
