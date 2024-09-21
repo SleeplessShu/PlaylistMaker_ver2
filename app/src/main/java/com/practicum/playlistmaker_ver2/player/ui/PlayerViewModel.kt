@@ -7,7 +7,6 @@ import android.os.Looper
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
 import com.practicum.playlistmaker_ver2.player.ui.models.PlayerState
 import com.practicum.playlistmaker_ver2.player.ui.models.PlayerTrack
 import com.practicum.playlistmaker_ver2.player.ui.models.PlayerViewState
@@ -153,17 +152,6 @@ class PlayerViewModel : ViewModel() {
     }
 
     companion object {
-        /*fun provideFactory(
-        ): ViewModelProvider.Factory = object : ViewModelProvider.Factory {
-            @Suppress("UNCHECKED_CAST")
-            override fun <T : ViewModel> create(modelClass: Class<T>): T {
-                if (modelClass.isAssignableFrom(PlayerViewModel::class.java)) {
-                    return PlayerViewModel() as T
-                }
-                throw IllegalArgumentException("Unknown ViewModel class")
-            }
-        }*/
-
         private const val DELAY = 1000L
     }
 }

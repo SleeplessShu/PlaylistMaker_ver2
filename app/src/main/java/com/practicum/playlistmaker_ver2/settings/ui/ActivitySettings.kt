@@ -3,7 +3,6 @@ package com.practicum.playlistmaker_ver2.settings.ui
 
 import android.os.Bundle
 import com.practicum.playlistmaker_ver2.util.DebounceClickListener
-
 import com.practicum.playlistmaker_ver2.databinding.ActivitySettingsBinding
 import com.practicum.playlistmaker_ver2.base.ActivityBase
 import org.koin.androidx.viewmodel.ext.android.viewModel

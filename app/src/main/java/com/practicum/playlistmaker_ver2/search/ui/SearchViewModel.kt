@@ -5,7 +5,6 @@ package com.practicum.playlistmaker_ver2.search.ui
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
 import com.practicum.playlistmaker_ver2.search.domain.api.SearchInteractor
 import com.practicum.playlistmaker_ver2.search.domain.models.Track
 import com.practicum.playlistmaker_ver2.search.ui.models.SearchState
@@ -114,16 +113,4 @@ class SearchViewModel(
         }
 
     }
-
-    /* companion object {
-         fun provideFactory(
-             interactor: SearchInteractor
-         ): ViewModelProvider.Factory =
-             object : ViewModelProvider.Factory {
-                 @Suppress("UNCHECKED_CAST")
-                 override fun <T : ViewModel> create(modelClass: Class<T>): T {
-                     return SearchViewModel(interactor) as T
-                 }
-             }
-     }*/
 }

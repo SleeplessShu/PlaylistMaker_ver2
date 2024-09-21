@@ -33,14 +33,4 @@ class SettingsViewModel(
     fun shareApp() {
         sharingInteractor.shareApp()
     }
-    /*
-        companion object {
-            fun getViewModelFactory(
-                sharingInteractor: SharingInteractor, settingsInteractor: SettingsInteractor
-            ): ViewModelProvider.Factory = viewModelFactory {
-                initializer {
-                    SettingsViewModel(sharingInteractor, settingsInteractor)
-                }
-            }
-        }*/
 }
