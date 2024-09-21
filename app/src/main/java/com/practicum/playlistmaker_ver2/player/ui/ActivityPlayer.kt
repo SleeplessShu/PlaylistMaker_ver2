@@ -2,7 +2,7 @@ package com.practicum.playlistmaker_ver2.player.ui
 
 import android.os.Bundle
 import android.widget.Toast
-import androidx.activity.viewModels
+
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.practicum.playlistmaker_ver2.R
@@ -13,14 +13,13 @@ import com.practicum.playlistmaker_ver2.player.ui.models.PlayerTrack
 import com.practicum.playlistmaker_ver2.player.ui.models.PlayerViewState
 import com.practicum.playlistmaker_ver2.util.formatDpToPx
 import com.practicum.playlistmaker_ver2.util.serializable
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class ActivityPlayer : ActivityBase() {
 
     private lateinit var binding: ActivityPlayerBinding
 
-    private val viewModel: PlayerViewModel by viewModels {
-        PlayerViewModel.provideFactory(currentTrack)
-    }
+    private val viewModel: PlayerViewModel by viewModel()
 
     private val currentTrack: PlayerTrack by lazy {
         requireNotNull(

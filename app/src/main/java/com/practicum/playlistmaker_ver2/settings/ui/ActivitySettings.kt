@@ -3,20 +3,15 @@ package com.practicum.playlistmaker_ver2.settings.ui
 
 import android.os.Bundle
 import com.practicum.playlistmaker_ver2.util.DebounceClickListener
-import com.practicum.playlistmaker_ver2.creator.Creator
+
 import com.practicum.playlistmaker_ver2.databinding.ActivitySettingsBinding
 import com.practicum.playlistmaker_ver2.base.ActivityBase
-import androidx.activity.viewModels
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class ActivitySettings : ActivityBase() {
 
 
-    private val viewModelSettings by viewModels<SettingsViewModel> {
-        SettingsViewModel.getViewModelFactory(
-            Creator.provideSharingInteractor(),
-            Creator.provideSettingsInteractor()
-        )
-    }
+    private val viewModel: SettingsViewModel by viewModel()
     private lateinit var binding: ActivitySettingsBinding
 
 
@@ -28,9 +23,9 @@ class ActivitySettings : ActivityBase() {
 
         setupStatusBar(androidx.appcompat.R.attr.colorPrimary)
 
-        binding.switcherTheme.isChecked = viewModelSettings.getTheme()
+        binding.switcherTheme.isChecked = viewModel.getTheme()
         binding.switcherTheme.setOnCheckedChangeListener { _, isChecked ->
-            viewModelSettings.setTheme(isChecked)
+            viewModel.setTheme(isChecked)
         }
 
         binding.bBackToMain.setOnClickListener(DebounceClickListener {
@@ -38,15 +33,15 @@ class ActivitySettings : ActivityBase() {
         })
 
         binding.bMailToSupport.setOnClickListener(DebounceClickListener {
-            viewModelSettings.supportSend()
+            viewModel.supportSend()
         })
 
         binding.bShareApp.setOnClickListener(DebounceClickListener {
-            viewModelSettings.shareApp()
+            viewModel.shareApp()
         })
 
         binding.bOpenAgreementWeb.setOnClickListener(DebounceClickListener {
-            viewModelSettings.openTerm()
+            viewModel.openTerm()
         })
     }
 }

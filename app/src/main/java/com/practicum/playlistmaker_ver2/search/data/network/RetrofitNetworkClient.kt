@@ -1,40 +1,19 @@
 package com.practicum.playlistmaker_ver2.search.data.network
 
+import android.content.Context
 import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
 import com.practicum.playlistmaker_ver2.search.data.dto.Response
 import com.practicum.playlistmaker_ver2.search.data.dto.TrackSearchRequest
-import okhttp3.OkHttpClient
-import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.HttpException
-import retrofit2.Retrofit
-import retrofit2.converter.gson.GsonConverterFactory
 import java.io.IOException
 import java.net.SocketTimeoutException
-import java.util.concurrent.TimeUnit
 
-class RetrofitNetworkClient(private val connectivityManager: ConnectivityManager) : NetworkClient {
+class RetrofitNetworkClient(
+    private val iTunesApiService: ITunesApiService,
+    private val context: Context
+) : NetworkClient {
 
-    private companion object {
-        const val ITUNES_BASE_URL = "https://itunes.apple.com"
-        const val TIMEOUT_SECONDS = 30L
-    }
-
-    private val okHttpClient: OkHttpClient = OkHttpClient.Builder()
-        .connectTimeout(TIMEOUT_SECONDS, TimeUnit.SECONDS)
-        .readTimeout(TIMEOUT_SECONDS, TimeUnit.SECONDS)
-        .writeTimeout(TIMEOUT_SECONDS, TimeUnit.SECONDS)
-        .retryOnConnectionFailure(true)
-        .addInterceptor(HttpLoggingInterceptor().apply {
-            level = HttpLoggingInterceptor.Level.BODY
-        })
-        .build()
-
-
-    private val retrofit: Retrofit = Retrofit.Builder().baseUrl(ITUNES_BASE_URL)
-        .addConverterFactory(GsonConverterFactory.create()).build()
-
-    private val iTunesApiService = retrofit.create(ITunesApiService::class.java)
     override fun doRequest(dto: Any): Response {
         if (!isConnected()) return Response(resultCode = -1)
         if (dto !is TrackSearchRequest) return Response(resultCode = 400)
@@ -54,7 +33,8 @@ class RetrofitNetworkClient(private val connectivityManager: ConnectivityManager
     }
 
     private fun isConnected(): Boolean {
-
+        val connectivityManager =
+            context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
         val capabilities =
             connectivityManager.getNetworkCapabilities(connectivityManager.activeNetwork)
         return capabilities?.run {
@@ -63,5 +43,26 @@ class RetrofitNetworkClient(private val connectivityManager: ConnectivityManager
                     hasTransport(NetworkCapabilities.TRANSPORT_ETHERNET)
         } ?: false
     }
-
 }
+
+/* private val okHttpClient: OkHttpClient = OkHttpClient.Builder()
+    .connectTimeout(TIMEOUT_SECONDS, TimeUnit.SECONDS)
+    .readTimeout(TIMEOUT_SECONDS, TimeUnit.SECONDS)
+    .writeTimeout(TIMEOUT_SECONDS, TimeUnit.SECONDS)
+    .retryOnConnectionFailure(true)
+    .addInterceptor(HttpLoggingInterceptor().apply {
+        level = HttpLoggingInterceptor.Level.BODY
+    })
+    .build()*/
+/*
+    private val connectivityManager =
+    App.appContext.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+
+    private val retrofit: Retrofit = Retrofit.Builder().baseUrl(ITUNES_BASE_URL)
+        .addConverterFactory(GsonConverterFactory.create()).build()
+
+    private val iTunesApiService = retrofit.create(ITunesApiService::class.java)*/
+/*    private companion object {
+        const val ITUNES_BASE_URL = "https://itunes.apple.com"
+        //const val TIMEOUT_SECONDS = 30L
+    }*/

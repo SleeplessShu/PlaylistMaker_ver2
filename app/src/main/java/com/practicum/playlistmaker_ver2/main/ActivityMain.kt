@@ -3,13 +3,14 @@ package com.practicum.playlistmaker_ver2.main
 import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatDelegate
-import com.practicum.playlistmaker_ver2.creator.Creator
 import com.practicum.playlistmaker_ver2.mediateka.ActivityMediateka
 import com.practicum.playlistmaker_ver2.search.ui.ActivitySearch
 import com.practicum.playlistmaker_ver2.settings.ui.ActivitySettings
 import com.practicum.playlistmaker_ver2.util.DebounceClickListener
 import com.practicum.playlistmaker_ver2.databinding.ActivityMainBinding
 import com.practicum.playlistmaker_ver2.base.ActivityBase
+import com.practicum.playlistmaker_ver2.settings.domain.api.SettingsInteractor
+import org.koin.java.KoinJavaComponent.getKoin
 
 class ActivityMain : ActivityBase() {
 
@@ -21,7 +22,7 @@ class ActivityMain : ActivityBase() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
         val appContext = applicationContext
-        val settingsInteractor = Creator.provideSettingsInteractor()
+        val settingsInteractor: SettingsInteractor = getKoin().get()
 
 
         binding.bSettings.setOnClickListener(DebounceClickListener {

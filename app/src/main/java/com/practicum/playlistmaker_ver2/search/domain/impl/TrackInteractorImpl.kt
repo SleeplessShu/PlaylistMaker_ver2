@@ -6,14 +6,14 @@ import com.practicum.playlistmaker_ver2.search.domain.api.TrackInteractor
 import com.practicum.playlistmaker_ver2.search.domain.api.TracksRepository
 import com.practicum.playlistmaker_ver2.search.domain.models.Resource
 import java.util.concurrent.ExecutorService
+import java.util.concurrent.Executors
 
 
 class TrackInteractorImpl(
-    private val repository: TracksRepository,
-    private val executor: ExecutorService
+    private val repository: TracksRepository
 ) : TrackInteractor {
 
-
+    private val executor = Executors.newCachedThreadPool()
     override fun doRequest(expression: String, consumer: TrackConsumer) {
         executor.execute {
             when (val resource = repository.searchTracks(expression)) {

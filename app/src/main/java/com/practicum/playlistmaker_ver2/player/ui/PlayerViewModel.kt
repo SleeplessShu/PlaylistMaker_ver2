@@ -13,9 +13,7 @@ import com.practicum.playlistmaker_ver2.player.ui.models.PlayerTrack
 import com.practicum.playlistmaker_ver2.player.ui.models.PlayerViewState
 import java.util.concurrent.TimeUnit
 
-class PlayerViewModel(
-    private val track: PlayerTrack
-) : ViewModel() {
+class PlayerViewModel : ViewModel() {
 
     private var playingTimeCounter: Runnable? = null
     private val mainThreadHandler = Handler(Looper.getMainLooper())
@@ -155,17 +153,16 @@ class PlayerViewModel(
     }
 
     companion object {
-        fun provideFactory(
-            track: PlayerTrack
+        /*fun provideFactory(
         ): ViewModelProvider.Factory = object : ViewModelProvider.Factory {
             @Suppress("UNCHECKED_CAST")
             override fun <T : ViewModel> create(modelClass: Class<T>): T {
                 if (modelClass.isAssignableFrom(PlayerViewModel::class.java)) {
-                    return PlayerViewModel(track) as T
+                    return PlayerViewModel() as T
                 }
                 throw IllegalArgumentException("Unknown ViewModel class")
             }
-        }
+        }*/
 
         private const val DELAY = 1000L
     }

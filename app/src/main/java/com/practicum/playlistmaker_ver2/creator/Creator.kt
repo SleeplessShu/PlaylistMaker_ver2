@@ -1,10 +1,9 @@
 package com.practicum.playlistmaker_ver2.creator
 
 
-import android.app.Application
+
 import android.content.Context
 import android.content.SharedPreferences
-import android.net.ConnectivityManager
 import androidx.lifecycle.ViewModelProvider
 import com.google.gson.Gson
 import com.practicum.playlistmaker_ver2.App
@@ -30,50 +29,49 @@ import com.practicum.playlistmaker_ver2.settings.domain.interactors.SharingInter
 import com.practicum.playlistmaker_ver2.settings.domain.repositories.ExternalNavigatorRepository
 import com.practicum.playlistmaker_ver2.settings.domain.repositories.SettingsRepository
 import com.practicum.playlistmaker_ver2.settings.domain.repositories.SharingRepository
-import java.util.concurrent.ExecutorService
-import java.util.concurrent.Executors
+
 
 
 object Creator {
 
-    private const val THEME_STATUS_SHARED_PREFERENCES_KEY: String = "NightMode"
-    private const val PREVIOUS_SEARCH_RESULT_KEY: String = "previous_search_result"
+    /*
+        private const val THEME_STATUS_SHARED_PREFERENCES_KEY: String = "NightMode"
+        private const val PREVIOUS_SEARCH_RESULT_KEY: String = "previous_search_result"
+    */
 
-    private lateinit var application: Application
+    /*private lateinit var application: Application
     fun initApplication(application: Application) {
         Creator.application = application
     }
-
+*//*
     // SEARCH ACTIVITY
-
+    fun provideSearchViewModelFactory(
+    ): ViewModelProvider.Factory {
+        return SearchViewModel.provideFactory(provideSearchInteractor())
+    }*/
+    /*
     private fun provideSearchInteractor(): SearchInteractor {
-        val connectivityManager =
-            App.appContext.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
-        val executor = Executors.newCachedThreadPool()
+
         val sharedPreferences =
             App.appContext.getSharedPreferences(PREVIOUS_SEARCH_RESULT_KEY, Context.MODE_PRIVATE)
         val gson = Gson()
 
-        val tracksInteractor = provideTracksInteractor(connectivityManager, executor)
+        val tracksInteractor = provideTracksInteractor()
         val clickedTracksInteractor = provideClickedTracksInteractor(sharedPreferences, gson)
         return SearchInteractorImpl(tracksInteractor, clickedTracksInteractor)
     }
 
-    fun provideSearchViewModelFactory(
-    ): ViewModelProvider.Factory {
-        return SearchViewModel.provideFactory(provideSearchInteractor())
-    }
+*/
 
-    private fun provideTracksRepository(connectivityManager: ConnectivityManager): TracksRepository {
-        return TracksRepositoryImpl(RetrofitNetworkClient(connectivityManager))
-    }
+    /* private fun provideTracksRepository(): TracksRepository {
+         return TracksRepositoryImpl(RetrofitNetworkClient())
+     }*/
 
-    private fun provideTracksInteractor(
-        connectivityManager: ConnectivityManager, executor: ExecutorService
-    ): TrackInteractor {
-        val tracksRepository = provideTracksRepository(connectivityManager)
-        return TrackInteractorImpl(tracksRepository, executor)
-    }
+    /*    private fun provideTracksInteractor(
+        ): TrackInteractor {
+            val tracksRepository = provideTracksRepository()
+            return TrackInteractorImpl(tracksRepository)
+        }*/
 
 
     // PLAYER ACTIVITY
@@ -87,47 +85,50 @@ object Creator {
         }
     */
 
-    private fun provideSharedPreferences(): SharedPreferences {
-        return application.getSharedPreferences(
-            THEME_STATUS_SHARED_PREFERENCES_KEY,
-            Context.MODE_PRIVATE
-        )
-    }
+    /*
+        private fun provideSharedPreferences(): SharedPreferences {
+            return App.appContext.getSharedPreferences(
+                THEME_STATUS_SHARED_PREFERENCES_KEY,
+                Context.MODE_PRIVATE
+            )
+        }
+    */
 
+    /*
+        private fun provideClickedTracksInteractor(
+            sharedPreferences: SharedPreferences, gson: Gson
+        ): ClickedTracksInteractor {
+            return ClickedTracksInteractorImpl(provideClickedTracksRepository(sharedPreferences, gson))
+        }
+    */
 
-    private fun provideClickedTracksInteractor(
-        sharedPreferences: SharedPreferences, gson: Gson
-    ): ClickedTracksInteractor {
-        return ClickedTracksInteractorImpl(provideClickedTracksRepository(sharedPreferences, gson))
-    }
-
-    private fun provideClickedTracksRepository(
-        sharedPreferences: SharedPreferences, gson: Gson
-    ): ClickedTracksRepository {
-        return ClickedTracksRepositoryImpl(sharedPreferences, gson)
-    }
+    /*    private fun provideClickedTracksRepository(
+            sharedPreferences: SharedPreferences, gson: Gson
+        ): ClickedTracksRepository {
+            return ClickedTracksRepositoryImpl(sharedPreferences, gson)
+        }*/
 
 
     //THEME STATUS
-    fun provideSettingsInteractor(): SettingsInteractor {
+    /*fun provideSettingsInteractor(): SettingsInteractor {
         return SettingsInteractorImpl(provideSettingsRepository())
     }
-
-    private fun provideSettingsRepository(): SettingsRepository {
+*/
+    /*private fun provideSettingsRepository(): SettingsRepository {
         return SettingsRepositoryImpl(provideSharedPreferences())
-    }
+    }*/
 
     //SHARING
-    fun provideSharingInteractor(): SharingInteractor {
+    /*fun provideSharingInteractor(): SharingInteractor {
         return SharingInteractorImpl(provideSharingRepository(), provideExternalNavigator())
     }
 
     private fun provideSharingRepository(): SharingRepository {
-        return SharingRepositoryImpl(application)
+        return SharingRepositoryImpl()
     }
 
     private fun provideExternalNavigator(): ExternalNavigatorRepository {
-        return ExternalNavigatorRepositoryImpl(application)
-    }
+        return ExternalNavigatorRepositoryImpl()
+    }*/
 
 }

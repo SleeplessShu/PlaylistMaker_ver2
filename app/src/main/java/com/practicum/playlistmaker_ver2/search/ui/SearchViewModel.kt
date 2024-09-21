@@ -115,15 +115,15 @@ class SearchViewModel(
 
     }
 
-    companion object {
-        fun provideFactory(
-            interactor: SearchInteractor
-        ): ViewModelProvider.Factory =
-            object : ViewModelProvider.Factory {
-                @Suppress("UNCHECKED_CAST")
-                override fun <T : ViewModel> create(modelClass: Class<T>): T {
-                    return SearchViewModel(interactor) as T
-                }
-            }
-    }
+    /* companion object {
+         fun provideFactory(
+             interactor: SearchInteractor
+         ): ViewModelProvider.Factory =
+             object : ViewModelProvider.Factory {
+                 @Suppress("UNCHECKED_CAST")
+                 override fun <T : ViewModel> create(modelClass: Class<T>): T {
+                     return SearchViewModel(interactor) as T
+                 }
+             }
+     }*/
 }
