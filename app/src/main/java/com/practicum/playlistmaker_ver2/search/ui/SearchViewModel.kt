@@ -1,14 +1,11 @@
 package com.practicum.playlistmaker_ver2.search.ui
 
 
-import android.os.Bundle
-import androidx.lifecycle.AbstractSavedStateViewModelFactory
+
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import androidx.savedstate.SavedStateRegistryOwner
 import com.practicum.playlistmaker_ver2.search.domain.api.SearchInteractor
 import com.practicum.playlistmaker_ver2.search.domain.models.Track
 import com.practicum.playlistmaker_ver2.search.ui.models.SearchState
@@ -16,13 +13,10 @@ import com.practicum.playlistmaker_ver2.search.ui.models.SearchState
 import com.practicum.playlistmaker_ver2.search.ui.models.SearchViewState
 
 class SearchViewModel(
-    private val searchInteractor: SearchInteractor, private val savedStateHandle: SavedStateHandle
+    private val searchInteractor: SearchInteractor
 ) : ViewModel() {
-    var currentQuery: String
-        get() = savedStateHandle.get<String>("currentQuery") ?: ""
-        set(value) {
-            savedStateHandle.set("currentQuery", value)
-        }
+    var currentQuery: String = ""
+
     private val _searchViewState = MutableLiveData<SearchViewState>()
     val searchViewState: LiveData<SearchViewState> get() = _searchViewState
 
@@ -123,16 +117,12 @@ class SearchViewModel(
 
     companion object {
         fun provideFactory(
-            interactor: SearchInteractor,
-            owner: SavedStateRegistryOwner,
-            defaultArgs: Bundle? = null
+            interactor: SearchInteractor
         ): ViewModelProvider.Factory =
-            object : AbstractSavedStateViewModelFactory(owner, defaultArgs) {
+            object : ViewModelProvider.Factory {
                 @Suppress("UNCHECKED_CAST")
-                override fun <T : ViewModel> create(
-                    key: String, modelClass: Class<T>, handle: SavedStateHandle
-                ): T {
-                    return SearchViewModel(interactor, handle) as T
+                override fun <T : ViewModel> create(modelClass: Class<T>): T {
+                    return SearchViewModel(interactor) as T
                 }
             }
     }

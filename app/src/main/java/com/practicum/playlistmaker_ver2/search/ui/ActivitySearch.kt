@@ -2,7 +2,6 @@ package com.practicum.playlistmaker_ver2.search.ui
 
 import android.content.Context
 import android.content.Intent
-import android.net.ConnectivityManager
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -12,7 +11,6 @@ import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.google.gson.Gson
 import com.practicum.playlistmaker_ver2.creator.Creator
 import com.practicum.playlistmaker_ver2.databinding.ActivitySearchBinding
 import com.practicum.playlistmaker_ver2.search.domain.models.Track
@@ -23,26 +21,13 @@ import com.practicum.playlistmaker_ver2.player.ui.mappers.TrackToPlayerTrackMapp
 import com.practicum.playlistmaker_ver2.player.ui.models.PlayerTrack
 import com.practicum.playlistmaker_ver2.search.ui.models.SearchState
 import com.practicum.playlistmaker_ver2.util.DebounceClickListener
-import java.util.concurrent.Executors
 
 class ActivitySearch : ActivityBase() {
 
     private var savedSearchText = AMOUNT_DEF
     private lateinit var binding: ActivitySearchBinding
     private val viewModelFactory by lazy {
-        Creator.provideSearchViewModelFactory(
-            Creator.provideSearchInteractor(
-                Creator.provideTracksInteractor(
-                    connectivityManager = getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager,
-                    executor = Executors.newCachedThreadPool()
-                ),
-                Creator.provideClickedTracksInteractor(
-                    sharedPreferences = getSharedPreferences(
-                        "previous_search_result", Context.MODE_PRIVATE
-                    ), gson = Gson()
-                )
-            ), owner = this
-        )
+        Creator.provideSearchViewModelFactory()
     }
     private val viewModel: SearchViewModel by viewModels { viewModelFactory }
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -190,8 +175,6 @@ class ActivitySearch : ActivityBase() {
 
     companion object {
         private const val SEARCH_TEXT_KEY = "SEARCH_TEXT"
-        private const val TRACKS_LIST_KEY = "TRACKS_LIST"
-        private const val ADAPTER_VIEW_TYPE_KEY = "ADAPTER_VIEW_TYPE"
         const val AMOUNT_DEF = ""
     }
 }
