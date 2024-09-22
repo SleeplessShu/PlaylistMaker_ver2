@@ -34,7 +34,8 @@ class ActivityPlayer : ActivityBase() {
         super.onCreate(savedInstanceState)
         binding = ActivityPlayerBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        viewModel.initializePlayer(currentTrack)
+        setupStatusBar(androidx.appcompat.R.attr.colorPrimary)
+        viewModel.setupPlayer(currentTrack.previewUrl)
         binding.bBack.setOnClickListener { finish() }
         binding.bLike.setOnClickListener { toggleLikeButton() }
         binding.bAddToPlaylist.setOnClickListener { toggleAddToPlaylistButton() }

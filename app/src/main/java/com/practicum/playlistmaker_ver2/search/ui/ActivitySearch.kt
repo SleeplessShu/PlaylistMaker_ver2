@@ -31,7 +31,7 @@ class ActivitySearch : ActivityBase() {
         super.onCreate(savedInstanceState)
         binding = ActivitySearchBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
+        setupStatusBar(androidx.appcompat.R.attr.colorPrimary)
         setupUI()
         setupObservers()
         restoreSearchState(savedInstanceState)

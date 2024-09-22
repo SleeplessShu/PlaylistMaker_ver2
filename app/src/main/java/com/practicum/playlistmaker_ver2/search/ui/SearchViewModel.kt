@@ -1,18 +1,18 @@
 package com.practicum.playlistmaker_ver2.search.ui
 
 
-
+import android.os.Handler
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.practicum.playlistmaker_ver2.search.domain.api.SearchInteractor
+import com.practicum.playlistmaker_ver2.search.domain.interactor.SearchInteractor
 import com.practicum.playlistmaker_ver2.search.domain.models.Track
 import com.practicum.playlistmaker_ver2.search.ui.models.SearchState
-
 import com.practicum.playlistmaker_ver2.search.ui.models.SearchViewState
 
 class SearchViewModel(
-    private val searchInteractor: SearchInteractor
+    private val searchInteractor: SearchInteractor,
+    private val handler: Handler
 ) : ViewModel() {
     var currentQuery: String = ""
 
@@ -31,7 +31,6 @@ class SearchViewModel(
     }
 
 
-    private val handler = android.os.Handler(android.os.Looper.getMainLooper())
     private val debounceRunnable = Runnable { searchTracks(currentQuery) }
 
     fun onSearchQueryChanged(query: String) {

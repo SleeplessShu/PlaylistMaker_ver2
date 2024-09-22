@@ -2,10 +2,9 @@ package com.practicum.playlistmaker_ver2.search.domain.impl
 
 
 import com.practicum.playlistmaker_ver2.search.domain.api.TrackConsumer
-import com.practicum.playlistmaker_ver2.search.domain.api.TrackInteractor
-import com.practicum.playlistmaker_ver2.search.domain.api.TracksRepository
+import com.practicum.playlistmaker_ver2.search.domain.interactor.TrackInteractor
+import com.practicum.playlistmaker_ver2.search.domain.repository.TracksRepository
 import com.practicum.playlistmaker_ver2.search.domain.models.Resource
-import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
 
 

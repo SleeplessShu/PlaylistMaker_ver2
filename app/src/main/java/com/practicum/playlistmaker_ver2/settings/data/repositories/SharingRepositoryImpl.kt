@@ -1,14 +1,12 @@
 package com.practicum.playlistmaker_ver2.settings.data.repositories
 
 import android.content.Context
-import com.practicum.playlistmaker_ver2.App
 import com.practicum.playlistmaker_ver2.R
 import com.practicum.playlistmaker_ver2.settings.domain.model.EmailData
 import com.practicum.playlistmaker_ver2.settings.domain.repositories.SharingRepository
 
-class SharingRepositoryImpl() : SharingRepository {
+class SharingRepositoryImpl(private val context: Context) : SharingRepository {
 
-    private val context: Context = App.appContext
 
     override fun getShareAppLink(): String {
         return context.getString(R.string.shareApp)

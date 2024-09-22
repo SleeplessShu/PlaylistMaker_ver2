@@ -1,8 +1,8 @@
 package com.practicum.playlistmaker_ver2.search.domain.impl
 
-import com.practicum.playlistmaker_ver2.search.domain.api.TrackInteractor
+import com.practicum.playlistmaker_ver2.search.domain.interactor.TrackInteractor
 import com.practicum.playlistmaker_ver2.search.domain.models.Track
-import com.practicum.playlistmaker_ver2.search.domain.api.SearchInteractor
+import com.practicum.playlistmaker_ver2.search.domain.interactor.SearchInteractor
 import com.practicum.playlistmaker_ver2.search.domain.interactor.ClickedTracksInteractor
 
 class SearchInteractorImpl(

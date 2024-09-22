@@ -3,13 +3,11 @@ package com.practicum.playlistmaker_ver2.settings.data.repositories
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
-import com.practicum.playlistmaker_ver2.App
 import com.practicum.playlistmaker_ver2.settings.domain.model.EmailData
 import com.practicum.playlistmaker_ver2.settings.domain.repositories.ExternalNavigatorRepository
 
-class ExternalNavigatorRepositoryImpl() : ExternalNavigatorRepository {
+class ExternalNavigatorRepositoryImpl(private val context: Context) : ExternalNavigatorRepository {
 
-    private val context: Context = App.appContext
     override fun shareLink(link: String) {
         val shareIntent = Intent(Intent.ACTION_SEND).apply {
             type = "text/plain"

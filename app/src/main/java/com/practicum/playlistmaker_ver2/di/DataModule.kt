@@ -2,14 +2,18 @@ package com.practicum.playlistmaker_ver2.di
 
 
 import android.content.Context
+import android.media.MediaPlayer
+import android.os.Handler
 import com.google.gson.Gson
 import com.practicum.playlistmaker_ver2.App
+import com.practicum.playlistmaker_ver2.player.data.repository.PlayerRepositoryImpl
+import com.practicum.playlistmaker_ver2.player.domain.repositories.PlayerRepository
 import com.practicum.playlistmaker_ver2.search.data.dto.TracksRepositoryImpl
 import com.practicum.playlistmaker_ver2.search.data.network.ITunesApiService
 import com.practicum.playlistmaker_ver2.search.data.network.NetworkClient
 import com.practicum.playlistmaker_ver2.search.data.network.RetrofitNetworkClient
 import com.practicum.playlistmaker_ver2.search.data.repository.ClickedTracksRepositoryImpl
-import com.practicum.playlistmaker_ver2.search.domain.api.TracksRepository
+import com.practicum.playlistmaker_ver2.search.domain.repository.TracksRepository
 import com.practicum.playlistmaker_ver2.search.domain.repository.ClickedTracksRepository
 import com.practicum.playlistmaker_ver2.settings.data.repositories.ExternalNavigatorRepositoryImpl
 import com.practicum.playlistmaker_ver2.settings.data.repositories.SettingsRepositoryImpl
@@ -34,7 +38,7 @@ val dataModule = module {
             .create(ITunesApiService::class.java)
     }
 
-    single { (Gson()) }
+    factory { (Gson()) }
 
     single<NetworkClient> {
         RetrofitNetworkClient(get(), get())
@@ -62,9 +66,19 @@ val dataModule = module {
     }
 
     single<SharingRepository> {
-        SharingRepositoryImpl()
+        SharingRepositoryImpl(get())
     }
     single<ExternalNavigatorRepository> {
-        ExternalNavigatorRepositoryImpl()
+        ExternalNavigatorRepositoryImpl(get())
     }
+
+    factory<PlayerRepository> {
+        PlayerRepositoryImpl(get())
+    }
+    factory<Handler> {
+        Handler()
+    }
+
+    single<Context> { App.appContext }
+
 }

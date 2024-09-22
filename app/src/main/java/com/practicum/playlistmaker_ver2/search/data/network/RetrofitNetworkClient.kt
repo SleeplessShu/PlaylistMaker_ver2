@@ -44,25 +44,3 @@ class RetrofitNetworkClient(
         } ?: false
     }
 }
-
-/* private val okHttpClient: OkHttpClient = OkHttpClient.Builder()
-    .connectTimeout(TIMEOUT_SECONDS, TimeUnit.SECONDS)
-    .readTimeout(TIMEOUT_SECONDS, TimeUnit.SECONDS)
-    .writeTimeout(TIMEOUT_SECONDS, TimeUnit.SECONDS)
-    .retryOnConnectionFailure(true)
-    .addInterceptor(HttpLoggingInterceptor().apply {
-        level = HttpLoggingInterceptor.Level.BODY
-    })
-    .build()*/
-/*
-    private val connectivityManager =
-    App.appContext.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
-
-    private val retrofit: Retrofit = Retrofit.Builder().baseUrl(ITUNES_BASE_URL)
-        .addConverterFactory(GsonConverterFactory.create()).build()
-
-    private val iTunesApiService = retrofit.create(ITunesApiService::class.java)*/
-/*    private companion object {
-        const val ITUNES_BASE_URL = "https://itunes.apple.com"
-        //const val TIMEOUT_SECONDS = 30L
-    }*/
