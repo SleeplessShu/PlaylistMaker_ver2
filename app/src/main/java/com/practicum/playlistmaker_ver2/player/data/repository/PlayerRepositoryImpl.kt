@@ -8,9 +8,10 @@ import android.os.Handler
 import com.practicum.playlistmaker_ver2.player.domain.repositories.PlayerRepository
 
 
-class PlayerRepositoryImpl(private val handler: Handler) : PlayerRepository {
+class PlayerRepositoryImpl(private var player: MediaPlayer, private val handler: Handler) :
+    PlayerRepository {
 
-    private var player: MediaPlayer? = null
+
     private var isPlayerReady: Boolean = false
     private var isPlayerReleased: Boolean = true
 
@@ -20,8 +21,7 @@ class PlayerRepositoryImpl(private val handler: Handler) : PlayerRepository {
         onCompletion: () -> Unit,
         onError: (what: Int, extra: Int) -> Boolean
     ) {
-        releasePlayer()  // Release any existing player
-        player = MediaPlayer()
+
 
         try {
             player?.apply {
@@ -86,7 +86,6 @@ class PlayerRepositoryImpl(private val handler: Handler) : PlayerRepository {
     override fun releasePlayer() {
         if (player != null && !isPlayerReleased) {
             player?.release()
-            player = null
             isPlayerReady = false
             isPlayerReleased = true
         }

@@ -73,10 +73,14 @@ val dataModule = module {
     }
 
     factory<PlayerRepository> {
-        PlayerRepositoryImpl(get())
+        PlayerRepositoryImpl(get(), get())
     }
     factory<Handler> {
         Handler()
+    }
+
+    factory<MediaPlayer> {
+        MediaPlayer()
     }
 
     single<Context> { App.appContext }
