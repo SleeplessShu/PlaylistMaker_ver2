@@ -3,7 +3,7 @@ package com.practicum.playlistmaker_ver2.search.data.dto
 import android.util.Log
 import com.practicum.playlistmaker_ver2.search.data.network.NetworkClient
 import com.practicum.playlistmaker_ver2.search.data.mapper.TrackDtoToTrackMapper
-import com.practicum.playlistmaker_ver2.search.domain.api.TracksRepository
+import com.practicum.playlistmaker_ver2.search.domain.repository.TracksRepository
 import com.practicum.playlistmaker_ver2.search.domain.models.Track
 import com.practicum.playlistmaker_ver2.search.domain.models.Resource
 

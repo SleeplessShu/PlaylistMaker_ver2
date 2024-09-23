@@ -15,11 +15,6 @@ class ClickedTracksRepositoryImpl(
 ) :
     ClickedTracksRepository {
 
-    private companion object {
-        const val CLICKED_TRACKS_REPOSITORY_KEY: String = "clicked_tracks"
-
-    }
-
     override fun addTrack(track: Track) {
         var previousSearchList: ArrayList<Track> = getTracks()
         previousSearchList = ArrayList(previousSearchList.filter { it.trackId != track.trackId })
@@ -50,4 +45,8 @@ class ClickedTracksRepositoryImpl(
         }
     }
 
+    private companion object {
+        const val CLICKED_TRACKS_REPOSITORY_KEY: String = "clicked_tracks"
+
+    }
 }

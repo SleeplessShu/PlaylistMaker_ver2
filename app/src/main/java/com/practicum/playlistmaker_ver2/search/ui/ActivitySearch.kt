@@ -8,33 +8,30 @@ import android.text.TextWatcher
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
-import androidx.activity.viewModels
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.practicum.playlistmaker_ver2.creator.Creator
-import com.practicum.playlistmaker_ver2.databinding.ActivitySearchBinding
-import com.practicum.playlistmaker_ver2.search.domain.models.Track
 import com.practicum.playlistmaker_ver2.base.ActivityBase
-import com.practicum.playlistmaker_ver2.search.ui.adapters.TrackAdapter
+import com.practicum.playlistmaker_ver2.databinding.ActivitySearchBinding
 import com.practicum.playlistmaker_ver2.player.ui.ActivityPlayer
 import com.practicum.playlistmaker_ver2.player.ui.mappers.TrackToPlayerTrackMapper
 import com.practicum.playlistmaker_ver2.player.ui.models.PlayerTrack
+import com.practicum.playlistmaker_ver2.search.domain.models.Track
+import com.practicum.playlistmaker_ver2.search.ui.adapters.TrackAdapter
 import com.practicum.playlistmaker_ver2.search.ui.models.SearchState
 import com.practicum.playlistmaker_ver2.util.DebounceClickListener
+import org.koin.androidx.viewmodel.ext.android.viewModel
+
 
 class ActivitySearch : ActivityBase() {
 
     private var savedSearchText = AMOUNT_DEF
     private lateinit var binding: ActivitySearchBinding
-    private val viewModelFactory by lazy {
-        Creator.provideSearchViewModelFactory()
-    }
-    private val viewModel: SearchViewModel by viewModels { viewModelFactory }
+    private val viewModel: SearchViewModel by viewModel()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivitySearchBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
+        setupStatusBar(androidx.appcompat.R.attr.colorPrimary)
         setupUI()
         setupObservers()
         restoreSearchState(savedInstanceState)

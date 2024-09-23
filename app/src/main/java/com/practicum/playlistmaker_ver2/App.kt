@@ -3,14 +3,27 @@ package com.practicum.playlistmaker_ver2
 import android.app.Application
 import android.content.Context
 import androidx.appcompat.app.AppCompatDelegate
-import com.practicum.playlistmaker_ver2.creator.Creator
+import com.practicum.playlistmaker_ver2.di.dataModule
+import com.practicum.playlistmaker_ver2.di.domainModule
+import com.practicum.playlistmaker_ver2.di.presentationModule
+import com.practicum.playlistmaker_ver2.settings.domain.api.SettingsInteractor
+import org.koin.android.ext.koin.androidContext
+import org.koin.core.context.startKoin
+import org.koin.java.KoinJavaComponent.getKoin
+
 
 class App : Application() {
     override fun onCreate() {
         super.onCreate()
-        Creator.initApplication(this)
+
         appContext = applicationContext
-        val settingsInteractor = Creator.provideSettingsInteractor()
+
+        startKoin {
+            androidContext(this@App)
+            modules(dataModule, domainModule, presentationModule)
+        }
+
+        val settingsInteractor: SettingsInteractor = getKoin().get()
         val isNightModeOn = settingsInteractor.getThemeSettings()
         AppCompatDelegate.setDefaultNightMode(
             if (isNightModeOn) AppCompatDelegate.MODE_NIGHT_YES else AppCompatDelegate.MODE_NIGHT_NO

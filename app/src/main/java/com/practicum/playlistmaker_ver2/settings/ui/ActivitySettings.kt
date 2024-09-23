@@ -3,20 +3,15 @@ package com.practicum.playlistmaker_ver2.settings.ui
 
 import android.os.Bundle
 import com.practicum.playlistmaker_ver2.util.DebounceClickListener
-import com.practicum.playlistmaker_ver2.creator.Creator
 import com.practicum.playlistmaker_ver2.databinding.ActivitySettingsBinding
 import com.practicum.playlistmaker_ver2.base.ActivityBase
-import androidx.activity.viewModels
+import com.practicum.playlistmaker_ver2.settings.models.ThemeViewState
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class ActivitySettings : ActivityBase() {
 
 
-    private val viewModelSettings by viewModels<SettingsViewModel> {
-        SettingsViewModel.getViewModelFactory(
-            Creator.provideSharingInteractor(),
-            Creator.provideSettingsInteractor()
-        )
-    }
+    private val viewModel: SettingsViewModel by viewModel()
     private lateinit var binding: ActivitySettingsBinding
 
 
@@ -27,10 +22,11 @@ class ActivitySettings : ActivityBase() {
         setContentView(binding.root)
 
         setupStatusBar(androidx.appcompat.R.attr.colorPrimary)
-
-        binding.switcherTheme.isChecked = viewModelSettings.getTheme()
+        setupObservers()
+        viewModel.initializeTheme()
         binding.switcherTheme.setOnCheckedChangeListener { _, isChecked ->
-            viewModelSettings.setTheme(isChecked)
+            viewModel.setTheme(isChecked)
+
         }
 
         binding.bBackToMain.setOnClickListener(DebounceClickListener {
@@ -38,15 +34,25 @@ class ActivitySettings : ActivityBase() {
         })
 
         binding.bMailToSupport.setOnClickListener(DebounceClickListener {
-            viewModelSettings.supportSend()
+            viewModel.supportSend()
         })
 
         binding.bShareApp.setOnClickListener(DebounceClickListener {
-            viewModelSettings.shareApp()
+            viewModel.shareApp()
         })
 
         binding.bOpenAgreementWeb.setOnClickListener(DebounceClickListener {
-            viewModelSettings.openTerm()
+            viewModel.openTerm()
         })
+    }
+
+    private fun setupObservers() {
+        viewModel.getThemeState().observe(this) { state: ThemeViewState ->
+            updateUi(state)
+        }
+    }
+
+    private fun updateUi(state: ThemeViewState) {
+        binding.switcherTheme.isChecked = (state.isNightModeOn)
     }
 }
