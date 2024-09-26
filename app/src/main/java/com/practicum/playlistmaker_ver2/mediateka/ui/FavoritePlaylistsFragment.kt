@@ -17,9 +17,7 @@ class FavoritePlaylistsFragment : Fragment() {
     private val binding get() = _binding!!
 
     override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
+        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View? {
         _binding = FavoritePlaylistsFragmentBinding.inflate(inflater, container, false)
         return binding.root
@@ -28,6 +26,12 @@ class FavoritePlaylistsFragment : Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+    }
+
+    companion object {
+        fun newInstance(): FavoritePlaylistsFragment {
+            return FavoritePlaylistsFragment()
+        }
     }
 }
 

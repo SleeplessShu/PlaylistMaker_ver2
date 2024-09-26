@@ -16,7 +16,7 @@
         android:layout_width="120dp"
         android:layout_height="120dp"
         android:layout_gravity="center_horizontal"
-        android:layout_marginTop="@dimen/dim_106dp"
+        android:layout_marginTop="@dimen/dim_108dp"
         tools:src="@drawable/er_nothingfound"
         android:src="@drawable/er_nothingfound" />
 
@@ -30,7 +30,7 @@
         android:fontFamily="@font/ys_display_medium"
         android:text="@string/emptyMediateka"
         android:textColor="?attr/colorOnPrimary"
-        android:textSize="@dimen/ts_19sp"
+        android:textSize="@dimen/ts_20sp"
         android:paddingTop="@dimen/dim_16dp"
         tools:text="@string/emptyMediateka"
         android:textAlignment="center" />

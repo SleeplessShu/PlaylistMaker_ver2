@@ -29,4 +29,10 @@ class FavoriteTracksFragment : Fragment() {
         super.onDestroyView()
         _binding = null
     }
+
+    companion object {
+        fun newInstance(): FavoriteTracksFragment {
+            return FavoriteTracksFragment()
+        }
+    }
 }

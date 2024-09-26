@@ -24,9 +24,9 @@ class ActivitySettings : ActivityBase() {
         setupStatusBar(androidx.appcompat.R.attr.colorPrimary)
         setupObservers()
         viewModel.initializeTheme()
+
         binding.switcherTheme.setOnCheckedChangeListener { _, isChecked ->
             viewModel.setTheme(isChecked)
-
         }
 
         binding.bBackToMain.setOnClickListener(DebounceClickListener {
