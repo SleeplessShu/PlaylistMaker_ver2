@@ -20,7 +20,7 @@
             android:exported="false"
             android:label="@string/title_activity_settings" />
         <activity
-            android:name=".mediateka.ActivityMediateka"
+            android:name=".mediateka.ui.ActivityMediateka"
             android:exported="false"
             android:label="@string/title_activity_mediateka" />
         <activity

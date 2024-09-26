@@ -10,6 +10,7 @@ import androidx.appcompat.app.AppCompatActivity
 
 open class ActivityBase : AppCompatActivity() {
 
+
     fun setupStatusBar(@AttrRes colorAttribute: Int) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             val typedValue = TypedValue()

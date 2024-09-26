@@ -3,8 +3,12 @@
     <!---DP-->
 
     <dimen name="dim_140dp">140dp</dimen>
+    <dimen name="dim_108dp">108dp</dimen>
+    <dimen name="dim_106dp">106dp</dimen>
     <dimen name="dim_82dp">82dp</dimen>
     <dimen name="dim_56dp">56dp</dimen>
+    <dimen name="dim_54dp">54dp</dimen>
+    <dimen name="dim_48dp">48dp</dimen>
     <dimen name="dim_46dp">46dp</dimen>
     <dimen name="dim_44dp">44dp</dimen>
     <dimen name="dim_42dp">42dp</dimen>
@@ -17,6 +21,7 @@
     <dimen name="dim_16dp">16dp</dimen>
     <dimen name="dim_14dp">14dp</dimen>
     <dimen name="dim_12dp">12dp</dimen>
+    <dimen name="dim_10dp">10dp</dimen>
     <dimen name="dim_08dp">8dp</dimen>
     <dimen name="dim_02dp">2dp</dimen>
     <dimen name="dim_00dp">0dp</dimen>
@@ -27,6 +32,7 @@
     <dimen name="ts_13sp">13sp</dimen>
     <dimen name="ts_14sp">14sp</dimen>
     <dimen name="ts_16sp">16sp</dimen>
+    <dimen name="ts_19sp">19sp</dimen>
     <dimen name="ts_22sp">22sp</dimen>
 
     <!---OTHER-->

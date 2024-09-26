@@ -52,8 +52,12 @@ dependencies {
     implementation("com.google.code.gson:gson:2.11.0")
     implementation("com.squareup.retrofit2:retrofit:2.11.0")
     implementation("com.squareup.retrofit2:converter-gson:2.11.0")
-    implementation("com.google.android.material:material:1.4.0")
+    implementation("com.google.android.material:material:1.5.0")
     implementation("com.squareup.okhttp3:logging-interceptor:4.9.3")
     implementation("androidx.activity:activity:1.9.0")
     implementation("io.insert-koin:koin-android:3.3.0")
+    implementation("com.google.android.material:material:1.8.0")
+    implementation("androidx.viewpager2:viewpager2:1.0.0")
+    implementation("com.google.android.material:material:1.8.0")
+
 }
