@@ -12,7 +12,7 @@ import com.practicum.playlistmaker_ver2.base.ActivityBase
 import com.practicum.playlistmaker_ver2.settings.domain.api.SettingsInteractor
 import org.koin.java.KoinJavaComponent.getKoin
 
-class ActivityMain : ActivityBase() {
+class ActivityMain_old : ActivityBase() {
 
 
     private lateinit var binding: ActivityMainBinding

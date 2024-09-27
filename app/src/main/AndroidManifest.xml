@@ -28,7 +28,7 @@
             android:exported="false"
             android:label="@string/title_activity_search" />
         <activity
-            android:name=".main.ActivityMain"
+            android:name=".main.ActivityMain_old"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
