@@ -42,4 +42,11 @@
     <string name="sYear">Год</string>
     <string name="sGenre">Жанр</string>
     <string name="sCountry">Страна</string>
+
+    <!--Mediateka-->
+    <string name="noPlaylists">Вы не создали\nни одного плейлиста</string>
+    <string name="newPlaylists">Новый плейлист</string>
+    <string name="emptyMediateka">Ваша медиатека пуста</string>
+    <string name="FavTracks">Избранные треки</string>
+    <string name="FavPlaylists">Плейлисты</string>
 </resources>

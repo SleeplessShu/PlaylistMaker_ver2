@@ -10,13 +10,6 @@ class ViewHolderNoInternet(
 ) : RecyclerView.ViewHolder(binding.root) {
 
     fun bind() {
-        val currentNightMode =
-            itemView.context.resources.configuration.uiMode and android.content.res.Configuration.UI_MODE_NIGHT_MASK
-        if (currentNightMode == android.content.res.Configuration.UI_MODE_NIGHT_YES) {
-            binding.ivNoInternet.setImageResource(R.drawable.er_nointernet_d)
-        } else {
-            binding.ivNoInternet.setImageResource(R.drawable.er_nointernet_l)
-        }
         binding.bRefresh.setOnClickListener {
             onRetry?.invoke()
         }

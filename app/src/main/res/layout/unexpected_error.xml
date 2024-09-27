@@ -14,7 +14,7 @@
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="102dp"
         android:layout_marginBottom="@dimen/dim_16dp"
-        tools:src="@drawable/er_nointernet_l" />
+        tools:src="@drawable/er_nointernet" />
 
     <TextView
         android:layout_width="312dp"

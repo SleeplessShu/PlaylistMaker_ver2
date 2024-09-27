@@ -20,7 +20,7 @@ class SettingsRepositoryImpl(
         switchTheme()
     }
 
-    override fun switchTheme() {
+    private fun switchTheme() {
         AppCompatDelegate.setDefaultNightMode(
             if (getThemeSettings()) AppCompatDelegate.MODE_NIGHT_YES else AppCompatDelegate.MODE_NIGHT_NO
         )

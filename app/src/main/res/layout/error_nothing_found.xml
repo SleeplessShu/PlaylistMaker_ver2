@@ -9,11 +9,10 @@
         android:id="@+id/ivNothingFound"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="102dp"
         android:layout_marginBottom="@dimen/dim_16dp"
-        tools:src="@drawable/er_nothingfound_l" />
+        android:src="@drawable/er_nothingfound" />
 
     <TextView
         android:layout_width="wrap_content"

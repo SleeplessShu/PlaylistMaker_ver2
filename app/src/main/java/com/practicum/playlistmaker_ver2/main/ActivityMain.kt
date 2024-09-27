@@ -3,7 +3,7 @@ package com.practicum.playlistmaker_ver2.main
 import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatDelegate
-import com.practicum.playlistmaker_ver2.mediateka.ActivityMediateka
+import com.practicum.playlistmaker_ver2.mediateka.ui.ActivityMediateka
 import com.practicum.playlistmaker_ver2.search.ui.ActivitySearch
 import com.practicum.playlistmaker_ver2.settings.ui.ActivitySettings
 import com.practicum.playlistmaker_ver2.util.DebounceClickListener
