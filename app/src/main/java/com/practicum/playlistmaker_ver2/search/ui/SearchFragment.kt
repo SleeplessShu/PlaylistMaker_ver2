@@ -5,13 +5,18 @@ import android.content.Intent
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
+import androidx.core.content.ContextCompat.getSystemService
 import androidx.core.view.isVisible
+import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.practicum.playlistmaker_ver2.base.ActivityBase
-import com.practicum.playlistmaker_ver2.databinding.ActivitySearchBinding
+import com.practicum.playlistmaker_ver2.databinding.SearchFragmentBinding
+import com.practicum.playlistmaker_ver2.mediateka.ui.FavoriteTracksFragment
 import com.practicum.playlistmaker_ver2.player.ui.ActivityPlayer
 import com.practicum.playlistmaker_ver2.player.ui.mappers.TrackToPlayerTrackMapper
 import com.practicum.playlistmaker_ver2.player.ui.models.PlayerTrack
@@ -22,29 +27,41 @@ import com.practicum.playlistmaker_ver2.util.DebounceClickListener
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 
-class ActivitySearch : ActivityBase() {
+class SearchFragment : Fragment() {
 
     private var savedSearchText = AMOUNT_DEF
-    private lateinit var binding: ActivitySearchBinding
+    private var _binding: SearchFragmentBinding? = null
+    private val binding: SearchFragmentBinding get() = _binding!!
     private val viewModel: SearchViewModel by viewModel()
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        binding = ActivitySearchBinding.inflate(layoutInflater)
-        setContentView(binding.root)
-        setupStatusBar(androidx.appcompat.R.attr.colorPrimary)
+
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        _binding = SearchFragmentBinding.inflate(inflater, container, false)
+        return binding.root
+    }
+
+    override fun onDestroyView() {
+        _binding = null
+        super.onDestroyView()
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
         setupUI()
         setupObservers()
         restoreSearchState(savedInstanceState)
     }
-
     private fun setupUI() {
-        binding.trackList.layoutManager = LinearLayoutManager(this)
+        binding.trackList.layoutManager = LinearLayoutManager(requireContext())
         binding.trackList.adapter = TrackAdapter(
             emptyList(),
             onRetry = { viewModel.searchTracks(viewModel.currentQuery) },
             onItemClick = { track ->
                 viewModel.addToSearchHistory(track)
-                startPlayer(this, track)
+                startPlayer(requireContext(), track)
             })
 
         binding.bEraseText.setOnClickListener {
@@ -57,7 +74,9 @@ class ActivitySearch : ActivityBase() {
             hideKeyboard()
         }
 
-        binding.bBackToMain.setOnClickListener(DebounceClickListener { finish() })
+        binding.bBackToMain.setOnClickListener(DebounceClickListener {
+            parentFragmentManager.popBackStack()
+        })
 
         binding.queryInput.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
@@ -86,7 +105,7 @@ class ActivitySearch : ActivityBase() {
     }
 
     private fun setupObservers() {
-        viewModel.searchViewState.observe(this) { viewState ->
+        viewModel.searchViewState.observe(viewLifecycleOwner) { viewState ->
             val adapter = binding.trackList.adapter as? TrackAdapter
 
             when (viewState.state) {
@@ -136,7 +155,8 @@ class ActivitySearch : ActivityBase() {
                     binding.progressBar.isVisible = false
                     binding.trackList.isVisible = true
                     binding.bEraseHistory.isVisible = false
-                    Toast.makeText(this, viewState.errorMessage, Toast.LENGTH_SHORT).show()
+                    Toast.makeText(requireContext(), viewState.errorMessage, Toast.LENGTH_SHORT)
+                        .show()
                 }
             }
         }
@@ -166,12 +186,20 @@ class ActivitySearch : ActivityBase() {
     }
 
     private fun hideKeyboard() {
-        val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-        imm.hideSoftInputFromWindow(currentFocus?.windowToken, 0)
+        val imm =
+            requireActivity().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        view?.let { v ->
+            imm.hideSoftInputFromWindow(v.windowToken, 0)
+        }
+
     }
 
     companion object {
         private const val SEARCH_TEXT_KEY = "SEARCH_TEXT"
         const val AMOUNT_DEF = ""
+
+        fun newInstance(): SearchFragment {
+            return SearchFragment()
+        }
     }
 }
