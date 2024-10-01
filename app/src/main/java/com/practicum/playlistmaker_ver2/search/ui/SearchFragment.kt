@@ -11,23 +11,22 @@ import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
-import androidx.core.content.ContextCompat.getSystemService
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.practicum.playlistmaker_ver2.databinding.SearchFragmentBinding
-import com.practicum.playlistmaker_ver2.mediateka.ui.FavoriteTracksFragment
 import com.practicum.playlistmaker_ver2.player.ui.ActivityPlayer
 import com.practicum.playlistmaker_ver2.player.ui.mappers.TrackToPlayerTrackMapper
 import com.practicum.playlistmaker_ver2.player.ui.models.PlayerTrack
 import com.practicum.playlistmaker_ver2.search.domain.models.Track
-import com.practicum.playlistmaker_ver2.search.ui.adapters.TrackAdapter
-import com.practicum.playlistmaker_ver2.search.ui.models.SearchState
-import com.practicum.playlistmaker_ver2.util.DebounceClickListener
+import com.practicum.playlistmaker_ver2.search.presentation.SearchViewModel
+import com.practicum.playlistmaker_ver2.search.presentation.adapters.TrackAdapter
+import com.practicum.playlistmaker_ver2.search.presentation.models.SearchState
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 
 class SearchFragment : Fragment() {
+
 
     private var savedSearchText = AMOUNT_DEF
     private var _binding: SearchFragmentBinding? = null
@@ -35,17 +34,16 @@ class SearchFragment : Fragment() {
     private val viewModel: SearchViewModel by viewModel()
 
     override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
+        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View? {
         _binding = SearchFragmentBinding.inflate(inflater, container, false)
         return binding.root
     }
 
     override fun onDestroyView() {
-        _binding = null
         super.onDestroyView()
+        _binding = null
+        //parentFragmentManager.popBackStack()
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -54,6 +52,7 @@ class SearchFragment : Fragment() {
         setupObservers()
         restoreSearchState(savedInstanceState)
     }
+
     private fun setupUI() {
         binding.trackList.layoutManager = LinearLayoutManager(requireContext())
         binding.trackList.adapter = TrackAdapter(
@@ -73,10 +72,6 @@ class SearchFragment : Fragment() {
             viewModel.clearSearchHistory()
             hideKeyboard()
         }
-
-        binding.bBackToMain.setOnClickListener(DebounceClickListener {
-            parentFragmentManager.popBackStack()
-        })
 
         binding.queryInput.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
@@ -198,8 +193,5 @@ class SearchFragment : Fragment() {
         private const val SEARCH_TEXT_KEY = "SEARCH_TEXT"
         const val AMOUNT_DEF = ""
 
-        fun newInstance(): SearchFragment {
-            return SearchFragment()
-        }
     }
 }

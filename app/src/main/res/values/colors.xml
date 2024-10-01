@@ -8,6 +8,9 @@
     <color name="blueLight">#9FBBF3</color>
     <color name="grey">#AEAFB4</color>
     <color name="greyLight">#E6E8EB</color>
+    <color name="active_item_color">#FF4886</color>
+    <color name="inactive_item_color">#009688</color>
+    <color name="bottom_nav_background_color">#673AB7</color>
 
 
 </resources>

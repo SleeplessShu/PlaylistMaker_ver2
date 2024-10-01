@@ -1,4 +1,4 @@
-package com.practicum.playlistmaker_ver2.settings.ui
+package com.practicum.playlistmaker_ver2.settings.presentation
 
 
 import androidx.lifecycle.LiveData
@@ -13,16 +13,24 @@ class SettingsViewModel(
     private val sharingInteractor: SharingInteractor,
     private val settingsInteractor: SettingsInteractor,
 ) : ViewModel() {
-    private var state = MutableLiveData(ThemeViewState())
-    fun getThemeState(): LiveData<ThemeViewState> = state
+    private val _state = MutableLiveData<ThemeViewState>()
+    val state: LiveData<ThemeViewState> get() = _state
+    fun getThemeState(): Boolean {
+        return settingsInteractor.getThemeSettings()
+    }
 
-    fun initializeTheme() {
+    init {
+        initializeTheme()
+    }
+
+    private fun initializeTheme() {
         val isNightModeOn = settingsInteractor.getThemeSettings()
-        state.postValue(ThemeViewState(isNightModeOn = isNightModeOn))
+        _state.value = ThemeViewState(isNightModeOn = isNightModeOn)
     }
 
     fun setTheme(isChecked: Boolean) {
         settingsInteractor.setThemeSetting(isChecked)
+        initializeTheme()
     }
 
     fun supportSend() {

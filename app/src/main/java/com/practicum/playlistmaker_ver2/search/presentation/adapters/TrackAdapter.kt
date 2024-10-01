@@ -1,4 +1,4 @@
-package com.practicum.playlistmaker_ver2.search.ui.adapters
+package com.practicum.playlistmaker_ver2.search.presentation.adapters
 
 import android.util.Log
 import android.view.LayoutInflater
@@ -9,10 +9,10 @@ import com.practicum.playlistmaker_ver2.databinding.ErrorNetworkConnectionBindin
 import com.practicum.playlistmaker_ver2.databinding.ErrorNothingFoundBinding
 import com.practicum.playlistmaker_ver2.databinding.TrackBinding
 import com.practicum.playlistmaker_ver2.search.domain.models.Track
-import com.practicum.playlistmaker_ver2.search.ui.viewHolders.ViewHolderEmpty
-import com.practicum.playlistmaker_ver2.search.ui.viewHolders.ViewHolderNoInternet
-import com.practicum.playlistmaker_ver2.search.ui.viewHolders.ViewHolderNothingFound
-import com.practicum.playlistmaker_ver2.search.ui.viewHolders.ViewHolderTrack
+import com.practicum.playlistmaker_ver2.search.presentation.viewHolders.ViewHolderEmpty
+import com.practicum.playlistmaker_ver2.search.presentation.viewHolders.ViewHolderNoInternet
+import com.practicum.playlistmaker_ver2.search.presentation.viewHolders.ViewHolderNothingFound
+import com.practicum.playlistmaker_ver2.search.presentation.viewHolders.ViewHolderTrack
 
 class TrackAdapter(
     private var trackData: List<Track> = emptyList(),

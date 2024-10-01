@@ -6,33 +6,19 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="?attr/colorPrimary"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    tools:context="com.practicum.playlistmaker_ver2.search.ui.SearchFragment">
 
-    <LinearLayout
-        android:id="@+id/b_back_to_main"
+
+    <TextView
+        style="@style/PM2_Header_Text"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:foreground="?attr/selectableItemBackground"
-        android:orientation="horizontal"
-        android:paddingBottom="@dimen/dim_16dp">
+        android:layout_gravity="center_vertical"
+        android:layout_margin="@dimen/dim_16dp"
+        android:paddingBottom="@dimen/dim_16dp"
+        android:text="@string/Search" />
 
-        <ImageView
-
-            style="@style/PM2_Header_Image"
-            android:layout_width="@dimen/dim_24dp"
-            android:layout_height="@dimen/dim_24dp"
-            android:layout_gravity="center_vertical"
-            android:layout_margin="@dimen/dim_16dp"
-            android:src="@drawable/ic_arrow" />
-
-        <TextView
-            style="@style/PM2_Header_Text"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:padding="@dimen/dim_16dp"
-            android:text="@string/Search" />
-    </LinearLayout>
 
     <FrameLayout
         android:layout_width="match_parent"
@@ -40,6 +26,7 @@
         android:layout_marginBottom="@dimen/dim_16dp"
         android:paddingHorizontal="@dimen/dim_16dp"
         android:paddingVertical="@dimen/dim_08dp">
+
         <EditText
             android:id="@+id/queryInput"
             android:layout_width="match_parent"
@@ -79,6 +66,7 @@
         android:layout_marginTop="@dimen/dim_140dp"
         android:indeterminateTint="@color/blue"
         android:visibility="gone" />
+
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
@@ -98,9 +86,8 @@
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
 
             <Button
-                style="@style/ButtonsStyle"
-                app:cornerRadius="56dp"
                 android:id="@+id/b_erase_history"
+                style="@style/ButtonsStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
@@ -112,9 +99,10 @@
                 android:paddingVertical="10dp"
                 android:text="@string/Clear_history"
                 android:textAllCaps="false"
-                android:visibility="invisible"
                 android:textColor="?attr/colorPrimary"
-                android:textSize="14sp" />
+                android:textSize="14sp"
+                android:visibility="invisible"
+                app:cornerRadius="56dp" />
         </LinearLayout>
 
         <TextView

@@ -1,4 +1,4 @@
-package com.practicum.playlistmaker_ver2.search.ui.viewHolders
+package com.practicum.playlistmaker_ver2.search.presentation.viewHolders
 
 import android.util.Log
 import androidx.recyclerview.widget.RecyclerView

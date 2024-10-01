@@ -10,8 +10,7 @@ import com.google.android.material.tabs.TabLayoutMediator
 import com.practicum.playlistmaker_ver2.R
 import com.practicum.playlistmaker_ver2.databinding.MediatekaFragmentBinding
 import com.practicum.playlistmaker_ver2.mediateka.adapters.MediatekaPagerAdapter
-import com.practicum.playlistmaker_ver2.mediateka.ViewModel.FavoritePlaylistsViewModel
-import com.practicum.playlistmaker_ver2.util.DebounceClickListener
+import com.practicum.playlistmaker_ver2.mediateka.presentation.FavoritePlaylistsViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class MediatekaFragment : Fragment() {
@@ -32,8 +31,9 @@ class MediatekaFragment : Fragment() {
 
 
     override fun onDestroyView() {
-        _binding = null
         super.onDestroyView()
+        _binding = null
+        //parentFragmentManager.popBackStack()
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -53,20 +53,10 @@ class MediatekaFragment : Fragment() {
             }
         }
         tabMediator?.attach()
-        binding.bBackToMain.setOnClickListener(DebounceClickListener {
-            parentFragmentManager.popBackStack()
-        })
-
     }
 
     override fun onDestroy() {
         super.onDestroy()
         tabMediator?.detach()
-    }
-
-    companion object {
-        fun newInstance(): MediatekaFragment {
-            return MediatekaFragment()
-        }
     }
 }

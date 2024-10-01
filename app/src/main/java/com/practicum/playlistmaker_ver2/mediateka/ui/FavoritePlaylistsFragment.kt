@@ -6,7 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.practicum.playlistmaker_ver2.databinding.FavoritePlaylistsFragmentBinding
-import com.practicum.playlistmaker_ver2.mediateka.ViewModel.FavoritePlaylistsViewModel
+import com.practicum.playlistmaker_ver2.mediateka.presentation.FavoritePlaylistsViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 

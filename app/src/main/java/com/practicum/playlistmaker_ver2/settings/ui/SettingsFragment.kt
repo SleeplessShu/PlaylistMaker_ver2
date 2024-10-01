@@ -5,12 +5,11 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.Fragment
 import com.practicum.playlistmaker_ver2.databinding.SettingsFragmentBinding
-import com.practicum.playlistmaker_ver2.mediateka.ui.FavoriteTracksFragment
 import com.practicum.playlistmaker_ver2.util.DebounceClickListener
 import com.practicum.playlistmaker_ver2.settings.models.ThemeViewState
+import com.practicum.playlistmaker_ver2.settings.presentation.SettingsViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class SettingsFragment : Fragment() {
@@ -28,28 +27,18 @@ class SettingsFragment : Fragment() {
     }
 
     override fun onDestroyView() {
-        _binding = null
         super.onDestroyView()
+        _binding = null
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setupObservers()
 
-        viewModel.initializeTheme()
         binding.switcherTheme.setOnCheckedChangeListener { _, isChecked ->
             viewModel.setTheme(isChecked)
         }
-        binding.bBackToMain.setOnClickListener(DebounceClickListener {
-            parentFragmentManager.popBackStack()
-        })/*binding.bBackToMain.setOnClickListener(DebounceClickListener {
-            onBackPressedDispatcher.addCallback(this, object : OnBackPressedCallback(true) {
-                override fun handleOnBackPressed() {
-                    TODO("Not yet implemented")
-                }
 
-            })
-        })*/
 
         binding.bMailToSupport.setOnClickListener(DebounceClickListener {
             viewModel.supportSend()
@@ -66,18 +55,12 @@ class SettingsFragment : Fragment() {
 
 
     private fun setupObservers() {
-        viewModel.getThemeState().observe(viewLifecycleOwner) { state: ThemeViewState ->
+        viewModel.state.observe(viewLifecycleOwner) { state ->
             updateUi(state)
         }
     }
 
     private fun updateUi(state: ThemeViewState) {
         binding.switcherTheme.isChecked = (state.isNightModeOn)
-    }
-
-    companion object {
-        fun newInstance(): SettingsFragment {
-            return SettingsFragment()
-        }
     }
 }

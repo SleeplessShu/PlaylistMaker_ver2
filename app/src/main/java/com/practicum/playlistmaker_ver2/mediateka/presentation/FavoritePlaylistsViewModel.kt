@@ -1,6 +1,5 @@
-package com.practicum.playlistmaker_ver2.mediateka.ViewModel
+package com.practicum.playlistmaker_ver2.mediateka.presentation
 
-import android.content.Context
 import androidx.lifecycle.ViewModel
 
 class FavoritePlaylistsViewModel() : ViewModel() {
