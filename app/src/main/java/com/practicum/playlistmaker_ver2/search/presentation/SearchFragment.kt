@@ -1,4 +1,4 @@
-package com.practicum.playlistmaker_ver2.search.ui
+package com.practicum.playlistmaker_ver2.search.presentation
 
 import android.content.Context
 import android.content.Intent
@@ -19,7 +19,6 @@ import com.practicum.playlistmaker_ver2.player.ui.ActivityPlayer
 import com.practicum.playlistmaker_ver2.player.ui.mappers.TrackToPlayerTrackMapper
 import com.practicum.playlistmaker_ver2.player.ui.models.PlayerTrack
 import com.practicum.playlistmaker_ver2.search.domain.models.Track
-import com.practicum.playlistmaker_ver2.search.presentation.SearchViewModel
 import com.practicum.playlistmaker_ver2.search.presentation.adapters.TrackAdapter
 import com.practicum.playlistmaker_ver2.search.presentation.models.SearchState
 import org.koin.androidx.viewmodel.ext.android.viewModel

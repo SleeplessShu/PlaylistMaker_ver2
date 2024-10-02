@@ -1,4 +1,4 @@
-package com.practicum.playlistmaker_ver2.settings.ui
+package com.practicum.playlistmaker_ver2.settings.presentation
 
 
 import android.os.Bundle
@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import com.practicum.playlistmaker_ver2.R
 import com.practicum.playlistmaker_ver2.databinding.SettingsFragmentBinding
 import com.practicum.playlistmaker_ver2.util.DebounceClickListener
 import com.practicum.playlistmaker_ver2.settings.models.ThemeViewState
@@ -33,7 +34,9 @@ class SettingsFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
         setupObservers()
+
 
         binding.switcherTheme.setOnCheckedChangeListener { _, isChecked ->
             viewModel.setTheme(isChecked)

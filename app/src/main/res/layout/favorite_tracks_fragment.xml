@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:gravity="center_horizontal"
     android:layout_height="match_parent"
-    tools:context="com.practicum.playlistmaker_ver2.mediateka.ui.FavoriteTracksFragment">
+    tools:context="com.practicum.playlistmaker_ver2.mediateka.presentation.FavoriteTracksFragment">
 
     <ImageView
         app:layout_constraintTop_toTopOf="parent"

@@ -35,6 +35,7 @@
     <dimen name="ts_19sp">19sp</dimen>
     <dimen name="ts_20sp">20sp</dimen>
     <dimen name="ts_22sp">22sp</dimen>
+    <dimen name="ts_422sp">422sp</dimen>
 
     <!---OTHER-->
     <dimen name="block_weight_1">1</dimen>

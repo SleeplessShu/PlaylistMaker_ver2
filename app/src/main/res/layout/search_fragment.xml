@@ -7,17 +7,18 @@
     android:layout_height="match_parent"
     android:background="?attr/colorPrimary"
     android:orientation="vertical"
-    tools:context="com.practicum.playlistmaker_ver2.search.ui.SearchFragment">
+    tools:context="com.practicum.playlistmaker_ver2.search.presentation.SearchFragment">
 
 
     <TextView
+        android:id="@+id/header"
         style="@style/PM2_Header_Text"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center_vertical"
         android:layout_margin="@dimen/dim_16dp"
-        android:paddingBottom="@dimen/dim_16dp"
-        android:text="@string/Search" />
+        android:text="@string/Search"
+        android:paddingBottom="@dimen/dim_14dp" />
 
 
     <FrameLayout
@@ -25,7 +26,7 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="@dimen/dim_16dp"
         android:paddingHorizontal="@dimen/dim_16dp"
-        android:paddingVertical="@dimen/dim_08dp">
+        android:paddingBottom="@dimen/dim_08dp">
 
         <EditText
             android:id="@+id/queryInput"
@@ -45,7 +46,8 @@
             android:singleLine="true"
             android:textColor="@color/black"
             android:textColorHint="?attr/colorTextInputFont"
-            android:textSize="@dimen/ts_16sp" />
+            android:textSize="@dimen/ts_16sp"
+            android:textCursorDrawable="@drawable/cursor_blue" />
 
         <ImageView
             android:id="@+id/bEraseText"
