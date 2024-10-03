@@ -8,31 +8,28 @@
     android:orientation="vertical"
     tools:context="com.practicum.playlistmaker_ver2.mediateka.presentation.MediatekaFragment">
 
-    <TextView
-        android:id="@+id/header"
-        style="@style/PM2_Header_Text"
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/page_header"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="center_vertical"
-        android:layout_margin="@dimen/dim_16dp"
-        android:paddingBottom="@dimen/dim_14dp"
-        android:text="@string/Mediateka"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:title="@string/Mediateka"
+        app:titleTextAppearance="@style/Header_ver2"
+        app:titleTextColor="?attr/colorOnPrimary" />
 
 
     <com.google.android.material.tabs.TabLayout
         android:id="@+id/tabLayout"
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="@dimen/dim_16dp"
-        android:layout_marginBottom="@dimen/dim_16dp"
         android:background="?attr/colorPrimary"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/header"
-        app:tabGravity="center"
+        app:layout_constraintTop_toBottomOf="@id/page_header"
+        app:tabGravity="fill"
         app:tabIndicatorColor="?attr/colorOnPrimary"
         app:tabIndicatorFullWidth="true"
         app:tabIndicatorHeight="@dimen/dim_02dp"

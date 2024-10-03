@@ -1,77 +1,101 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="?attr/colorPrimary"
-    android:orientation="vertical"
     tools:context="com.practicum.playlistmaker_ver2.search.presentation.SearchFragment">
 
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/leftBorder"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_begin="@dimen/dim_16dp" />
 
-    <TextView
-        android:id="@+id/header"
-        style="@style/PM2_Header_Text"
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/rightBorder"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_end="@dimen/dim_16dp" />
+
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/page_header"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="center_vertical"
-        android:layout_margin="@dimen/dim_16dp"
-        android:text="@string/Search"
-        android:paddingBottom="@dimen/dim_14dp" />
+        app:layout_constraintEnd_toEndOf="@id/rightBorder"
+        app:layout_constraintStart_toStartOf="@id/leftBorder"
+        app:layout_constraintTop_toTopOf="parent"
+        app:title="@string/Search"
+        app:titleTextAppearance="@style/Header_ver2"
+        app:titleTextColor="?attr/colorOnPrimary" />
 
 
-    <FrameLayout
-        android:layout_width="match_parent"
+    <EditText
+        android:id="@+id/queryInput"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="@dimen/dim_16dp"
-        android:paddingHorizontal="@dimen/dim_16dp"
-        android:paddingBottom="@dimen/dim_08dp">
+        android:background="@drawable/bkg_rounded_rectungle"
+        android:backgroundTint="?attr/colorTextInputBackground"
+        android:drawableStart="@drawable/ic_search_v3"
+        android:drawablePadding="@dimen/dim_08dp"
+        android:drawableTint="?attr/colorTextInputFont"
+        android:fontFamily="@font/ys_display_regular"
+        android:hint="@string/Search"
+        android:imeOptions="actionDone"
+        android:maxLines="1"
+        android:padding="@dimen/dim_08dp"
+        android:paddingStart="@dimen/dim_16dp"
+        android:singleLine="true"
+        android:textColor="@color/black"
+        android:textColorHint="?attr/colorTextInputFont"
+        android:textCursorDrawable="@drawable/cursor_blue"
+        android:textSize="@dimen/ts_16sp"
+        app:layout_constraintBottom_toTopOf="@+id/progressBar"
+        app:layout_constraintEnd_toEndOf="@id/rightBorder"
+        app:layout_constraintStart_toStartOf="@id/leftBorder"
+        app:layout_constraintTop_toBottomOf="@+id/page_header" />
 
-        <EditText
-            android:id="@+id/queryInput"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@drawable/bkg_rounded_rectungle"
-            android:backgroundTint="?attr/colorTextInputBackground"
-            android:drawableStart="@drawable/ic_search_v3"
-            android:drawablePadding="@dimen/dim_08dp"
-            android:drawableTint="?attr/colorTextInputFont"
-            android:fontFamily="@font/ys_display_regular"
-            android:hint="@string/Search"
-            android:imeOptions="actionDone"
-            android:maxLines="1"
-            android:padding="@dimen/dim_08dp"
-            android:paddingStart="@dimen/dim_16dp"
-            android:singleLine="true"
-            android:textColor="@color/black"
-            android:textColorHint="?attr/colorTextInputFont"
-            android:textSize="@dimen/ts_16sp"
-            android:textCursorDrawable="@drawable/cursor_blue" />
+    <ImageView
+        android:id="@+id/bEraseText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="end"
+        android:paddingEnd="@dimen/dim_16dp"
+        android:src="@drawable/ic_cross"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toBottomOf="@id/queryInput"
+        app:layout_constraintEnd_toEndOf="@id/queryInput"
+        app:layout_constraintTop_toTopOf="@id/queryInput"
+        app:tint="?attr/colorTextInputFont"
+        tools:visibility="visible" />
 
-        <ImageView
-            android:id="@+id/bEraseText"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_gravity="end"
-            android:paddingEnd="@dimen/dim_16dp"
-            android:src="@drawable/ic_cross"
-            android:visibility="invisible"
-            app:tint="?attr/colorTextInputFont" />
-    </FrameLayout>
 
     <ProgressBar
         android:id="@+id/progressBar"
         android:layout_width="@dimen/dim_44dp"
         android:layout_height="@dimen/dim_44dp"
-        android:layout_gravity="center"
+        android:layout_gravity="center_horizontal"
         android:layout_marginTop="@dimen/dim_140dp"
         android:indeterminateTint="@color/blue"
-        android:visibility="gone" />
+        android:visibility="gone"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/queryInput"
+        tools:visibility="visible" />
 
-    <FrameLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+    <ScrollView
+        android:id="@+id/scrollable"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginTop="24dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@id/rightBorder"
+        app:layout_constraintStart_toStartOf="@id/leftBorder"
+        app:layout_constraintTop_toBottomOf="@id/queryInput">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -81,11 +105,14 @@
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/track_list"
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/dim_00dp"
-                android:layout_weight="1"
+                android:layout_height="wrap_content"
+
                 android:orientation="vertical"
-                android:paddingBottom="@dimen/dim_24dp"
-                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
 
             <Button
                 android:id="@+id/b_erase_history"
@@ -93,31 +120,20 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
-                android:layout_marginTop="12dp"
-                android:layout_marginBottom="@dimen/dim_24dp"
+                android:layout_marginTop="@dimen/dim_32dp"
+                android:layout_marginBottom="@dimen/dim_16dp"
                 android:backgroundTint="?attr/colorOnPrimary"
                 android:fontFamily="@font/ys_display_medium"
-                android:paddingHorizontal="12dp"
-                android:paddingVertical="10dp"
                 android:text="@string/Clear_history"
                 android:textAllCaps="false"
                 android:textColor="?attr/colorPrimary"
                 android:textSize="14sp"
                 android:visibility="invisible"
-                app:cornerRadius="56dp" />
+                app:cornerRadius="56dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/track_list"
+                tools:visibility="visible" />
         </LinearLayout>
-
-        <TextView
-            android:id="@+id/phMessage"
-            android:layout_width="300dp"
-            android:layout_height="200dp"
-            android:layout_gravity="center"
-            android:layout_marginVertical="250dp"
-            android:textAlignment="center"
-            android:textColor="@color/white"
-            android:textSize="32sp"
-            android:textStyle="bold"
-            tools:text="ЗАГЛУШКА" />
-    </FrameLayout>
-
-</LinearLayout>
+    </ScrollView>
+</androidx.constraintlayout.widget.ConstraintLayout>
