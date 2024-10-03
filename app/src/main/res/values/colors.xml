@@ -9,5 +9,10 @@
     <color name="grey">#AEAFB4</color>
     <color name="greyLight">#E6E8EB</color>
 
+    <!--отладочные цвета-->
+    <color name="pink">#FF4886</color>
+    <color name="green">#009688</color>
+    <color name="magenta">#673AB7</color>
+
 
 </resources>

@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main_navigation_graph"
+    app:startDestination="@id/mediatekaFragment">
+
+    <fragment
+        android:id="@+id/searchFragment"
+        android:name="com.practicum.playlistmaker_ver2.search.presentation.SearchFragment"
+        android:label="search_fragment"
+        tools:layout="@layout/search_fragment" />
+    <fragment
+        android:id="@+id/mediatekaFragment"
+        android:name="com.practicum.playlistmaker_ver2.mediateka.presentation.MediatekaFragment"
+        android:label="mediateka_fragment"
+        tools:layout="@layout/mediateka_fragment">
+        <action
+            android:id="@+id/action_mediatekaFragment_to_searchFragment"
+            app:destination="@id/searchFragment" />
+        <action
+            android:id="@+id/action_mediatekaFragment_to_settingsFragment"
+            app:destination="@id/settingsFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_right"
+            app:popEnterAnim="@anim/slide_in_right"
+            app:popExitAnim="@anim/slide_out_right" />
+    </fragment>
+    <fragment
+        android:id="@+id/settingsFragment"
+        android:name="com.practicum.playlistmaker_ver2.settings.presentation.SettingsFragment"
+        android:label="settings_fragment"
+        tools:layout="@layout/settings_fragment" />
+    <activity
+        android:id="@+id/activityPlayer2"
+        android:name="com.practicum.playlistmaker_ver2.player.ui.ActivityPlayer"
+        android:label="activity_player"
+        tools:layout="@layout/activity_player" />
+</navigation>

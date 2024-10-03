@@ -1,13 +1,14 @@
 package com.practicum.playlistmaker_ver2.player.ui
 
 import android.os.Bundle
+import android.view.MenuItem
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.practicum.playlistmaker_ver2.R
 import com.practicum.playlistmaker_ver2.databinding.ActivityPlayerBinding
-import com.practicum.playlistmaker_ver2.base.ActivityBase
 import com.practicum.playlistmaker_ver2.player.ui.models.PlayerState
 import com.practicum.playlistmaker_ver2.player.ui.models.PlayerTrack
 import com.practicum.playlistmaker_ver2.player.ui.models.PlayerViewState
@@ -15,7 +16,7 @@ import com.practicum.playlistmaker_ver2.util.formatDpToPx
 import com.practicum.playlistmaker_ver2.util.serializable
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-class ActivityPlayer : ActivityBase() {
+class ActivityPlayer : AppCompatActivity() {
 
     private lateinit var binding: ActivityPlayerBinding
 
@@ -34,9 +35,14 @@ class ActivityPlayer : ActivityBase() {
         super.onCreate(savedInstanceState)
         binding = ActivityPlayerBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        setupStatusBar(androidx.appcompat.R.attr.colorPrimary)
+
+        // Установка поддержки кнопки "Назад" в Toolbar
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+
         viewModel.setupPlayer(currentTrack.previewUrl)
-        binding.bBack.setOnClickListener { finish() }
+        binding.bBack.setOnClickListener {
+            onBackPressed()
+        }
         binding.bLike.setOnClickListener { toggleLikeButton() }
         binding.bAddToPlaylist.setOnClickListener { toggleAddToPlaylistButton() }
         binding.bPlay.setOnClickListener { viewModel.playPause() }
@@ -113,5 +119,16 @@ class ActivityPlayer : ActivityBase() {
 
     private companion object {
         const val GET_TRACK_DATA_FROM_SEARCH = "trackData"
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            android.R.id.home -> {
+                onBackPressed() // Нажатие на кнопку "Up" в Toolbar выполняет возврат
+                true
+            }
+
+            else -> super.onOptionsItemSelected(item)
+        }
     }
 }
