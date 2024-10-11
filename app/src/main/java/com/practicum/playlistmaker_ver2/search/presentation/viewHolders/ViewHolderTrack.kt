@@ -1,17 +1,21 @@
 package com.practicum.playlistmaker_ver2.search.presentation.viewHolders
 
 import android.util.Log
+import androidx.lifecycle.LifecycleOwner
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
-import com.practicum.playlistmaker_ver2.util.DebounceClickListener
 import com.practicum.playlistmaker_ver2.R
 import com.practicum.playlistmaker_ver2.databinding.TrackBinding
 import com.practicum.playlistmaker_ver2.search.domain.models.Track
-import com.practicum.playlistmaker_ver2.util.formatDpToPx
+import com.practicum.playlistmaker_ver2.utils.DebounceClickListener
+import com.practicum.playlistmaker_ver2.utils.formatDpToPx
 
 
-class ViewHolderTrack(private val binding: TrackBinding) : RecyclerView.ViewHolder(binding.root) {
+class ViewHolderTrack(
+    private val binding: TrackBinding,
+    private val lifecycleOwner: LifecycleOwner
+) : RecyclerView.ViewHolder(binding.root) {
 
     fun bind(track: Track, onItemClick: (Track) -> Unit) {
         val context = itemView.context
@@ -21,19 +25,14 @@ class ViewHolderTrack(private val binding: TrackBinding) : RecyclerView.ViewHold
         binding.tvDuration.text = track.trackTime
 
         if (track.artworkUrl100.isNotBlank() && track.artworkUrl100.startsWith("http")) {
-        Glide.with(context)
-            .load(track.artworkUrl100)
-            .placeholder(R.drawable.placeholder)
-            .error(R.drawable.placeholder_error)
-            .fitCenter()
-            .transform(RoundedCorners(radiusPx))
-            .into(binding.ivCollectionImage)
+            Glide.with(context).load(track.artworkUrl100).placeholder(R.drawable.placeholder)
+                .error(R.drawable.placeholder_error).fitCenter().transform(RoundedCorners(radiusPx))
+                .into(binding.ivCollectionImage)
         } else {
             Log.d("GlideDebug", "Loading image from URL: ${track.artworkUrl100}")
             binding.ivCollectionImage.setImageResource(R.drawable.placeholder_error)
         }
-        itemView.setOnClickListener(
-            DebounceClickListener { onItemClick(track) }
-        )
+        itemView.setOnClickListener(DebounceClickListener(lifecycleOwner) { onItemClick(track) })
+
     }
 }

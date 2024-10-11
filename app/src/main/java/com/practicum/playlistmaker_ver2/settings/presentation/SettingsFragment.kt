@@ -6,11 +6,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import com.practicum.playlistmaker_ver2.R
 import com.practicum.playlistmaker_ver2.databinding.SettingsFragmentBinding
-import com.practicum.playlistmaker_ver2.util.DebounceClickListener
+import com.practicum.playlistmaker_ver2.utils.DebounceClickListener
 import com.practicum.playlistmaker_ver2.settings.models.ThemeViewState
-import com.practicum.playlistmaker_ver2.settings.presentation.SettingsViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class SettingsFragment : Fragment() {
@@ -43,15 +41,18 @@ class SettingsFragment : Fragment() {
         }
 
 
-        binding.bMailToSupport.setOnClickListener(DebounceClickListener {
+        binding.bMailToSupport.setOnClickListener(
+            DebounceClickListener(viewLifecycleOwner) {
             viewModel.supportSend()
         })
 
-        binding.bShareApp.setOnClickListener(DebounceClickListener {
+        binding.bShareApp.setOnClickListener(
+            DebounceClickListener(viewLifecycleOwner) {
             viewModel.shareApp()
         })
 
-        binding.bOpenAgreementWeb.setOnClickListener(DebounceClickListener {
+        binding.bOpenAgreementWeb.setOnClickListener(
+            DebounceClickListener(viewLifecycleOwner) {
             viewModel.openTerm()
         })
     }
