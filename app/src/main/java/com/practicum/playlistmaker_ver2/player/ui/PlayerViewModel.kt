@@ -4,9 +4,13 @@ import android.os.Handler
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.practicum.playlistmaker_ver2.player.domain.api.PlayerInteractor
 import com.practicum.playlistmaker_ver2.player.ui.models.PlayerState
 import com.practicum.playlistmaker_ver2.player.ui.models.PlayerViewState
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import java.util.concurrent.TimeUnit
 
 class PlayerViewModel(
@@ -14,10 +18,9 @@ class PlayerViewModel(
     private val mainThreadHandler: Handler,
 ) : ViewModel() {
 
-    private var playingTimeCounter: Runnable? = null
     private val viewState = MutableLiveData(PlayerViewState())
     private var savedTrackUrl = ""
-
+    private var timerJob: Job? = null
     fun getViewState(): LiveData<PlayerViewState> = viewState
 
     fun playPause() {
@@ -59,8 +62,7 @@ class PlayerViewModel(
                     updatePlayerState(PlayerState.ERROR, 0L, errorMessage)
                 }
                 true
-            }
-        )
+            })
     }
 
     private fun startPlayer() {
@@ -78,23 +80,19 @@ class PlayerViewModel(
     }
 
     private fun startPlayingTimeCounter() {
-        playingTimeCounter = createPlayingTimeCounterTask()
-        mainThreadHandler.post(playingTimeCounter!!)
-    }
-
-    private fun stopPlayingTimeCounter() {
-        playingTimeCounter?.let { mainThreadHandler.removeCallbacks(it) }
-    }
-
-    private fun createPlayingTimeCounterTask(): Runnable {
-        return object : Runnable {
-            override fun run() {
+        timerJob = viewModelScope.launch {
+            while (interactor.isPlaying()) {
                 val currentTime = getCurrentTime()
                 updatePlayerState(PlayerState.PLAYING, currentTime, null)
-                mainThreadHandler.postDelayed(this, DELAY)
+                delay(TIMER_DELAY)
             }
         }
     }
+
+    private fun stopPlayingTimeCounter() {
+        timerJob?.cancel()
+    }
+
 
     private fun getCurrentTime(): Long {
         return interactor.getCurrentPosition().toLong()
@@ -117,6 +115,6 @@ class PlayerViewModel(
     }
 
     companion object {
-        private const val DELAY = 1000L
+        private const val TIMER_DELAY = 300L
     }
 }
