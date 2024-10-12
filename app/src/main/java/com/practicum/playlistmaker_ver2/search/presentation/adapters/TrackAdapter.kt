@@ -3,6 +3,7 @@ package com.practicum.playlistmaker_ver2.search.presentation.adapters
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.lifecycle.LifecycleOwner
 import androidx.recyclerview.widget.RecyclerView
 import com.practicum.playlistmaker_ver2.databinding.EmptyViewBinding
 import com.practicum.playlistmaker_ver2.databinding.ErrorNetworkConnectionBinding
@@ -18,7 +19,8 @@ class TrackAdapter(
     private var trackData: List<Track> = emptyList(),
     private var viewType: Int = VIEW_TYPE_EMPTY,
     private val onRetry: (() -> Unit)? = null,
-    private val onItemClick: (Track) -> Unit
+    private val onItemClick: (Track) -> Unit,
+    private val lifecycleOwner: LifecycleOwner
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     companion object {
@@ -29,7 +31,6 @@ class TrackAdapter(
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
-        Log.d("DEBUG_SHU", "onCreateViewHolder: viewType = $viewType")
         return when (viewType) {
             VIEW_TYPE_EMPTY -> {
                 val binding =
@@ -58,7 +59,7 @@ class TrackAdapter(
             VIEW_TYPE_ITEM -> {
                 val binding =
                     TrackBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-                ViewHolderTrack(binding)
+                ViewHolderTrack(binding, lifecycleOwner)
             }
 
             else -> {

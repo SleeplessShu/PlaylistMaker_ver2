@@ -10,7 +10,6 @@
         android:id="@+id/ivNoInternet"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="102dp"
         android:layout_marginBottom="@dimen/dim_16dp"
@@ -28,9 +27,8 @@
         tools:text="@string/network_error1" />
 
     <Button
-        style="@style/ButtonsStyle"
-        app:cornerRadius="56dp"
         android:id="@+id/bRefresh"
+        style="@style/ButtonsStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
@@ -42,7 +40,8 @@
         android:text="@string/Refresh"
         android:textAllCaps="false"
         android:textColor="?attr/colorPrimary"
-        android:textSize="14sp" />
+        android:textSize="14sp"
+        app:cornerRadius="56dp" />
 
 
 </LinearLayout>

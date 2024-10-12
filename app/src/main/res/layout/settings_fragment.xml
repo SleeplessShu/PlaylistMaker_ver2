@@ -9,122 +9,55 @@
     android:orientation="vertical"
     tools:context="com.practicum.playlistmaker_ver2.settings.presentation.SettingsFragment">
 
-    <TextView
-        style="@style/PM2_Header_Text"
+
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/Page_header"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="center_vertical"
-        android:layout_margin="@dimen/dim_16dp"
-        android:paddingBottom="@dimen/dim_16dp"
-        android:text="@string/Settings" />
+        app:title="@string/Settings"
+        app:titleTextAppearance="@style/Header_ver2"
+        app:titleTextColor="?attr/colorOnPrimary" />
 
-
-    <LinearLayout
+    <com.google.android.material.switchmaterial.SwitchMaterial
+        android:id="@+id/switcherTheme"
+        style="@style/ThemeSwitch"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:gravity="center_vertical"
+        android:paddingHorizontal="16dp"
+        android:paddingVertical="20dp"
+        android:text="@string/switchDarkTheme"
+        android:thumbTintMode="screen" />
 
-        <FrameLayout
-            android:id="@+id/b_switch_theme"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:foreground="?attr/selectableItemBackground"
-            android:orientation="horizontal"
-            android:paddingHorizontal="@dimen/dim_16dp"
-            android:paddingVertical="@dimen/dim_24dp">
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/b_share_app"
+        style="@style/SettingsStyle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:drawableEnd="@drawable/ic_share"
+        android:paddingHorizontal="16dp"
+        android:paddingVertical="20dp"
+        android:text="@string/shareApp" />
 
-            <com.google.android.material.switchmaterial.SwitchMaterial
-                android:id="@+id/switcherTheme"
-                style="@style/ThemeSwitch"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/switchDarkTheme"
-                app:layout_constraintStart_toStartOf="@+id/textBlack"
-                app:layout_constraintTop_toTopOf="@+id/textBlack" />
-        </FrameLayout>
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/b_mail_to_support"
+        style="@style/SettingsStyle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:drawableEnd="@drawable/ic_support"
+        android:paddingHorizontal="16dp"
+        android:paddingVertical="20dp"
+        android:text="@string/support" />
 
-        <FrameLayout
-            android:id="@+id/b_share_app"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:foreground="?attr/selectableItemBackground"
-            android:orientation="horizontal"
-            android:paddingHorizontal="@dimen/dim_16dp"
-            android:paddingVertical="@dimen/dim_24dp">
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/b_open_agreement_web"
+        style="@style/SettingsStyle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:drawableEnd="@drawable/ic_forward"
+        android:paddingHorizontal="16dp"
+        android:paddingVertical="20dp"
+        android:text="@string/agreement" />
 
-            <TextView
-                style="@style/SettingsStyle"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_gravity="start"
-                android:gravity="center_vertical"
-                android:text="@string/shareApp" />
 
-            <ImageView
-
-                style="@style/SettingsStyle"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_gravity="end"
-                android:gravity="center_vertical"
-                android:src="@drawable/ic_share" />
-        </FrameLayout>
-
-        <FrameLayout
-            android:id="@+id/b_mail_to_support"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:foreground="?attr/selectableItemBackground"
-            android:orientation="horizontal"
-            android:paddingHorizontal="@dimen/dim_16dp"
-            android:paddingVertical="@dimen/dim_24dp">
-
-            <TextView
-                style="@style/SettingsStyle"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_gravity="start"
-                android:gravity="center_vertical"
-                android:text="@string/support" />
-
-            <ImageView
-
-                style="@style/SettingsStyle"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_gravity="end"
-                android:gravity="center_vertical"
-                android:src="@drawable/ic_support" />
-        </FrameLayout>
-
-        <FrameLayout
-            android:id="@+id/b_open_agreement_web"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:foreground="?attr/selectableItemBackground"
-            android:orientation="horizontal"
-            android:paddingHorizontal="@dimen/dim_16dp"
-            android:paddingVertical="@dimen/dim_24dp">
-
-            <TextView
-                style="@style/SettingsStyle"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_gravity="start"
-                android:gravity="center_vertical"
-                android:text="@string/agreement" />
-
-            <ImageView
-
-                style="@style/SettingsStyle"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="end"
-                android:gravity="center_vertical"
-                android:src="@drawable/ic_forward" />
-        </FrameLayout>
-    </LinearLayout>
 </LinearLayout>

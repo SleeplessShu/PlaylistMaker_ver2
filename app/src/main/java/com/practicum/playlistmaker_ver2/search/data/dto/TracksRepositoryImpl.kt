@@ -5,22 +5,28 @@ import com.practicum.playlistmaker_ver2.search.data.network.NetworkClient
 import com.practicum.playlistmaker_ver2.search.data.mapper.TrackDtoToTrackMapper
 import com.practicum.playlistmaker_ver2.search.domain.repository.TracksRepository
 import com.practicum.playlistmaker_ver2.search.domain.models.Track
-import com.practicum.playlistmaker_ver2.search.domain.models.Resource
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flow
+
 
 
 class TracksRepositoryImpl(private val networkClient: NetworkClient) : TracksRepository {
-    override fun searchTracks(expression: String): Resource<List<Track>> {
+    override fun searchTracks(expression: String): Flow<Resource<List<Track>>> = flow {
         val response = networkClient.doRequest(TrackSearchRequest(expression))
 
         val msg: String = response.resultCode.toString() + " " + response.toString()
         Log.d("DEBUG", msg)
 
-        return when (response.resultCode) {
+        when (response.resultCode) {
             200 -> {
-                Resource.Success(TrackDtoToTrackMapper.map((response as TrackSearchResponse).results))
+                with(response as TrackSearchResponse) {
+                    val data = TrackDtoToTrackMapper.map(results)
+                    emit(Resource.Success(data))
+                }
             }
+
             else -> {
-                Resource.Error(response.resultCode.toString())
+                emit(Resource.Error(response.resultCode.toString(), null))
             }
         }
     }

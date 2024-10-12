@@ -1,4 +1,4 @@
-package com.practicum.playlistmaker_ver2.search.domain.models
+package com.practicum.playlistmaker_ver2.search.data.dto
 
 
 sealed class Resource<T>(val data: T? = null, val message: String? = null) {

@@ -12,8 +12,8 @@ import com.practicum.playlistmaker_ver2.databinding.ActivityPlayerBinding
 import com.practicum.playlistmaker_ver2.player.ui.models.PlayerState
 import com.practicum.playlistmaker_ver2.player.ui.models.PlayerTrack
 import com.practicum.playlistmaker_ver2.player.ui.models.PlayerViewState
-import com.practicum.playlistmaker_ver2.util.formatDpToPx
-import com.practicum.playlistmaker_ver2.util.serializable
+import com.practicum.playlistmaker_ver2.utils.formatDpToPx
+import com.practicum.playlistmaker_ver2.utils.serializable
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class ActivityPlayer : AppCompatActivity() {
