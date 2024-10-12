@@ -15,8 +15,7 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 class SearchViewModel(
-    private val searchInteractor: SearchInteractor,
-    private val handler: Handler
+    private val searchInteractor: SearchInteractor, private val handler: Handler
 
 ) : ViewModel() {
     var currentQuery: String = ""
@@ -48,27 +47,33 @@ class SearchViewModel(
         }
         _searchViewState.postValue(_searchViewState.value?.copy(state = SearchState.SEARCHING))
 
-        searchInteractor.searchTracks(query) { tracks, errorMessage ->
-            if (errorMessage != null) {
+        viewModelScope.launch {
+            searchInteractor.searchTracks(query).collect { pair ->
+                processResult(pair.first, pair.second)
+
+            }
+        }
+    }
+
+    private fun processResult(foundTracks: List<Track>?, errorMessage: String?) {
+        if (errorMessage != null) {
+            _searchViewState.postValue(
+                _searchViewState.value?.copy(
+                    state = SearchState.NO_INTERNET, errorMessage = errorMessage
+                )
+            )
+        } else if (foundTracks?.isEmpty() == true) {
+            _searchViewState.postValue(
+                _searchViewState.value?.copy(state = SearchState.NOTHING_FOUND)
+            )
+        } else {
+            foundTracks?.let {
                 _searchViewState.postValue(
                     _searchViewState.value?.copy(
-                        state = SearchState.NO_INTERNET, errorMessage = errorMessage
+                        state = SearchState.TRACKS, tracks = foundTracks
                     )
                 )
-            } else if (tracks?.isEmpty() == true) {
-                _searchViewState.postValue(
-                    _searchViewState.value?.copy(state = SearchState.NOTHING_FOUND)
-                )
-            } else {
-                tracks?.let {
-                    _searchViewState.postValue(
-                        _searchViewState.value?.copy(
-                            state = SearchState.TRACKS, tracks = tracks
-                        )
-                    )
-                }
             }
-
         }
     }
 
