@@ -38,6 +38,7 @@ class PlayerViewModel(
 
     override fun onCleared() {
         super.onCleared()
+        timerJob?.cancel()
         releasePlayer()
     }
 
@@ -80,6 +81,7 @@ class PlayerViewModel(
     }
 
     private fun startPlayingTimeCounter() {
+        timerJob?.cancel()
         timerJob = viewModelScope.launch {
             while (interactor.isPlaying()) {
                 val currentTime = getCurrentTime()
