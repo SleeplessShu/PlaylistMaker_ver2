@@ -5,17 +5,21 @@ import android.os.Handler
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.practicum.playlistmaker_ver2.search.domain.interactor.SearchInteractor
 import com.practicum.playlistmaker_ver2.search.domain.models.Track
 import com.practicum.playlistmaker_ver2.search.presentation.models.SearchState
 import com.practicum.playlistmaker_ver2.search.presentation.models.SearchViewState
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 class SearchViewModel(
-    private val searchInteractor: SearchInteractor,
-    private val handler: Handler
+    private val searchInteractor: SearchInteractor, private val handler: Handler
+
 ) : ViewModel() {
     var currentQuery: String = ""
-
+    private var searchJob: Job? = null
     private val _searchViewState = MutableLiveData<SearchViewState>()
     val searchViewState: LiveData<SearchViewState> get() = _searchViewState
 
@@ -31,8 +35,6 @@ class SearchViewModel(
     }
 
 
-    private val debounceRunnable = Runnable { searchTracks(currentQuery) }
-
     fun onSearchQueryChanged(query: String) {
         currentQuery = query
     }
@@ -45,33 +47,43 @@ class SearchViewModel(
         }
         _searchViewState.postValue(_searchViewState.value?.copy(state = SearchState.SEARCHING))
 
-        searchInteractor.searchTracks(query) { tracks, errorMessage ->
-            if (errorMessage != null) {
+        viewModelScope.launch {
+            searchInteractor.searchTracks(query).collect { pair ->
+                processResult(pair.first, pair.second)
+
+            }
+        }
+    }
+
+    private fun processResult(foundTracks: List<Track>?, errorMessage: String?) {
+        if (errorMessage != null) {
+            _searchViewState.postValue(
+                _searchViewState.value?.copy(
+                    state = SearchState.NO_INTERNET, errorMessage = errorMessage
+                )
+            )
+        } else if (foundTracks?.isEmpty() == true) {
+            _searchViewState.postValue(
+                _searchViewState.value?.copy(state = SearchState.NOTHING_FOUND)
+            )
+        } else {
+            foundTracks?.let {
                 _searchViewState.postValue(
                     _searchViewState.value?.copy(
-                        state = SearchState.NO_INTERNET, errorMessage = errorMessage
+                        state = SearchState.TRACKS, tracks = foundTracks
                     )
                 )
-            } else if (tracks?.isEmpty() == true) {
-                _searchViewState.postValue(
-                    _searchViewState.value?.copy(state = SearchState.NOTHING_FOUND)
-                )
-            } else {
-                tracks?.let {
-                    _searchViewState.postValue(
-                        _searchViewState.value?.copy(
-                            state = SearchState.TRACKS, tracks = tracks
-                        )
-                    )
-                }
             }
-
         }
     }
 
     fun searchDebounce() {
-        handler.removeCallbacks(debounceRunnable)
-        handler.postDelayed(debounceRunnable, 1000)
+        searchJob?.cancel()
+        searchJob = viewModelScope.launch {
+            delay(DEBOUNCE_DELAY)
+            searchTracks(currentQuery)
+        }
+
     }
 
     fun clearSearchHistory() {
@@ -95,7 +107,7 @@ class SearchViewModel(
 
     override fun onCleared() {
         super.onCleared()
-        handler.removeCallbacks(debounceRunnable)
+        searchJob?.cancel()
     }
 
     private fun loadSearchHistory() {
@@ -111,5 +123,9 @@ class SearchViewModel(
             _searchViewState.postValue(_searchViewState.value?.copy(state = SearchState.EMPTY))
         }
 
+    }
+
+    private companion object {
+        const val DEBOUNCE_DELAY = 1000L
     }
 }

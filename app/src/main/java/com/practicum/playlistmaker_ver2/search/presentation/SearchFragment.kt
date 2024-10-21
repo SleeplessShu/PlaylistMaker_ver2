@@ -11,9 +11,13 @@ import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
+import androidx.core.content.ContentProviderCompat.requireContext
+import androidx.core.content.ContextCompat.startActivity
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.android.material.internal.ViewUtils.hideKeyboard
 import com.practicum.playlistmaker_ver2.databinding.SearchFragmentBinding
 import com.practicum.playlistmaker_ver2.player.ui.ActivityPlayer
 import com.practicum.playlistmaker_ver2.player.ui.mappers.TrackToPlayerTrackMapper
@@ -21,6 +25,9 @@ import com.practicum.playlistmaker_ver2.player.ui.models.PlayerTrack
 import com.practicum.playlistmaker_ver2.search.domain.models.Track
 import com.practicum.playlistmaker_ver2.search.presentation.adapters.TrackAdapter
 import com.practicum.playlistmaker_ver2.search.presentation.models.SearchState
+import com.practicum.playlistmaker_ver2.utils.DebounceClickListener
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 
@@ -31,7 +38,6 @@ class SearchFragment : Fragment() {
     private var _binding: SearchFragmentBinding? = null
     private val binding: SearchFragmentBinding get() = _binding!!
     private val viewModel: SearchViewModel by viewModel()
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View? {
@@ -42,7 +48,6 @@ class SearchFragment : Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
-        //parentFragmentManager.popBackStack()
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -58,9 +63,10 @@ class SearchFragment : Fragment() {
             emptyList(),
             onRetry = { viewModel.searchTracks(viewModel.currentQuery) },
             onItemClick = { track ->
-                viewModel.addToSearchHistory(track)
-                startPlayer(requireContext(), track)
-            })
+                onTrackClick(track)
+            },
+            lifecycleOwner = viewLifecycleOwner
+        )
 
         binding.bEraseText.setOnClickListener {
             binding.queryInput.text.clear()
@@ -167,10 +173,12 @@ class SearchFragment : Fragment() {
         binding.queryInput.setText("")
         savedInstanceState?.getString(SEARCH_TEXT_KEY)?.let { viewModel.restoreSearchState(it) }
         binding.queryInput.setText(viewModel.currentQuery)
-
-
     }
 
+    private fun onTrackClick(track: Track) {
+        viewModel.addToSearchHistory(track)
+        startPlayer(requireContext(), track)
+    }
     private fun startPlayer(context: Context, track: Track) {
         val playerTrack: PlayerTrack = TrackToPlayerTrackMapper.map(track)
         val intent = Intent(context, ActivityPlayer::class.java).apply {
@@ -180,17 +188,16 @@ class SearchFragment : Fragment() {
     }
 
     private fun hideKeyboard() {
-        val imm =
-            requireActivity().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        val imm = requireActivity()
+            .getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
         view?.let { v ->
             imm.hideSoftInputFromWindow(v.windowToken, 0)
         }
 
     }
 
-    companion object {
-        private const val SEARCH_TEXT_KEY = "SEARCH_TEXT"
+    private companion object {
+        const val SEARCH_TEXT_KEY = "SEARCH_TEXT"
         const val AMOUNT_DEF = ""
-
     }
 }
