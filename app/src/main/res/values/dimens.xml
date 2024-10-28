@@ -2,6 +2,7 @@
 <resources>
     <!---DP-->
 
+    <dimen name="dim_180dp">180dp</dimen>
     <dimen name="dim_140dp">140dp</dimen>
     <dimen name="dim_108dp">108dp</dimen>
     <dimen name="dim_106dp">106dp</dimen>

@@ -5,26 +5,35 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.practicum.playlistmaker_ver2.database.domain.LikedTracksInteractor
 import com.practicum.playlistmaker_ver2.player.domain.api.PlayerInteractor
 import com.practicum.playlistmaker_ver2.player.ui.models.PlayerState
+import com.practicum.playlistmaker_ver2.player.ui.models.PlayerTrack
 import com.practicum.playlistmaker_ver2.player.ui.models.PlayerViewState
+import com.practicum.playlistmaker_ver2.player.ui.models.UiState
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 import java.util.concurrent.TimeUnit
 
 class PlayerViewModel(
-    private val interactor: PlayerInteractor,
+    private val interactorPlayer: PlayerInteractor,
+    private val interactorLikedTracks: LikedTracksInteractor,
     private val mainThreadHandler: Handler,
 ) : ViewModel() {
 
+
     private val viewState = MutableLiveData(PlayerViewState())
+    private val uiState = MutableLiveData(UiState())
     private var savedTrackUrl = ""
     private var timerJob: Job? = null
-    fun getViewState(): LiveData<PlayerViewState> = viewState
 
+    fun getViewState(): LiveData<PlayerViewState> = viewState
+    fun getUiState(): LiveData<UiState> = uiState
     fun playPause() {
-        if (interactor.isPlaying()) {
+        if (interactorPlayer.isPlaying()) {
             pausePlayer()
         } else {
             startPlayer()
@@ -32,7 +41,7 @@ class PlayerViewModel(
     }
 
     fun releasePlayer() {
-        interactor.releasePlayer()
+        interactorPlayer.releasePlayer()
         stopPlayingTimeCounter()
     }
 
@@ -45,14 +54,15 @@ class PlayerViewModel(
     fun setupPlayer(trackUrl: String) {
         savedTrackUrl = trackUrl
 
-        interactor.prepare(trackUrl, onPrepared = {
+        interactorPlayer.prepare(
+            trackUrl, onPrepared = {
             updatePlayerState(PlayerState.PREPARED, 0L, null)
         },
 
             onCompletion = {
                 mainThreadHandler.post {
                     stopPlayingTimeCounter()
-                    interactor.seekTo(0)  // Reset to the beginning
+                    interactorPlayer.seekTo(0)  // Reset to the beginning
                     updatePlayerState(PlayerState.PREPARED, 0L, null)
                 }
             },
@@ -66,15 +76,52 @@ class PlayerViewModel(
             })
     }
 
+    fun toggleLikeButton(currentTrack: PlayerTrack) {
+        if (currentTrack.isLiked) {
+
+            deleteTrackFromFavorite(currentTrack)
+            currentTrack.isLiked = false
+
+        } else {
+
+            addTrackToFavorite(currentTrack)
+            currentTrack.isLiked = true
+
+        }
+        updateUiState(currentTrack.isLiked)
+    }
+
+    private fun addTrackToFavorite(currentTrack: PlayerTrack) {
+        viewModelScope.launch {
+            interactorLikedTracks.addTrack(currentTrack)
+        }
+    }
+
+    private fun deleteTrackFromFavorite(currentTrack: PlayerTrack) {
+        viewModelScope.launch {
+            interactorLikedTracks.deleteEntity(currentTrack)
+        }
+    }
+
+
+    fun checkInLiked(track: PlayerTrack) {
+        viewModelScope.launch {
+            val isLiked = interactorLikedTracks.getTracks()
+                .map { tracks -> tracks.any() { it.trackId == track.trackId } }
+                .first()
+            updateUiState(isLiked)
+        }
+    }
+
     private fun startPlayer() {
-        interactor.startPlayer()
+        interactorPlayer.startPlayer()
         startPlayingTimeCounter()
         val currentTime = getCurrentTime()
         updatePlayerState(PlayerState.PLAYING, currentTime, null)
     }
 
     private fun pausePlayer() {
-        interactor.pausePlayer()
+        interactorPlayer.pausePlayer()
         val currentTime = getCurrentTime()
         stopPlayingTimeCounter()
         updatePlayerState(PlayerState.PAUSED, currentTime, null)
@@ -83,7 +130,7 @@ class PlayerViewModel(
     private fun startPlayingTimeCounter() {
         timerJob?.cancel()
         timerJob = viewModelScope.launch {
-            while (interactor.isPlaying()) {
+            while (interactorPlayer.isPlaying()) {
                 val currentTime = getCurrentTime()
                 updatePlayerState(PlayerState.PLAYING, currentTime, null)
                 delay(TIMER_DELAY)
@@ -97,7 +144,7 @@ class PlayerViewModel(
 
 
     private fun getCurrentTime(): Long {
-        return interactor.getCurrentPosition().toLong()
+        return interactorPlayer.getCurrentPosition().toLong()
     }
 
     private fun convertTime(currentTime: Long): String {
@@ -114,6 +161,12 @@ class PlayerViewModel(
         state: PlayerState, currentTime: Long, errorMessage: String? = null
     ) {
         viewState.postValue(PlayerViewState(state, convertTime(currentTime), errorMessage))
+    }
+
+    private fun updateUiState(
+        isLiked: Boolean
+    ) {
+        uiState.postValue(UiState(isLiked))
     }
 
     companion object {

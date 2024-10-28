@@ -3,6 +3,8 @@ package com.practicum.playlistmaker_ver2
 import android.app.Application
 import android.content.Context
 import androidx.appcompat.app.AppCompatDelegate
+import androidx.room.Room
+import com.practicum.playlistmaker_ver2.database.data.LikedTracksDatabase
 import com.practicum.playlistmaker_ver2.di.dataModule
 import com.practicum.playlistmaker_ver2.di.domainModule
 import com.practicum.playlistmaker_ver2.di.presentationModule
@@ -28,6 +30,7 @@ class App : Application() {
         AppCompatDelegate.setDefaultNightMode(
             if (isNightModeOn) AppCompatDelegate.MODE_NIGHT_YES else AppCompatDelegate.MODE_NIGHT_NO
         )
+
     }
 
     companion object {
