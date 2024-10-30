@@ -18,7 +18,7 @@ interface TrackDao {
     @Query("SELECT * FROM tracks_table WHERE track_id LIKE :id")
     suspend fun getTrackById(id: Int): TrackEntity
 
-    @Query("SELECT * FROM tracks_table ORDER BY 'order' ASC")
+    @Query("SELECT * FROM tracks_table ORDER BY \"order\" ASC")
     fun getAllTracks(): Flow<List<TrackEntity>>
 
     @Query("SELECT MIN(`order`) FROM tracks_table")

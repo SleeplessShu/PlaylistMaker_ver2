@@ -18,7 +18,9 @@ class TrackDbConverter {
             track.artistName,
             track.trackTime,
             track.previewUrl,
-            track.artworkUrl500
+            track.artworkUrl500,
+            track.order
+
         )
     }
 
@@ -51,8 +53,8 @@ class TrackDbConverter {
             track.trackTime,
             track.previewUrl,
             getLowResCoverArtwork(track.artworkUrl500),
-            track.isLiked,
-            track.order
+            track.isLiked
+
         )
     }
 

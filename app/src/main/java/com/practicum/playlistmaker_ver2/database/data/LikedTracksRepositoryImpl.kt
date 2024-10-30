@@ -1,5 +1,6 @@
 package com.practicum.playlistmaker_ver2.database.data
 
+
 import com.practicum.playlistmaker_ver2.database.data.converters.TrackDbConverter
 import com.practicum.playlistmaker_ver2.database.domain.LikedTracksRepository
 import com.practicum.playlistmaker_ver2.player.ui.models.PlayerTrack
@@ -26,7 +27,9 @@ class LikedTracksRepositoryImpl(
         val minOrder = appDatabase
             .getTrackDao()
             .getMinOrder() ?: 0
+
         val newOrder = minOrder - 1
+
         val entityWithOrder = entity.copy(order = newOrder)
         appDatabase
             .getTrackDao()

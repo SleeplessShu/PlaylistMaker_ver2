@@ -4,6 +4,7 @@ package com.practicum.playlistmaker_ver2.mediateka.presentation
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -97,6 +98,10 @@ class FavoriteTracksFragment() : Fragment() {
 
     private fun showContent(tracks: List<Track>) {
         adapter?.updateTracks(tracks, TrackAdapter.VIEW_TYPE_ITEM)
+        tracks.forEach { track ->
+            Log.d("DEBUG", "${track.trackName}, ${track.order}")
+        }
+
         binding.progressBar.isVisible = false
         binding.ivNothingFound.isVisible = false
         binding.tvNothingFound.isVisible = false
