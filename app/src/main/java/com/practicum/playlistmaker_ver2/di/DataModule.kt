@@ -4,8 +4,13 @@ package com.practicum.playlistmaker_ver2.di
 import android.content.Context
 import android.media.MediaPlayer
 import android.os.Handler
+import androidx.room.Room
 import com.google.gson.Gson
 import com.practicum.playlistmaker_ver2.App
+import com.practicum.playlistmaker_ver2.database.data.LikedTracksRepositoryImpl
+import com.practicum.playlistmaker_ver2.database.data.converters.TrackDbConverter
+import com.practicum.playlistmaker_ver2.database.data.LikedTracksDatabase
+import com.practicum.playlistmaker_ver2.database.domain.LikedTracksRepository
 import com.practicum.playlistmaker_ver2.player.data.repository.PlayerRepositoryImpl
 import com.practicum.playlistmaker_ver2.player.domain.repositories.PlayerRepository
 import com.practicum.playlistmaker_ver2.search.data.dto.TracksRepositoryImpl
@@ -72,9 +77,21 @@ val dataModule = module {
         ExternalNavigatorRepositoryImpl(get())
     }
 
+    single {
+        Room.databaseBuilder(get(), LikedTracksDatabase::class.java, "database.db")
+            .build()
+    }
+
+    factory { TrackDbConverter() }
+
     factory<PlayerRepository> {
         PlayerRepositoryImpl(get(), get())
     }
+
+    single<LikedTracksRepository> {
+        LikedTracksRepositoryImpl(get(), get())
+    }
+
     factory<Handler> {
         Handler()
     }

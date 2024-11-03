@@ -1,5 +1,7 @@
 package com.practicum.playlistmaker_ver2.di
 
+import com.practicum.playlistmaker_ver2.database.domain.LikedTracksInteractor
+import com.practicum.playlistmaker_ver2.database.domain.impl.LikedTracksInteractorImpl
 import com.practicum.playlistmaker_ver2.player.domain.api.PlayerInteractor
 import com.practicum.playlistmaker_ver2.player.domain.impl.PlayerInteractorImpl
 import com.practicum.playlistmaker_ver2.search.domain.interactor.SearchInteractor
@@ -37,5 +39,9 @@ val domainModule = module {
 
     factory<PlayerInteractor> {
         PlayerInteractorImpl(get())
+    }
+
+    single<LikedTracksInteractor> {
+        LikedTracksInteractorImpl(get())
     }
 }

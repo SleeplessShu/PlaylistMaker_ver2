@@ -37,9 +37,8 @@
 
     <TextView
         android:id="@+id/tv_artist_name"
-        android:layout_width="0dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="@dimen/dim_08dp"
         android:layout_marginBottom="06dp"
         android:ellipsize="end"
         android:fontFamily="@font/ys_display_regular"
@@ -47,8 +46,9 @@
         android:singleLine="true"
         android:textColor="?attr/colorPrimaryVariant"
         android:textSize="@dimen/ts_11sp"
-        app:layout_constraintBottom_toBottomOf="@id/iv_collection_image"
-        app:layout_constraintStart_toEndOf="@id/iv_collection_image"
+        app:layout_constraintBottom_toBottomOf="parent"
+
+        app:layout_constraintStart_toStartOf="@+id/tv_track_name"
         tools:text="BandNameeeeeeeeeeeeeeeeeeeeeeeee" />
 
     <ImageView

@@ -1,6 +1,6 @@
 package com.practicum.playlistmaker_ver2.search.presentation.adapters
 
-import android.util.Log
+
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.lifecycle.LifecycleOwner
@@ -28,6 +28,8 @@ class TrackAdapter(
         const val VIEW_TYPE_NOTHING_FOUND = 0
         const val VIEW_TYPE_NO_INTERNET = 1
         const val VIEW_TYPE_ITEM = 2
+        const val VIEW_TYPE_EMPTY_FAVORITE = 3
+
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {

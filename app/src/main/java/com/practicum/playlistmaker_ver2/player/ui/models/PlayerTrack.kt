@@ -12,5 +12,7 @@ data class PlayerTrack(
     val artistName: String,
     val trackTime: String,
     val previewUrl: String,
-    val artworkUrl500: String
+    val artworkUrl500: String,
+    var isLiked: Boolean = false,
+    val order: Int = 0
 ) : Serializable
