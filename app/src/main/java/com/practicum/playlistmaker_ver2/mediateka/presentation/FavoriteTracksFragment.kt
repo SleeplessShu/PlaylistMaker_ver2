@@ -64,7 +64,6 @@ class FavoriteTracksFragment() : Fragment() {
     }
 
     private fun onTrackClick(track: Track) {
-        //viewModel.addToSearchHistory(track)
         startPlayer(requireContext(), track)
     }
 
