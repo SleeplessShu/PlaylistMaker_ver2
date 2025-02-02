@@ -26,9 +26,11 @@
     <dimen name="dim_08dp">8dp</dimen>
     <dimen name="dim_02dp">2dp</dimen>
     <dimen name="dim_00dp">0dp</dimen>
+    <dimen name="elevation">08dp</dimen>
 
     <!---SP-->
     <dimen name="ts_11sp">11sp</dimen>
+    <dimen name="ts_12sp">12sp</dimen>
 
     <dimen name="ts_13sp">13sp</dimen>
     <dimen name="ts_14sp">14sp</dimen>
@@ -41,4 +43,11 @@
     <!---OTHER-->
     <dimen name="block_weight_1">1</dimen>
     <dimen name="bias_0.5">0.5</dimen>
+
+    <dimen name="tvPaddingStart">16dp</dimen>
+    <dimen name="tvPaddingTop">8dp</dimen>
+    <dimen name="tvPaddingBottom">8dp</dimen>
+    <dimen name="tvTextSize">13sp</dimen>
+    <dimen name="placeholder_corner_radius">08dp</dimen>
+    <dimen name="rounded_corner_radius">02dp</dimen>
 </resources>

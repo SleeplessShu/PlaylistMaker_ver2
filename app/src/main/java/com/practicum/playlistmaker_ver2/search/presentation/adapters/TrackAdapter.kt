@@ -4,6 +4,7 @@ package com.practicum.playlistmaker_ver2.search.presentation.adapters
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.lifecycle.LifecycleOwner
+import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.practicum.playlistmaker_ver2.databinding.EmptyViewBinding
 import com.practicum.playlistmaker_ver2.databinding.ErrorNetworkConnectionBinding
@@ -19,8 +20,8 @@ class TrackAdapter(
     private var trackData: List<Track> = emptyList(),
     private var viewType: Int = VIEW_TYPE_EMPTY,
     private val onRetry: (() -> Unit)? = null,
-    private val onItemClick: (Track) -> Unit,
-    private val lifecycleOwner: LifecycleOwner
+    private val onItemClick: (Track) -> Unit = {},
+    private val lifecycleOwner: LifecycleOwner? = null
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     companion object {
@@ -31,7 +32,32 @@ class TrackAdapter(
         const val VIEW_TYPE_EMPTY_FAVORITE = 3
 
     }
+    var onItemClickListener: ViewHolderTrack.OnItemClickListener? = null
 
+    private var items: List<Track> = emptyList()
+    fun updateItems(newItems: List<Track>) {
+        val oldItems = items
+        val diffResult = DiffUtil.calculateDiff(object : DiffUtil.Callback() {
+            override fun getOldListSize(): Int {
+                return oldItems.size
+            }
+
+            override fun getNewListSize(): Int {
+                return newItems.size
+            }
+
+            override fun areItemsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
+                return oldItems[oldItemPosition].trackId == newItems[newItemPosition].trackId
+            }
+
+            override fun areContentsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
+                return oldItems[oldItemPosition] == newItems[newItemPosition]
+            }
+
+        })
+        items = newItems.toMutableList()
+        diffResult.dispatchUpdatesTo(this)
+    }
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         return when (viewType) {
             VIEW_TYPE_EMPTY -> {
@@ -61,7 +87,7 @@ class TrackAdapter(
             VIEW_TYPE_ITEM -> {
                 val binding =
                     TrackBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-                ViewHolderTrack(binding, lifecycleOwner)
+                ViewHolderTrack(binding, lifecycleOwner!!)
             }
 
             else -> {

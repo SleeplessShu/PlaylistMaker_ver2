@@ -35,4 +35,7 @@ class ViewHolderTrack(
         itemView.setOnClickListener(DebounceClickListener(lifecycleOwner) { onItemClick(track) })
 
     }
+    fun interface OnItemClickListener {
+        fun onItemClick(item: Track)
+    }
 }

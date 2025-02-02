@@ -14,5 +14,6 @@ data class Track(
     val trackTime: String,
     val previewUrl: String?,
     val artworkUrl100: String,
-    val order: Int = 0
+    var inFavorite : Boolean = false,
+    var timeAdd: Long = 0,
 ) : Serializable

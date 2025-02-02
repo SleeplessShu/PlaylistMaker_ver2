@@ -19,7 +19,7 @@ class TrackDbConverter {
             track.trackTime,
             track.previewUrl,
             track.artworkUrl500,
-            track.order
+            track.inFavorite
 
         )
     }
@@ -36,7 +36,7 @@ class TrackDbConverter {
             track.trackTime,
             track.previewUrl,
             track.artworkUrl500,
-            track.isLiked,
+            track.inFavorite,
             track.order
         )
     }

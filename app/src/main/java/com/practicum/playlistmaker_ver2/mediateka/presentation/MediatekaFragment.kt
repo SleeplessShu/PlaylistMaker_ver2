@@ -14,12 +14,11 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class MediatekaFragment : Fragment() {
 
-    private val viewModel: FavoritePlaylistsViewModel by viewModel()
+    //private val viewModel: FavoritePlaylistsViewModel by viewModel()
     private var _binding: MediatekaFragmentBinding? = null
     private val binding: MediatekaFragmentBinding get() = _binding!!
 
     private var tabMediator: TabLayoutMediator? = null
-    private var pagerAdapter: MediatekaPagerAdapter? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
@@ -32,12 +31,15 @@ class MediatekaFragment : Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+        tabMediator?.detach()
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        pagerAdapter = MediatekaPagerAdapter(requireActivity() as AppCompatActivity)
-        binding?.viewPager?.adapter = pagerAdapter
+        val pagerAdapter = ViewPagerAdapter(childFragmentManager, lifecycle)
+        binding.viewPager.adapter = pagerAdapter
+
+
 
         tabMediator = binding?.tabLayout?.let {
             binding?.viewPager?.let { it1 ->
@@ -54,6 +56,7 @@ class MediatekaFragment : Fragment() {
     }
 
     override fun onDestroy() {
+        _binding = null
         super.onDestroy()
         tabMediator?.detach()
     }

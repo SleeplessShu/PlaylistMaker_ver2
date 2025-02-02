@@ -7,6 +7,7 @@ import android.os.Handler
 import androidx.room.Room
 import com.google.gson.Gson
 import com.practicum.playlistmaker_ver2.App
+import com.practicum.playlistmaker_ver2.AppDataBase
 import com.practicum.playlistmaker_ver2.database.data.LikedTracksRepositoryImpl
 import com.practicum.playlistmaker_ver2.database.data.converters.TrackDbConverter
 import com.practicum.playlistmaker_ver2.database.data.LikedTracksDatabase
@@ -26,6 +27,7 @@ import com.practicum.playlistmaker_ver2.settings.data.repositories.SharingReposi
 import com.practicum.playlistmaker_ver2.settings.domain.repositories.ExternalNavigatorRepository
 import com.practicum.playlistmaker_ver2.settings.domain.repositories.SettingsRepository
 import com.practicum.playlistmaker_ver2.settings.domain.repositories.SharingRepository
+import org.koin.android.ext.koin.androidContext
 import org.koin.core.qualifier.named
 
 
@@ -102,4 +104,8 @@ val dataModule = module {
 
     single<Context> { App.appContext }
 
+    single {
+        Room.databaseBuilder(androidContext(), AppDataBase::class.java,"database.db")
+            .build()
+    }
 }

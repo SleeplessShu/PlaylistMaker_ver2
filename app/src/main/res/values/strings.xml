@@ -21,6 +21,10 @@
 
     <string name="mailToSupportSubject">Сообщение разработчикам и разработчицам приложения Playlist Maker</string>
     <string name="mailToSupportText">Спасибо разработчикам и разработчицам за крутое приложение!</string>
+
+    <string name="duration">Продолжительность</string>
+
+
     <!--LINKS-->
     <string name="linkToAgreement">https://yandex.ru/legal/practicum_offer/</string>
     <string name="linkToAndroidCourse">https://practicum.yandex.ru/android-developer/</string>
@@ -50,4 +54,7 @@
     <string name="emptyMediateka">Ваша медиатека пуста</string>
     <string name="FavTracks">Избранные треки</string>
     <string name="FavPlaylists">Плейлисты</string>
+    <string name="mediaEmpty">Ваша медиатека пуста</string>
+    <string name="editPlaylist">Редактировать</string>
+
 </resources>

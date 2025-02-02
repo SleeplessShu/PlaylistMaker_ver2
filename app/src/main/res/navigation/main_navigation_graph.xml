@@ -16,18 +16,12 @@
         android:label="mediateka_fragment"
         tools:layout="@layout/mediateka_fragment">
         <action
-            android:id="@+id/action_mediatekaFragment_to_searchFragment"
-            app:destination="@id/searchFragment" />
+            android:id="@+id/action_mediaFragment_to_createPlayListFragment"
+            app:destination="@id/PlaylistCreationFragment" />
         <action
-            android:id="@+id/action_mediatekaFragment_to_settingsFragment"
-            app:destination="@id/settingsFragment"
-            app:enterAnim="@anim/slide_in_right"
-            app:exitAnim="@anim/slide_out_right"
-            app:popEnterAnim="@anim/slide_in_right"
-            app:popExitAnim="@anim/slide_out_right" />
-        <action
-            android:id="@+id/action_mediatekaFragment_to_activityPlayer2"
-            app:destination="@id/activityPlayer2" />
+            android:id="@+id/action_mediaFragment_to_playlistInfoFragment"
+            app:destination="@id/playlistInfoFragment"
+            tools:layout ="@layout/playlist_fragment"/>
     </fragment>
     <fragment
         android:id="@+id/settingsFragment"
@@ -39,4 +33,32 @@
         android:name="com.practicum.playlistmaker_ver2.player.ui.ActivityPlayer"
         android:label="activity_player"
         tools:layout="@layout/activity_player" />
+    <fragment
+        android:id="@+id/favoriteFragment"
+        android:name="com.practicum.playlistmaker_ver2.favorite.presentation.FavoriteFragment"
+        android:label="FavoriteFragment"
+        tools:layout="@layout/tab_favorites_fragment"/>
+    <fragment
+        android:id="@+id/PlaylistCreationFragment"
+        android:name="com.practicum.playlistmaker_ver2.playlist.presentation.PlaylistCreationFragment"
+        android:label="CreatePlayListFragment" />
+    <fragment
+        android:id="@+id/playlistInfoFragment"
+        android:name="com.practicum.playlistmaker_ver2.playlist.presentation.PlaylistInfoFragment"
+        android:label="PlaylistInfoFragment" >
+        <action
+            android:id="@+id/action_playlistInfoFragment_to_redactorPlayListFragment"
+            app:destination="@id/redactorPlayListFragment" />
+        <action
+            android:id="@+id/action_playlistInfoFragment_to_mediaFragment"
+            app:destination="@id/mediatekaFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/redactorPlayListFragment"
+        android:name="com.practicum.playlistmaker_ver2.playlist.presentation.PlaylistEditorFragment"
+        android:label="PlaylistEditorFragment" >
+        <action
+            android:id="@+id/action_redactorPlayListFragment_to_playlistInfoFragment"
+            app:destination="@id/playlistInfoFragment" />
+    </fragment>
 </navigation>

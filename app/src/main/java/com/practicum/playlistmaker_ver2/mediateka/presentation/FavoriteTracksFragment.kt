@@ -98,7 +98,7 @@ class FavoriteTracksFragment() : Fragment() {
     private fun showContent(tracks: List<Track>) {
         adapter?.updateTracks(tracks, TrackAdapter.VIEW_TYPE_ITEM)
         tracks.forEach { track ->
-            Log.d("DEBUG", "${track.trackName}, ${track.order}")
+
         }
 
         binding.progressBar.isVisible = false

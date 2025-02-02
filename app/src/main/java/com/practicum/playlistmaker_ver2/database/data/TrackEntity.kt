@@ -29,7 +29,7 @@ data class TrackEntity(
     @ColumnInfo(name = "poster", typeAffinity = TEXT)
     val artworkUrl500: String,
 
-    val isLiked: Boolean = false,
+    val inFavorite: Boolean = false,
     @ColumnInfo(name = "order", typeAffinity = ColumnInfo.INTEGER)
     val order: Int = 0
 )

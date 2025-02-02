@@ -5,12 +5,14 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.practicum.playlistmaker_ver2.database.data.TrackEntity
 import com.practicum.playlistmaker_ver2.database.domain.LikedTracksInteractor
 import com.practicum.playlistmaker_ver2.player.domain.api.PlayerInteractor
 import com.practicum.playlistmaker_ver2.player.ui.models.PlayerState
 import com.practicum.playlistmaker_ver2.player.ui.models.PlayerTrack
 import com.practicum.playlistmaker_ver2.player.ui.models.PlayerViewState
 import com.practicum.playlistmaker_ver2.player.ui.models.UiState
+import com.practicum.playlistmaker_ver2.playlist.data.database.entity.PlaylistTrackEntity
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.first
@@ -168,6 +170,7 @@ class PlayerViewModel(
     ) {
         uiState.postValue(UiState(isLiked))
     }
+
 
     companion object {
         private const val TIMER_DELAY = 300L
