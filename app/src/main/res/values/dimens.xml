@@ -38,6 +38,12 @@
     <dimen name="ts_22sp">22sp</dimen>
     <dimen name="ts_422sp">422sp</dimen>
 
+
+    <dimen name="fragment_header">22sp</dimen>
+    <dimen name="fragment_button">16sp</dimen>
+
+
+
     <!---OTHER-->
     <dimen name="block_weight_1">1</dimen>
     <dimen name="bias_0.5">0.5</dimen>

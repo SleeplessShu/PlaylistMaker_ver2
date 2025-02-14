@@ -1,4 +1,7 @@
 <resources>
+    <!-- GLOBAL -->
+    <string name="buttonBack">кнопка "назад"</string>
+
     <!-- TITLES -->
     <string name="title_application_name">PlaylistMaker</string>
     <string name="title_screen_name">Playlist Maker</string>
@@ -50,4 +53,11 @@
     <string name="emptyMediateka">Ваша медиатека пуста</string>
     <string name="FavTracks">Избранные треки</string>
     <string name="FavPlaylists">Плейлисты</string>
+
+    <!--PlaylistEditor-->
+    <string name="playlistImage">Обложка плейлиста</string>
+    <string name="playlistName">Название*</string>
+    <string name="playlistDescription">Описание</string>
+    <string name="playlistCreate">Создать</string>
+
 </resources>
