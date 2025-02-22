@@ -47,4 +47,16 @@
     <!---OTHER-->
     <dimen name="block_weight_1">1</dimen>
     <dimen name="bias_0.5">0.5</dimen>
+
+    <!--PLAYLIST-->
+    <dimen name="playlistImageRoundedCorners">8dp</dimen>
+
+    <!--PlAYLIST_UNIT-->
+    <dimen name="playlistUnitPaddingTop">4dp</dimen>
+    <dimen name="playlistUnitRoundedCorners">8dp</dimen>
+    <dimen name="playlistUnitFontSize">16sp</dimen>
+
+    <!--TAB_PlAYLIST-->
+    <dimen name="marginRecycleView">8dp</dimen>
+    <dimen name="marginElemnt">8dp</dimen>
 </resources>

@@ -12,6 +12,7 @@ import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.practicum.playlistmaker_ver2.databinding.FavoriteTracksBinding
+import com.practicum.playlistmaker_ver2.mediateka.presentation.states.FavoriteTracksState
 import com.practicum.playlistmaker_ver2.player.ui.ActivityPlayer
 import com.practicum.playlistmaker_ver2.player.ui.mappers.TrackToPlayerTrackMapper
 import com.practicum.playlistmaker_ver2.player.ui.models.PlayerTrack
@@ -20,8 +21,8 @@ import com.practicum.playlistmaker_ver2.search.presentation.adapters.TrackAdapte
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 
-class FavoriteTracksFragment() : Fragment() {
-    private val viewModel: FavoriteTracksViewModel by viewModel()
+class TabFavoriteFragment() : Fragment() {
+    private val viewModel: TabFavoriteViewModel by viewModel()
     private var _binding: FavoriteTracksBinding? = null
     private val binding: FavoriteTracksBinding get() = _binding!!
     private lateinit var adapter: TrackAdapter
@@ -116,8 +117,8 @@ class FavoriteTracksFragment() : Fragment() {
     }
 
     companion object {
-        fun newInstance(): FavoriteTracksFragment {
-            return FavoriteTracksFragment()
+        fun newInstance(): TabFavoriteFragment {
+            return TabFavoriteFragment()
         }
     }
 }

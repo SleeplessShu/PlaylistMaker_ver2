@@ -152,5 +152,20 @@
         <item name="android:textColorHint">?attr/colorOnPrimary</item>
         <item name="hintTextColor">#3772E7</item>
     </style>
+    <style name="PlaylistImageRoundedCorners">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">@dimen/playlistImageRoundedCorners</item>
+    </style>
 
+    <style name="PlaylistUnit">
+        <item name="android:textSize">@dimen/playlistUnitFontSize</item>
+        <item name="android:fontFamily">@font/ys_display_regular</item>
+        <item name="cornerSize">@dimen/playlistUnitRoundedCorners</item>
+        <item name="android:ellipsize">end</item>
+        <item name="android:singleLine">true</item>
+    </style>
+
+    <style name="tab_Playlist">
+
+    </style>
 </resources>

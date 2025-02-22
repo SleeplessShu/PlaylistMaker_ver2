@@ -1,4 +1,4 @@
-package com.practicum.playlistmaker_ver2.mediateka.presentation
+package com.practicum.playlistmaker_ver2.mediateka.presentation.states
 
 import com.practicum.playlistmaker_ver2.search.domain.models.Track
 

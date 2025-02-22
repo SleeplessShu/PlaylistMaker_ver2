@@ -11,8 +11,14 @@ import com.practicum.playlistmaker_ver2.database.data.LikedTracksRepositoryImpl
 import com.practicum.playlistmaker_ver2.database.data.converters.TrackDbConverter
 import com.practicum.playlistmaker_ver2.database.data.LikedTracksDatabase
 import com.practicum.playlistmaker_ver2.database.domain.LikedTracksRepository
+import com.practicum.playlistmaker_ver2.playlist.database.PlaylistDatabase
+import com.practicum.playlistmaker_ver2.player.data.repository.ImageRepositoryImpl
 import com.practicum.playlistmaker_ver2.player.data.repository.PlayerRepositoryImpl
+import com.practicum.playlistmaker_ver2.player.domain.repositories.ImageRepository
 import com.practicum.playlistmaker_ver2.player.domain.repositories.PlayerRepository
+import com.practicum.playlistmaker_ver2.playlist.data.repository.PlaylistRepositoryImpl
+import com.practicum.playlistmaker_ver2.playlist.domain.repositories.PlaylistRepository
+
 import com.practicum.playlistmaker_ver2.search.data.dto.TracksRepositoryImpl
 import com.practicum.playlistmaker_ver2.search.data.network.ITunesApiService
 import com.practicum.playlistmaker_ver2.search.data.network.NetworkClient
@@ -78,9 +84,16 @@ val dataModule = module {
     }
 
     single {
-        Room.databaseBuilder(get(), LikedTracksDatabase::class.java, "database.db")
+        Room.databaseBuilder(get(), LikedTracksDatabase::class.java, "likedTracksDatabase.db")
             .build()
     }
+
+    single {
+        Room.databaseBuilder(get(), PlaylistDatabase::class.java, "playlistDatabase.db")
+            .build()
+    }
+
+    single { get<PlaylistDatabase>().playlistDao() }
 
     factory { TrackDbConverter() }
 
@@ -90,6 +103,14 @@ val dataModule = module {
 
     single<LikedTracksRepository> {
         LikedTracksRepositoryImpl(get(), get())
+    }
+
+    single<ImageRepository> {
+        ImageRepositoryImpl(get())
+    }
+
+    single<PlaylistRepository>{
+        PlaylistRepositoryImpl(get())
     }
 
     factory<Handler> {

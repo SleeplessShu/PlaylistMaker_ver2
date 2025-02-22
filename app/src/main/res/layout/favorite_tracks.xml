@@ -6,7 +6,7 @@
     android:background="?attr/colorPrimary"
     android:gravity="center_horizontal"
     android:orientation="vertical"
-    tools:context="com.practicum.playlistmaker_ver2.mediateka.presentation.FavoriteTracksFragment">
+    tools:context="com.practicum.playlistmaker_ver2.mediateka.presentation.TabFavoriteFragment">
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/leftBorder"

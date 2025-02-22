@@ -59,5 +59,21 @@
     <string name="playlistName">Название*</string>
     <string name="playlistDescription">Описание</string>
     <string name="playlistCreate">Создать</string>
+    <string name="playlistImageNotSelected">Изображение не выбрано</string>
+    <string name="playlistImageSelected">Обложка сохранена</string>
+    <string name="playlistImageSelectionError">Ошибка сохранения обложки</string>
+    <string name="playlistHasCreated">«Плейлист %s создан»</string>
+    <!--PlaylistDialogue-->
+    <string name="playlistDialogueHeader">Завершить создание плейлиста?</string>
+    <string name="playlistDialogueBody">Все несохраненные данные будут потеряны</string>
+    <string name="playlistDialogueYes">Завершить</string>
+    <string name="playlistDialogueNo">Отмена</string>
 
+    <!--WordsForWordsEnding-->
+    <plurals name="track_count">
+        <item quantity="one">%d трек</item>       <!-- 1 трек -->
+        <item quantity="few">%d трека</item>      <!-- 2, 3, 4 трека -->
+        <item quantity="many">%d треков</item>    <!-- 5, 6, 7... треков -->
+        <item quantity="other">%d треков</item>   <!-- 0, 11-19, 20+ треков -->
+    </plurals>
 </resources>

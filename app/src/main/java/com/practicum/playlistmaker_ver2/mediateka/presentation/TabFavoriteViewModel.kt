@@ -1,15 +1,15 @@
 package com.practicum.playlistmaker_ver2.mediateka.presentation
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.practicum.playlistmaker_ver2.database.domain.LikedTracksInteractor
+import com.practicum.playlistmaker_ver2.mediateka.presentation.states.FavoriteTracksState
 import com.practicum.playlistmaker_ver2.search.domain.models.Track
 import kotlinx.coroutines.launch
 
-class FavoriteTracksViewModel(
+class TabFavoriteViewModel(
     private val likedTracksInteractor: LikedTracksInteractor
 ) : ViewModel() {
     private val _stateLiveData = MutableLiveData<FavoriteTracksState>()

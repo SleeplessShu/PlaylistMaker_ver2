@@ -9,12 +9,12 @@ import androidx.fragment.app.Fragment
 import com.google.android.material.tabs.TabLayoutMediator
 import com.practicum.playlistmaker_ver2.R
 import com.practicum.playlistmaker_ver2.databinding.MediatekaFragmentBinding
-import com.practicum.playlistmaker_ver2.mediateka.adapters.MediatekaPagerAdapter
+import com.practicum.playlistmaker_ver2.mediateka.presentation.adapters.MediatekaPagerAdapter
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class MediatekaFragment : Fragment() {
 
-    private val viewModel: FavoritePlaylistsViewModel by viewModel()
+    private val viewModel: TabPlaylistsViewModel by viewModel()
     private var _binding: MediatekaFragmentBinding? = null
     private val binding: MediatekaFragmentBinding get() = _binding!!
 

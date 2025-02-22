@@ -10,11 +10,11 @@ import kotlinx.coroutines.flow.map
 
 
 class LikedTracksRepositoryImpl(
-    private val appDatabase: LikedTracksDatabase,
+    private val likedTracksDatabase: LikedTracksDatabase,
     private val trackDbConverter: TrackDbConverter
 ) : LikedTracksRepository {
     override fun getTracksFromDb(): Flow<List<Track>> {
-        return appDatabase
+        return likedTracksDatabase
             .getTrackDao()
             .getAllTracks()
             .map { trackEntities ->
@@ -24,21 +24,21 @@ class LikedTracksRepositoryImpl(
 
     override suspend fun addTrackToDb(playerTrack: PlayerTrack) {
         val entity = convertToTrackEntity(playerTrack)
-        val minOrder = appDatabase
+        val minOrder = likedTracksDatabase
             .getTrackDao()
             .getMinOrder() ?: 0
 
         val newOrder = minOrder - 1
 
         val entityWithOrder = entity.copy(order = newOrder)
-        appDatabase
+        likedTracksDatabase
             .getTrackDao()
             .addTrackToLikedDb(entityWithOrder)
     }
 
     override suspend fun deleteEntityFromDb(playerTrack: PlayerTrack) {
         val entity = convertToTrackEntity(playerTrack)
-        appDatabase.getTrackDao().deleteTrackEntity(entity)
+        likedTracksDatabase.getTrackDao().deleteTrackEntity(entity)
     }
 
     private fun convertFromTrackEntity(tracks: List<TrackEntity>): List<Track> {

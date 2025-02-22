@@ -30,6 +30,15 @@
             app:destination="@id/activityPlayer2" />
     </fragment>
     <fragment
+        android:id="@+id/playlistCreationFragment"
+        android:name="com.practicum.playlistmaker_ver2.playlist.presentation.PlaylistFragment"
+        android:label="Создание плейлиста"
+        tools:layout="@layout/playlist_editor" />
+
+    <action
+        android:id="@+id/action_playlistFragment_to_playlistCreationFragment"
+        app:destination="@id/playlistCreationFragment" />
+    <fragment
         android:id="@+id/settingsFragment"
         android:name="com.practicum.playlistmaker_ver2.settings.presentation.SettingsFragment"
         android:label="settings_fragment"

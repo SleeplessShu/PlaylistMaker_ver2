@@ -48,16 +48,18 @@
     </androidx.appcompat.widget.Toolbar>
 
 
-    <ImageView
+    <com.google.android.material.imageview.ShapeableImageView
         android:id="@+id/imagePlayList"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginHorizontal="@dimen/dim_16dp"
         android:layout_marginTop="26dp"
         android:adjustViewBounds="true"
+        android:scaleType="centerCrop"
+        app:shapeAppearanceOverlay="@style/PlaylistImageRoundedCorners"
         android:background="@drawable/playlist_default_image"
         android:contentDescription="@string/playlistImage"
-        app:layout_constraintBottom_toTopOf="@id/NamePlayList"
+        app:layout_constraintBottom_toTopOf="@id/frameName"
         app:layout_constraintDimensionRatio="H,1:1"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -65,7 +67,7 @@
 
 
     <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/NamePlayList"
+        android:id="@+id/frameName"
         style="@style/CustomOutlineBox"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -74,7 +76,7 @@
         android:layout_marginEnd="16dp"
         android:hint="@string/playlistName"
         android:textSize="@dimen/fragment_button"
-        app:layout_constraintBottom_toTopOf="@id/et_description"
+        app:layout_constraintBottom_toTopOf="@id/frameDescription"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/imagePlayList">
@@ -86,7 +88,7 @@
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/et_description"
+        android:id="@+id/frameDescription"
         style="@style/CustomOutlineBox"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -97,7 +99,7 @@
         android:textSize="@dimen/fragment_button"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/NamePlayList">
+        app:layout_constraintTop_toBottomOf="@id/frameName">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/tiDescription"
