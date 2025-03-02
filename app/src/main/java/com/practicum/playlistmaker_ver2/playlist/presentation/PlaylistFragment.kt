@@ -1,7 +1,6 @@
 package com.practicum.playlistmaker_ver2.playlist.presentation
 
 import android.content.res.ColorStateList
-import android.net.Uri
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
