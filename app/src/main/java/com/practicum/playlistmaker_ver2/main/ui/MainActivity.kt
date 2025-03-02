@@ -33,15 +33,11 @@ class MainActivity : AppCompatActivity() {
                     if (currentDestination != R.id.mediatekaFragment) {
                         if (currentDestination == R.id.settingsFragment) {
                             navController.navigate(
-                                R.id.mediatekaFragment,
-                                null,
-                                getNavOptions(false)
+                                R.id.mediatekaFragment, null, getNavOptions(false)
                             )
                         } else {
                             navController.navigate(
-                                R.id.mediatekaFragment,
-                                null,
-                                getNavOptions(true)
+                                R.id.mediatekaFragment, null, getNavOptions(true)
                             )
                         }
                     }
@@ -67,40 +63,39 @@ class MainActivity : AppCompatActivity() {
         }
 
         navController.addOnDestinationChangedListener { _, destination, _ ->
-            if (destination.id == R.id.playlistCreationFragment ||
-                destination.id == R.id.playerFragment
-            ) {
-
-                findViewById<View>(R.id.bottomNavigationView)?.visibility = View.GONE
-                findViewById<View>(R.id.view_line)?.visibility = View.GONE
+            if (destination.id == R.id.playlistCreationFragment || destination.id == R.id.playerFragment) {
+                bottomNavigationVisible(false)
             } else {
-                findViewById<View>(R.id.bottomNavigationView)?.visibility = View.VISIBLE
-                findViewById<View>(R.id.view_line)?.visibility = View.VISIBLE
+                bottomNavigationVisible(true)
             }
-        }
-        /*val bottomNavigationView = binding.bottomNavigationView
+        }/*val bottomNavigationView = binding.bottomNavigationView
         bottomNavigationView.setupWithNavController(navController)*/
 
     }
 
+    private fun bottomNavigationVisible(isVisible: Boolean) {
+        if (isVisible) {
+            findViewById<View>(R.id.bottomNavigationView)?.visibility = View.VISIBLE
+            findViewById<View>(R.id.view_line)?.visibility = View.VISIBLE
+        } else {
+            findViewById<View>(R.id.bottomNavigationView)?.visibility = View.GONE
+            findViewById<View>(R.id.view_line)?.visibility = View.GONE
+        }
+    }
+
+
     private fun getNavOptions(slideRight: Boolean): androidx.navigation.NavOptions {
         when (slideRight) {
             true -> {
-                return androidx.navigation.NavOptions.Builder()
-                    .setEnterAnim(R.anim.slide_in_right)
-                    .setExitAnim(R.anim.slide_out_left)
-                    .setPopEnterAnim(R.anim.slide_in_left)
-                    .setPopExitAnim(R.anim.slide_out_right)
-                    .build()
+                return androidx.navigation.NavOptions.Builder().setEnterAnim(R.anim.slide_in_right)
+                    .setExitAnim(R.anim.slide_out_left).setPopEnterAnim(R.anim.slide_in_left)
+                    .setPopExitAnim(R.anim.slide_out_right).build()
             }
 
             false -> {
-                return androidx.navigation.NavOptions.Builder()
-                    .setEnterAnim(R.anim.slide_in_left)
-                    .setExitAnim(R.anim.slide_out_right)
-                    .setPopEnterAnim(R.anim.slide_in_right)
-                    .setPopExitAnim(R.anim.slide_out_left)
-                    .build()
+                return androidx.navigation.NavOptions.Builder().setEnterAnim(R.anim.slide_in_left)
+                    .setExitAnim(R.anim.slide_out_right).setPopEnterAnim(R.anim.slide_in_right)
+                    .setPopExitAnim(R.anim.slide_out_left).build()
             }
         }
     }
