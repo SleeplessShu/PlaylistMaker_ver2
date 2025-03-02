@@ -90,8 +90,8 @@ class PlayerFragment : Fragment() {
     private fun setupUI() {
         binding.apply {
             binding.bBack.setOnClickListener { onBackPressed() }
-            binding.bLike.setOnClickListener { viewModel.addToLikeList(currentTrack) }
-            binding.bAddToPlaylist.setOnClickListener { viewModel.addToPlaylist(currentTrack.trackId) }
+            binding.bLike.setOnClickListener { viewModel.reactOnLikeButton(currentTrack) }
+            binding.bAddToPlaylist.setOnClickListener { viewModel.reactOnPlaylistButton(currentTrack.trackId) }
             binding.bPlay.setOnClickListener { viewModel.playPause() }
             binding.bNewPlaylist.setOnClickListener {
                 findNavController().navigate(R.id.action_playerFragment_to_playlistCreationFragment)

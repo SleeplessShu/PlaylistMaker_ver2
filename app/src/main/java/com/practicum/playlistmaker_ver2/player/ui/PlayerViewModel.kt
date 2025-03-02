@@ -90,14 +90,13 @@ class PlayerViewModel(
     }
 
 
-    fun addToLikeList(currentTrack: PlayerTrack) {
-        if (currentTrack.isLiked) {
+    fun reactOnLikeButton(currentTrack: PlayerTrack) {
+        if (_uiState.value!!.isLiked) {
             deleteTrackFromFavorite(currentTrack)
             currentTrack.isLiked = false
         } else {
             addTrackToFavorite(currentTrack)
             currentTrack.isLiked = true
-
         }
         updateUiState(isLiked = currentTrack.isLiked)
     }
@@ -106,12 +105,12 @@ class PlayerViewModel(
     fun checkInLiked(track: PlayerTrack) {
         viewModelScope.launch {
             val isLiked = interactorLikedTracks.getTracks()
-                .map { tracks -> tracks.any() { it.trackId == track.trackId } }.first()
+                .map { tracks -> tracks.any { it.trackId == track.trackId } }.first()
             updateUiState(isLiked)
         }
     }
 
-    fun addToPlaylist(trackID: Int) {
+    fun reactOnPlaylistButton(trackID: Int) {
         updateUiState(bottomSheet = BottomSheetBehavior.STATE_EXPANDED, overlayVisibility = true)
         loadPlaylists()
     }
@@ -235,7 +234,6 @@ class PlayerViewModel(
             )
         )
     }
-
 
 
     companion object {
