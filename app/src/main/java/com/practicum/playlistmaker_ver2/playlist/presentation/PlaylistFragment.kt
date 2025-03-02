@@ -117,7 +117,7 @@ class PlaylistFragment : Fragment() {
         if (playlistViewModel.shouldShowExitDialog()) {
             showPopUpDialogue()
         } else {
-            findNavController().popBackStack()
+            findNavController().navigateUp()
         }
     }
 
@@ -126,7 +126,8 @@ class PlaylistFragment : Fragment() {
             .setTitle(R.string.playlistDialogueHeader)
             .setMessage(R.string.playlistDialogueBody)
             .setNegativeButton(R.string.playlistDialogueNo, null)
-            .setPositiveButton(R.string.playlistDialogueYes) { _, _ -> findNavController().popBackStack() }
+            .setPositiveButton(R.string.playlistDialogueYes) { _, _ ->
+                findNavController().navigateUp()}
             .show()
     }
 
