@@ -55,15 +55,15 @@
         android:layout_marginHorizontal="@dimen/dim_16dp"
         android:layout_marginTop="26dp"
         android:adjustViewBounds="true"
-        android:scaleType="centerCrop"
-        app:shapeAppearanceOverlay="@style/PlaylistImageRoundedCorners"
-
         android:contentDescription="@string/playlistImage"
+        android:scaleType="fitCenter"
+        tools:src="@drawable/playlist_default_image"
         app:layout_constraintBottom_toTopOf="@id/frameName"
         app:layout_constraintDimensionRatio="H,1:1"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/toolbarSearch" />
+        app:layout_constraintTop_toBottomOf="@id/toolbarSearch"
+        app:shapeAppearanceOverlay="@style/PlaylistImageRoundedCorners" />
 
 
     <com.google.android.material.textfield.TextInputLayout
