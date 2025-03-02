@@ -23,9 +23,16 @@ class MainActivity : AppCompatActivity() {
             supportFragmentManager.findFragmentById(R.id.fragment_container) as NavHostFragment
         val navController = navHostFragment.navController
         navController.addOnDestinationChangedListener { _, destination, _ ->
-            findViewById<View>(R.id.bottomNavigationView)?.visibility =
                 if (destination.id == R.id.playlistCreationFragment ||
-                    destination.id == R.id.playerFragment) View.GONE else View.VISIBLE
+                    destination.id == R.id.playerFragment) {
+
+                    findViewById<View>(R.id.bottomNavigationView)?.visibility = View.GONE
+                    findViewById<View>(R.id.view_line)?.visibility = View.GONE
+                }
+                else {
+                    findViewById<View>(R.id.bottomNavigationView)?.visibility = View.VISIBLE
+                    findViewById<View>(R.id.view_line)?.visibility = View.VISIBLE
+                }
         }
         val bottomNavigationView = binding.bottomNavigationView
         bottomNavigationView.setupWithNavController(navController)
