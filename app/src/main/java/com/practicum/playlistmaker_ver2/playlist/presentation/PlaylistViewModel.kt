@@ -32,10 +32,12 @@ class PlaylistViewModel(
     }
 
     fun addPlaylist(title: String, description: String, onComplete: () -> Unit) {
-        val imageUri = _playlistImage.value ?: Constants.PLACEHOLDER_URI
+        val imageUri = if(_playlistImage.value == Constants.DEFAULT_PLAYLIST_IMAGE_URI) Constants.PLACEHOLDER_URI else _playlistImage.value
 
         viewModelScope.launch {
-            playlistInteractor.addPlaylist(imageUri, title, description)
+            if (imageUri != null) {
+                playlistInteractor.addPlaylist(imageUri, title, description)
+            }
             onComplete()
         }
     }
