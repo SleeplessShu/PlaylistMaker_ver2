@@ -7,17 +7,18 @@ import android.os.Handler
 import androidx.room.Room
 import com.google.gson.Gson
 import com.practicum.playlistmaker_ver2.App
-import com.practicum.playlistmaker_ver2.database.data.LikedTracksRepositoryImpl
-import com.practicum.playlistmaker_ver2.database.data.converters.TrackDbConverter
-import com.practicum.playlistmaker_ver2.database.data.LikedTracksDatabase
-import com.practicum.playlistmaker_ver2.database.domain.LikedTracksRepository
-import com.practicum.playlistmaker_ver2.playlist.database.PlaylistDatabase
+import com.practicum.playlistmaker_ver2.database.LikedTracks.data.LikedTracksRepositoryImpl
+import com.practicum.playlistmaker_ver2.database.LikedTracks.data.converters.TrackDbConverter
+import com.practicum.playlistmaker_ver2.database.LikedTracks.data.LikedTracksDatabase
+import com.practicum.playlistmaker_ver2.database.LikedTracks.domain.LikedTracksRepository
+import com.practicum.playlistmaker_ver2.database.Playlists.data.PlaylistDatabase
 import com.practicum.playlistmaker_ver2.player.data.repository.ImageRepositoryImpl
 import com.practicum.playlistmaker_ver2.player.data.repository.PlayerRepositoryImpl
 import com.practicum.playlistmaker_ver2.player.domain.repositories.ImageRepository
 import com.practicum.playlistmaker_ver2.player.domain.repositories.PlayerRepository
-import com.practicum.playlistmaker_ver2.playlist.data.repository.PlaylistRepositoryImpl
-import com.practicum.playlistmaker_ver2.playlist.domain.repositories.PlaylistRepository
+import com.practicum.playlistmaker_ver2.database.Playlists.data.PlaylistRepositoryImpl
+import com.practicum.playlistmaker_ver2.database.Playlists.domain.PlaylistRepository
+import com.practicum.playlistmaker_ver2.database.TracksInPlaylists.TracksInPlaylistsDatabase
 
 import com.practicum.playlistmaker_ver2.search.data.dto.TracksRepositoryImpl
 import com.practicum.playlistmaker_ver2.search.data.network.ITunesApiService
@@ -93,7 +94,14 @@ val dataModule = module {
             .build()
     }
 
-    single { get<PlaylistDatabase>().playlistDao() }
+    single {
+        Room.databaseBuilder(get(), TracksInPlaylistsDatabase::class.java, "tracksInPlaylists.db")
+            .build()
+    }
+
+    single { get<TracksInPlaylistsDatabase>().getTracksInPlaylistsDao() }
+
+    single { get<PlaylistDatabase>().getPlaylistDao() }
 
     factory { TrackDbConverter() }
 
@@ -110,7 +118,7 @@ val dataModule = module {
     }
 
     single<PlaylistRepository>{
-        PlaylistRepositoryImpl(get())
+        PlaylistRepositoryImpl(get(), get())
     }
 
     factory<Handler> {

@@ -51,12 +51,27 @@
     <!--PLAYLIST-->
     <dimen name="playlistImageRoundedCorners">8dp</dimen>
 
-    <!--PlAYLIST_UNIT-->
-    <dimen name="playlistUnitPaddingTop">4dp</dimen>
-    <dimen name="playlistUnitRoundedCorners">8dp</dimen>
-    <dimen name="playlistUnitFontSize">16sp</dimen>
+    <!--PlAYLIST_ITEM-->
+    <dimen name="playlistItemPaddingTop">4dp</dimen>
+    <dimen name="playlistItemRoundedCorners">8dp</dimen>
+    <dimen name="playlistItemFontSizeMedium">16sp</dimen>
+
+    <!--PlAYLIST_ITEM_PLAYER-->
+    <dimen name="playlistImageSize">46dp</dimen>
+    <dimen name="playlistItemPlayerRoundedCorners">2dp</dimen>
+    <dimen name="playlistItemPlayerFontSizeSmall">12sp</dimen>
+    <dimen name="playlistItemPlayerPaddingVertical">6dp</dimen>
+    <dimen name="playlistItemPlayerPaddingHorizontal">8dp</dimen>
+    <dimen name="playlistItemPlayerElementPaddingHorizontal">12dp</dimen>
+    <dimen name="playlistItemPlayerElementPaddingVertical">8dp</dimen>
+
 
     <!--TAB_PlAYLIST-->
     <dimen name="marginRecycleView">8dp</dimen>
     <dimen name="marginElemnt">8dp</dimen>
+
+    <!--PLAYER_BOTTOM_SHEET-->
+    <dimen name="Header">20sp</dimen>
+    <dimen name="Button">14sp</dimen>
+
 </resources>

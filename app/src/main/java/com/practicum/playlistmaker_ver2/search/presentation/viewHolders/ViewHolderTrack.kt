@@ -29,7 +29,6 @@ class ViewHolderTrack(
                 .error(R.drawable.placeholder_error).fitCenter().transform(RoundedCorners(radiusPx))
                 .into(binding.ivCollectionImage)
         } else {
-            Log.d("GlideDebug", "Loading image from URL: ${track.artworkUrl100}")
             binding.ivCollectionImage.setImageResource(R.drawable.placeholder_error)
         }
         itemView.setOnClickListener(DebounceClickListener(lifecycleOwner) { onItemClick(track) })

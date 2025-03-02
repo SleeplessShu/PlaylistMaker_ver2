@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tool="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginVertical="@dimen/playlistItemPlayerElementPaddingVertical"
+    android:layout_marginHorizontal="@dimen/playlistItemPlayerElementPaddingHorizontal">
+
+    <com.google.android.material.imageview.ShapeableImageView
+        android:id="@+id/ivPlaylistItemImage"
+        android:layout_width="@dimen/playlistImageSize"
+        android:layout_height="@dimen/playlistImageSize"
+        android:scaleType="centerCrop"
+        android:src="@drawable/test_rectangle"
+        app:layout_constraintDimensionRatio="H,1:1"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:shapeAppearanceOverlay="@style/PlaylistItemPlayer" />
+
+    <TextView
+        android:id="@+id/tvPlaylistItemName"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        style="@style/PlaylistItemPlayer"
+        android:paddingTop="@dimen/playlistItemPlayerPaddingVertical"
+        android:paddingStart="@dimen/playlistItemPlayerPaddingHorizontal"
+        app:layout_constraintStart_toEndOf="@id/ivPlaylistItemImage"
+        app:layout_constraintTop_toTopOf="@id/ivPlaylistItemImage"
+        tool:text="Best Summer Parties" />
+
+    <TextView
+        android:id="@+id/tvPlaylistItemTracksCount"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        style="@style/PlaylistItemPlayerSmall"
+        android:paddingBottom="@dimen/playlistItemPlayerPaddingVertical"
+        android:paddingStart="@dimen/playlistItemPlayerPaddingHorizontal"
+        app:layout_constraintStart_toStartOf="@id/tvPlaylistItemName"
+        app:layout_constraintBottom_toBottomOf="@id/ivPlaylistItemImage"
+        tool:text="197 треков" />
+</androidx.constraintlayout.widget.ConstraintLayout>

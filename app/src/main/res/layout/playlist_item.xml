@@ -16,14 +16,14 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:shapeAppearanceOverlay="@style/PlaylistUnit" />
+        app:shapeAppearanceOverlay="@style/PlaylistItem" />
 
     <TextView
         android:id="@+id/tvPlaylistItemName"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        style="@style/PlaylistUnit"
-        android:paddingTop="@dimen/playlistUnitPaddingTop"
+        style="@style/PlaylistItem"
+        android:paddingTop="@dimen/playlistItemPaddingTop"
 
         app:layout_constraintEnd_toEndOf="@id/ivPlaylistItemImage"
         app:layout_constraintStart_toStartOf="@id/ivPlaylistItemImage"
@@ -34,8 +34,8 @@
         android:id="@+id/tvPlaylistItemTracksCount"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        style="@style/PlaylistUnit"
-        android:paddingTop="@dimen/playlistUnitPaddingTop"
+        style="@style/PlaylistItem"
+        android:paddingTop="@dimen/playlistItemPaddingTop"
 
         app:layout_constraintEnd_toEndOf="@id/ivPlaylistItemImage"
         app:layout_constraintStart_toStartOf="@id/ivPlaylistItemImage"

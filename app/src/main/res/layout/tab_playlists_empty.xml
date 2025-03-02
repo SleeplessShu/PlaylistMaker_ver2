@@ -20,7 +20,7 @@
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="@dimen/dim_24dp"
         android:paddingVertical="@dimen/dim_12dp"
-        android:text="@string/newPlaylists" />
+        android:text="@string/newPlaylist" />
 
     <ImageView
         app:layout_constraintTop_toTopOf="parent"

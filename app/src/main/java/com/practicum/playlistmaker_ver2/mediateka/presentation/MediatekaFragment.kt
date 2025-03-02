@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import com.google.android.material.tabs.TabLayoutMediator
 import com.practicum.playlistmaker_ver2.R
 import com.practicum.playlistmaker_ver2.databinding.MediatekaFragmentBinding
@@ -36,7 +37,10 @@ class MediatekaFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        pagerAdapter = MediatekaPagerAdapter(requireActivity() as AppCompatActivity)
+        val navController = parentFragment?.findNavController()
+        pagerAdapter = MediatekaPagerAdapter(requireActivity() as AppCompatActivity, navController)
+        binding.viewPager.adapter = pagerAdapter
+        //pagerAdapter = MediatekaPagerAdapter(requireActivity() as AppCompatActivity)
         binding?.viewPager?.adapter = pagerAdapter
 
         tabMediator = binding?.tabLayout?.let {

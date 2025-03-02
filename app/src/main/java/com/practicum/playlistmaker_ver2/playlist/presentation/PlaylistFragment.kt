@@ -9,6 +9,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.activity.OnBackPressedCallback
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
@@ -20,23 +21,16 @@ import com.practicum.playlistmaker_ver2.R
 import com.practicum.playlistmaker_ver2.databinding.PlaylistEditorBinding
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-class PlaylistFragment(
-
-) : Fragment() {
+class PlaylistFragment : Fragment() {
     private val playlistViewModel: PlaylistViewModel by viewModel()
-    private var playlistImage: Uri? = null
     private var _binding: PlaylistEditorBinding? = null
     private val binding: PlaylistEditorBinding get() = _binding!!
 
     private val pickImageLauncher =
         registerForActivityResult(ActivityResultContracts.PickVisualMedia()) { uri ->
-            if (uri != null) {
-                saveImageToPrivateStorage(uri)
-            } else {
-                Toast.makeText(
-                    requireContext(), R.string.playlistImageNotSelected, Toast.LENGTH_SHORT
-                ).show()
-            }
+            uri?.let { playlistViewModel.saveImageToPrivateStorage(it) } ?: Toast.makeText(
+                requireContext(), R.string.playlistImageNotSelected, Toast.LENGTH_SHORT
+            ).show()
         }
 
     override fun onCreateView(
@@ -54,25 +48,27 @@ class PlaylistFragment(
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setupUI()
+        observeViewModel()
     }
 
     private fun setupUI() {
-        binding.btnBack.setOnClickListener {
-            onBackPress()
-        }
         setupTextInputWatcher(binding.frameName)
         setupTextInputWatcher(binding.frameDescription)
 
+        binding.btnBack.setOnClickListener { onBackPress() }
         binding.imagePlayList.setOnClickListener {
-            pickImageLauncher.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
+            pickImageLauncher.launch(
+                PickVisualMediaRequest(
+                    ActivityResultContracts.PickVisualMedia.ImageOnly
+                )
+            )
         }
 
         binding.tiPlaylistName.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
-
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                updateTextInputLayoutState(binding.frameName)
-                checkCreateButtonState()
+                playlistViewModel.validatePlaylist(s.toString())
+                updateTextInputLayoutState(binding.frameName, s?.isNotEmpty() == true)
             }
 
             override fun afterTextChanged(s: Editable?) {}
@@ -80,105 +76,92 @@ class PlaylistFragment(
 
         binding.tiDescription.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
-
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                updateTextInputLayoutState(binding.frameDescription)
+                updateTextInputLayoutState(binding.frameDescription, s?.isNotEmpty() == true)
             }
 
             override fun afterTextChanged(s: Editable?) {}
         })
 
         binding.bCreatePlaylist.setOnClickListener {
-            if (binding.bCreatePlaylist.isEnabled) {
-                savePlaylist()
+            playlistViewModel.addPlaylist(
+                binding.tiPlaylistName.text.toString(), binding.tiDescription.text.toString()
+            ) {
+                Toast.makeText(
+                    context,
+                    getString(R.string.playlistHasCreated, binding.tiPlaylistName.text.toString()),
+                    Toast.LENGTH_SHORT
+                ).show()
+                findNavController().popBackStack()
             }
         }
+
+        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                onBackPress()
+            }
+        })
     }
 
-    private fun checkCreateButtonState() {
-        val isNameNotEmpty = !binding.tiPlaylistName.text.isNullOrBlank()
-        binding.bCreatePlaylist.isEnabled = isNameNotEmpty
-    }
-
-    private fun setupTextInputWatcher(inputLayout: TextInputLayout) {
-        val editText = inputLayout.editText
-
-        editText?.setOnFocusChangeListener { _, _ ->
-            updateTextInputLayoutState(inputLayout)
-        }
-    }
-
-    private fun updateTextInputLayoutState(inputLayout: TextInputLayout) {
-        val editText = inputLayout.editText
-        val isNotEmpty = !editText?.text.isNullOrBlank()
-
-        val colorStateList = ColorStateList(
-            arrayOf(
-                intArrayOf(android.R.attr.state_focused), intArrayOf(android.R.attr.state_enabled)
-            ), intArrayOf(
-                ContextCompat.getColor(requireContext(), R.color.blue),  // Если в фокусе — синий
-                if (isNotEmpty) ContextCompat.getColor(
-                    requireContext(), R.color.blue
-                )  // Если есть текст — синий
-                else ContextCompat.getColor(
-                    requireContext(), R.color.playlist_box_stroke
-                ) // Стандартный цвет
-
-            )
-        )
-
-        inputLayout.setBoxStrokeColorStateList(colorStateList)
-    }
-
-
-    private fun saveImageToPrivateStorage(uri: Uri) {
-        val savedUri = playlistViewModel.saveImageToPrivateStorage(uri)
-        if (savedUri != null) {
-            playlistImage = savedUri
-            binding.imagePlayList.setImageURI(playlistImage)
-            Toast.makeText(context, R.string.playlistImageSelected, Toast.LENGTH_SHORT).show()
-        } else {
-            Toast.makeText(context, R.string.playlistImageSelectionError, Toast.LENGTH_SHORT)
+    private fun observeViewModel() {
+        playlistViewModel.playlistImage.observe(viewLifecycleOwner) { uri ->
+            binding.imagePlayList.setImageURI(uri)
         }
 
-
+        playlistViewModel.isPlaylistValid.observe(viewLifecycleOwner) { isValid ->
+            binding.bCreatePlaylist.isEnabled = isValid
+        }
     }
 
     private fun onBackPress() {
-        if (exitCheck()) {
+        if (playlistViewModel.shouldShowExitDialog()) {
             showPopUpDialogue()
         } else {
             findNavController().popBackStack()
         }
     }
 
-    private fun exitCheck(): Boolean {
-        return playlistImage != null
-                || !binding.tiPlaylistName.text.isNullOrEmpty()
-                || !binding.tiDescription.text.isNullOrEmpty()
-    }
-
     private fun showPopUpDialogue() {
-        MaterialAlertDialogBuilder(requireContext()).setTitle(R.string.playlistDialogueHeader)
+        MaterialAlertDialogBuilder(requireContext(), R.style.CustomAlertDialogTheme)
+            .setTitle(R.string.playlistDialogueHeader)
             .setMessage(R.string.playlistDialogueBody)
-            .setNegativeButton(R.string.playlistDialogueNo) { dialog, which -> // Добавляет кнопку «Отмена»
-                // Действия, выполняемые при нажатии на кнопку «Отмена»
-            }.setPositiveButton(R.string.playlistDialogueYes) { dialog, which ->
-                findNavController().popBackStack()
-            }.show()
+            .setNegativeButton(R.string.playlistDialogueNo, null)
+            .setPositiveButton(R.string.playlistDialogueYes) { _, _ -> findNavController().popBackStack() }
+            .show()
     }
 
+    private fun setupTextInputWatcher(inputLayout: TextInputLayout) {
+        val editText = inputLayout.editText
 
-    private fun savePlaylist() {
-        val defaultImageUri = Uri.parse("android.resource://${context?.packageName}/${R.drawable.placeholder}")
-        val imageUri = playlistImage ?: defaultImageUri
-        val title = binding.tiPlaylistName.text.toString()
-        val description = binding.tiDescription.text.toString()
-        val message = getString(R.string.playlistHasCreated, title)
+        editText?.setOnFocusChangeListener { _, hasFocus ->
+            val hasText = !editText.text.isNullOrBlank()
+            inputLayout.isSelected = hasText
+        }
 
-        playlistViewModel.addPlaylist(imageUri, title, description) {
-            Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
-            findNavController().popBackStack()
+        editText?.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                val hasText = !s.isNullOrBlank()
+                inputLayout.isSelected = hasText
+            }
+
+            override fun afterTextChanged(s: Editable?) {}
+        })
+    }
+
+    private fun updateTextInputLayoutState(inputLayout: TextInputLayout, hasFocus: Boolean) {
+        val editText = inputLayout.editText
+        val hasText = !editText?.text.isNullOrBlank()
+        val color = when {
+            hasFocus || hasText -> ContextCompat.getColor(requireContext(), R.color.blue)
+            else -> ContextCompat.getColor(requireContext(), R.color.grey)
+        }
+
+        inputLayout.apply {
+            setBoxStrokeColor(color)
+            defaultHintTextColor = ColorStateList.valueOf(color)
+            isSelected = hasText
         }
     }
 }

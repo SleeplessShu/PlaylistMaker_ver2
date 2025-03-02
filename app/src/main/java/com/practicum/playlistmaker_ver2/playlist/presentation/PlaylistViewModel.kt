@@ -1,25 +1,47 @@
 package com.practicum.playlistmaker_ver2.playlist.presentation
 
 import android.net.Uri
+
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.practicum.playlistmaker_ver2.mediateka.domain.api.ImageInteractor
-import com.practicum.playlistmaker_ver2.playlist.domain.api.PlaylistInteractor
+import com.practicum.playlistmaker_ver2.database.Playlists.domain.PlaylistInteractor
+import com.practicum.playlistmaker_ver2.utils.Constants
 import kotlinx.coroutines.launch
 
 class PlaylistViewModel(
-    private val imageInteractor: ImageInteractor,
-    private val playlistInteractor: PlaylistInteractor
+    private val imageInteractor: ImageInteractor, private val playlistInteractor: PlaylistInteractor
 ) : ViewModel() {
 
-    fun saveImageToPrivateStorage(uri: Uri): Uri? {
-        return imageInteractor.saveImageToPrivateStorage(uri)
+    private val _playlistImage = MutableLiveData(Constants.DEFAULT_PLAYLIST_IMAGE_URI)
+    val playlistImage: LiveData<Uri> get() = _playlistImage
+
+    private val _isPlaylistValid = MutableLiveData<Boolean>()
+    val isPlaylistValid: LiveData<Boolean> get() = _isPlaylistValid
+
+
+    fun saveImageToPrivateStorage(uri: Uri) {
+        val savedUri = imageInteractor.saveImageToPrivateStorage(uri)
+        _playlistImage.postValue(savedUri ?: _playlistImage.value)
     }
 
-    fun addPlaylist(imageUri: Uri, title: String, description: String, onComplete: () -> Unit) {
+    fun validatePlaylist(name: String) {
+        _isPlaylistValid.postValue(name.isNotBlank())
+    }
+
+    fun addPlaylist(title: String, description: String, onComplete: () -> Unit) {
+        val imageUri = _playlistImage.value ?: Constants.PLACEHOLDER_URI
+
         viewModelScope.launch {
             playlistInteractor.addPlaylist(imageUri, title, description)
-            onComplete() 
+            onComplete()
         }
     }
+
+    fun shouldShowExitDialog(): Boolean {
+        return _playlistImage.value != Constants.DEFAULT_PLAYLIST_IMAGE_URI || _isPlaylistValid.value == true
+    }
+
 }

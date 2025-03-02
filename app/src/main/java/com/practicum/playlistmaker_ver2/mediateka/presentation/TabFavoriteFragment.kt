@@ -1,8 +1,5 @@
 package com.practicum.playlistmaker_ver2.mediateka.presentation
 
-
-import android.content.Context
-import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -10,21 +7,23 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
+import androidx.navigation.NavController
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.practicum.playlistmaker_ver2.databinding.FavoriteTracksBinding
+import com.practicum.playlistmaker_ver2.R
+import com.practicum.playlistmaker_ver2.databinding.TabFavoriteTracksBinding
 import com.practicum.playlistmaker_ver2.mediateka.presentation.states.FavoriteTracksState
-import com.practicum.playlistmaker_ver2.player.ui.ActivityPlayer
+
 import com.practicum.playlistmaker_ver2.player.ui.mappers.TrackToPlayerTrackMapper
-import com.practicum.playlistmaker_ver2.player.ui.models.PlayerTrack
 import com.practicum.playlistmaker_ver2.search.domain.models.Track
 import com.practicum.playlistmaker_ver2.search.presentation.adapters.TrackAdapter
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 
-class TabFavoriteFragment() : Fragment() {
+class TabFavoriteFragment(private val navController: NavController?) : Fragment() {
     private val viewModel: TabFavoriteViewModel by viewModel()
-    private var _binding: FavoriteTracksBinding? = null
-    private val binding: FavoriteTracksBinding get() = _binding!!
+    private var _binding: TabFavoriteTracksBinding? = null
+    private val binding: TabFavoriteTracksBinding get() = _binding!!
     private lateinit var adapter: TrackAdapter
 
     override fun onCreateView(
@@ -32,7 +31,7 @@ class TabFavoriteFragment() : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        _binding = FavoriteTracksBinding.inflate(inflater, container, false)
+        _binding = TabFavoriteTracksBinding.inflate(inflater, container, false)
         return binding.root
     }
 
@@ -66,15 +65,14 @@ class TabFavoriteFragment() : Fragment() {
 
     private fun onTrackClick(track: Track) {
         //viewModel.addToSearchHistory(track)
-        startPlayer(requireContext(), track)
+        startPlayer(track)
     }
 
-    private fun startPlayer(context: Context, track: Track) {
-        val playerTrack: PlayerTrack = TrackToPlayerTrackMapper.map(track)
-        val intent = Intent(context, ActivityPlayer::class.java).apply {
-            putExtra("trackData", playerTrack)
-        }
-        startActivity(intent)
+    private fun startPlayer(track: Track) {
+        val action = MediatekaFragmentDirections.actionFavoriteTracksFragmentToPlayerFragment(
+            TrackToPlayerTrackMapper.map(track)
+        )
+        navController?.navigate(action)
     }
 
     override fun onDestroyView() {
@@ -117,8 +115,8 @@ class TabFavoriteFragment() : Fragment() {
     }
 
     companion object {
-        fun newInstance(): TabFavoriteFragment {
-            return TabFavoriteFragment()
+        fun newInstance(navController: NavController?): TabFavoriteFragment {
+            return TabFavoriteFragment(navController)
         }
     }
 }

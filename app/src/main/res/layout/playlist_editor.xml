@@ -41,7 +41,7 @@
             android:layout_weight="1"
             android:fontFamily="@font/ys_display_medium"
             android:paddingHorizontal="@dimen/dim_12dp"
-            android:text="@string/newPlaylists"
+            android:text="@string/newPlaylist"
             android:textAlignment="center"
             android:textColor="?attr/colorOnPrimary"
             android:textSize="@dimen/fragment_header" />
@@ -57,7 +57,7 @@
         android:adjustViewBounds="true"
         android:scaleType="centerCrop"
         app:shapeAppearanceOverlay="@style/PlaylistImageRoundedCorners"
-        android:background="@drawable/playlist_default_image"
+
         android:contentDescription="@string/playlistImage"
         app:layout_constraintBottom_toTopOf="@id/frameName"
         app:layout_constraintDimensionRatio="H,1:1"

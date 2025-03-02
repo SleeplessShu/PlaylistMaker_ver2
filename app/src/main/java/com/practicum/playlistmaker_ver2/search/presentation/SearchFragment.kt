@@ -5,6 +5,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -19,7 +20,6 @@ import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.internal.ViewUtils.hideKeyboard
 import com.practicum.playlistmaker_ver2.databinding.SearchFragmentBinding
-import com.practicum.playlistmaker_ver2.player.ui.ActivityPlayer
 import com.practicum.playlistmaker_ver2.player.ui.mappers.TrackToPlayerTrackMapper
 import com.practicum.playlistmaker_ver2.player.ui.models.PlayerTrack
 import com.practicum.playlistmaker_ver2.search.domain.models.Track
@@ -29,7 +29,11 @@ import com.practicum.playlistmaker_ver2.utils.DebounceClickListener
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
-
+import androidx.navigation.NavOptions
+import androidx.navigation.findNavController
+import androidx.navigation.fragment.NavHostFragment
+import androidx.navigation.fragment.findNavController
+import androidx.navigation.ui.setupWithNavController
 
 class SearchFragment : Fragment() {
 
@@ -177,15 +181,15 @@ class SearchFragment : Fragment() {
 
     private fun onTrackClick(track: Track) {
         viewModel.addToSearchHistory(track)
-        startPlayer(requireContext(), track)
+        startPlayer(track)
     }
-    private fun startPlayer(context: Context, track: Track) {
-        val playerTrack: PlayerTrack = TrackToPlayerTrackMapper.map(track)
-        val intent = Intent(context, ActivityPlayer::class.java).apply {
-            putExtra("trackData", playerTrack)
-        }
-        startActivity(intent)
+    private fun startPlayer(track: Track) {
+        val action = SearchFragmentDirections.actionSearchFragmentToPlayerFragment(
+            TrackToPlayerTrackMapper.map(track)
+            )
+        findNavController().navigate(action)
     }
+
 
     private fun hideKeyboard() {
         val imm = requireActivity()
