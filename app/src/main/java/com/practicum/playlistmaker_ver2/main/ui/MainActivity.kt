@@ -5,7 +5,6 @@ import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.fragment.NavHostFragment
-import androidx.navigation.ui.setupWithNavController
 import com.practicum.playlistmaker_ver2.R
 import com.practicum.playlistmaker_ver2.databinding.ActivityMainBinding
 
@@ -22,23 +21,91 @@ class MainActivity : AppCompatActivity() {
         val navHostFragment =
             supportFragmentManager.findFragmentById(R.id.fragment_container) as NavHostFragment
         val navController = navHostFragment.navController
-        navController.addOnDestinationChangedListener { _, destination, _ ->
-                if (destination.id == R.id.playlistCreationFragment ||
-                    destination.id == R.id.playerFragment) {
 
-                    findViewById<View>(R.id.bottomNavigationView)?.visibility = View.GONE
-                    findViewById<View>(R.id.view_line)?.visibility = View.GONE
-                }
-                else {
-                    findViewById<View>(R.id.bottomNavigationView)?.visibility = View.VISIBLE
-                    findViewById<View>(R.id.view_line)?.visibility = View.VISIBLE
-                }
-        }
+        binding.bottomNavigationView.selectedItemId = R.id.mediatekaFragment
+
         val bottomNavigationView = binding.bottomNavigationView
-        bottomNavigationView.setupWithNavController(navController)
+        bottomNavigationView.setOnItemSelectedListener { item ->
+            val currentDestination = navController.currentDestination?.id
+
+            when (item.itemId) {
+                R.id.mediatekaFragment -> {
+                    if (currentDestination != R.id.mediatekaFragment) {
+                        if (currentDestination == R.id.settingsFragment) {
+                            navController.navigate(
+                                R.id.mediatekaFragment,
+                                null,
+                                getNavOptions(false)
+                            )
+                        } else {
+                            navController.navigate(
+                                R.id.mediatekaFragment,
+                                null,
+                                getNavOptions(true)
+                            )
+                        }
+                    }
+                    true
+                }
+
+                R.id.searchFragment -> {
+                    if (currentDestination != R.id.searchFragment) {
+                        navController.navigate(R.id.searchFragment, null, getNavOptions(false))
+                    }
+                    true
+                }
+
+                R.id.settingsFragment -> {
+                    if (currentDestination != R.id.settingsFragment) {
+                        navController.navigate(R.id.settingsFragment, null, getNavOptions(true))
+                    }
+                    true
+                }
+
+                else -> false
+            }
+        }
+
+        navController.addOnDestinationChangedListener { _, destination, _ ->
+            if (destination.id == R.id.playlistCreationFragment ||
+                destination.id == R.id.playerFragment
+            ) {
+
+                findViewById<View>(R.id.bottomNavigationView)?.visibility = View.GONE
+                findViewById<View>(R.id.view_line)?.visibility = View.GONE
+            } else {
+                findViewById<View>(R.id.bottomNavigationView)?.visibility = View.VISIBLE
+                findViewById<View>(R.id.view_line)?.visibility = View.VISIBLE
+            }
+        }
+        /*val bottomNavigationView = binding.bottomNavigationView
+        bottomNavigationView.setupWithNavController(navController)*/
 
     }
-    private fun deleteAllDatabases(){
+
+    private fun getNavOptions(slideRight: Boolean): androidx.navigation.NavOptions {
+        when (slideRight) {
+            true -> {
+                return androidx.navigation.NavOptions.Builder()
+                    .setEnterAnim(R.anim.slide_in_right)
+                    .setExitAnim(R.anim.slide_out_left)
+                    .setPopEnterAnim(R.anim.slide_in_left)
+                    .setPopExitAnim(R.anim.slide_out_right)
+                    .build()
+            }
+
+            false -> {
+                return androidx.navigation.NavOptions.Builder()
+                    .setEnterAnim(R.anim.slide_in_left)
+                    .setExitAnim(R.anim.slide_out_right)
+                    .setPopEnterAnim(R.anim.slide_in_right)
+                    .setPopExitAnim(R.anim.slide_out_left)
+                    .build()
+            }
+        }
+    }
+
+    private fun deleteAllDatabases() {
         this.deleteDatabase("likedTracksDatabase.db")
         this.deleteDatabase("playlistDatabase.db")
         this.deleteDatabase("tracksInPlaylists.db")
