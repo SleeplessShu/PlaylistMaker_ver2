@@ -14,9 +14,9 @@
 
         <action android:id="@+id/actionSearchFragmentToPlayerFragment"
             app:destination="@id/playerFragment"
-            app:enterAnim="@anim/slide_in_left"
+            app:enterAnim="@anim/slide_in_right"
             app:exitAnim="@anim/slide_out_left"
-            app:popEnterAnim="@anim/slide_in_left"
+            app:popEnterAnim="@anim/slide_in_right"
             app:popExitAnim="@anim/slide_out_left"/>
 
     </fragment>
@@ -30,6 +30,7 @@
         <action
             android:id="@+id/action_mediatekaFragment_to_playlistCreationFragment"
             app:destination="@id/playlistCreationFragment" />
+
         <action
             android:id="@+id/action_mediatekaFragment_to_searchFragment"
             app:destination="@id/searchFragment"
@@ -54,7 +55,10 @@
             android:id="@+id/action_favoriteTracksFragment_to_playerFragment"
             app:destination="@id/playerFragment"
             app:popEnterAnim="@anim/slide_in_right"
-            app:popExitAnim="@anim/slide_out_right"/>
+            app:popExitAnim="@anim/slide_out_left"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            />
 
     </fragment>
 
