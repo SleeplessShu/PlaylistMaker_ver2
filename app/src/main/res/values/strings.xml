@@ -87,4 +87,9 @@
     <string name="addInPlaylistFail">При добавлении трека возникла ошибка</string>
     <string name="addInPlaylistAlreadyAdded">Данный трек уже добавлен в плейлист</string>
 
+    <!--EASY PERMISSIONS-->
+    <string name="permissionDenied">"Разрешение отклонено!"</string>
+    <string name="checkSettingsForAccess">"Перейдите в настройки, чтобы включить доступ."</string>
+    <string name="accessToStorageGranted">"Доступ к хранилищу разрешён!"</string>
+    <string name="appNeedsPermission">"Приложению нужно разрешение на доступ к изображениям."</string>
 </resources>

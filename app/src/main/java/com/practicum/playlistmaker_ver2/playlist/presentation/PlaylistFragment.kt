@@ -77,7 +77,7 @@ class PlaylistFragment : Fragment(), EasyPermissions.PermissionCallbacks {
             } else {
                 EasyPermissions.requestPermissions(
                     this,
-                    "Приложению нужно разрешение на доступ к изображениям.",
+                    getString(R.string.appNeedsPermission),
                     REQUEST_CODE_STORAGE,
                     permission
                 )
@@ -193,9 +193,13 @@ class PlaylistFragment : Fragment(), EasyPermissions.PermissionCallbacks {
 
     override fun onPermissionsGranted(requestCode: Int, perms: List<String>) {
         if (requestCode == REQUEST_CODE_STORAGE) {
-            Toast.makeText(requireContext(), "Доступ к хранилищу разрешён!", Toast.LENGTH_SHORT)
+            Toast.makeText(
+                requireContext(),
+                getString(R.string.accessToStorageGranted),
+                Toast.LENGTH_SHORT
+            )
                 .show()
-            binding.imagePlayList.performClick() // Запускаем обработчик снова
+            binding.imagePlayList.performClick()
         }
     }
 
@@ -203,14 +207,19 @@ class PlaylistFragment : Fragment(), EasyPermissions.PermissionCallbacks {
         if (EasyPermissions.somePermissionPermanentlyDenied(this, perms)) {
             Toast.makeText(
                 requireContext(),
-                "Перейдите в настройки, чтобы включить доступ.",
+                getString(R.string.checkSettingsForAccess),
                 Toast.LENGTH_LONG
             ).show()
             openAppSettings()
         } else {
-            Toast.makeText(requireContext(), "Разрешение отклонено!", Toast.LENGTH_SHORT).show()
+            Toast.makeText(
+                requireContext(),
+                getString(R.string.permissionDenied),
+                Toast.LENGTH_SHORT
+            ).show()
         }
     }
+
     private fun openAppSettings() {
         val intent = Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS).apply {
             data = Uri.fromParts(SCHEME, requireContext().packageName, null)
