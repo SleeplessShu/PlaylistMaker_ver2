@@ -1,7 +1,11 @@
 package com.practicum.playlistmaker_ver2.playlist.presentation
 
+import android.Manifest
+import android.content.Intent
 import android.content.res.ColorStateList
+import android.net.Uri
 import android.os.Bundle
+import android.provider.Settings
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.LayoutInflater
@@ -19,8 +23,9 @@ import com.google.android.material.textfield.TextInputLayout
 import com.practicum.playlistmaker_ver2.R
 import com.practicum.playlistmaker_ver2.databinding.PlaylistEditorBinding
 import org.koin.androidx.viewmodel.ext.android.viewModel
+import pub.devrel.easypermissions.EasyPermissions
 
-class PlaylistFragment : Fragment() {
+class PlaylistFragment : Fragment(), EasyPermissions.PermissionCallbacks {
     private val playlistViewModel: PlaylistViewModel by viewModel()
     private var _binding: PlaylistEditorBinding? = null
     private val binding: PlaylistEditorBinding get() = _binding!!
@@ -56,12 +61,31 @@ class PlaylistFragment : Fragment() {
 
         binding.btnBack.setOnClickListener { onBackPress() }
         binding.imagePlayList.setOnClickListener {
-            pickImageLauncher.launch(
-                PickVisualMediaRequest(
-                    ActivityResultContracts.PickVisualMedia.ImageOnly
+            val permission =
+                if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.TIRAMISU) {
+                    Manifest.permission.READ_MEDIA_IMAGES
+                } else {
+                    Manifest.permission.READ_EXTERNAL_STORAGE
+                }
+
+            if (EasyPermissions.hasPermissions(requireContext(), permission)) {
+                pickImageLauncher.launch(
+                    PickVisualMediaRequest(
+                        ActivityResultContracts.PickVisualMedia.ImageOnly
+                    )
                 )
-            )
+            } else {
+                EasyPermissions.requestPermissions(
+                    this,
+                    "Приложению нужно разрешение на доступ к изображениям.",
+                    REQUEST_CODE_STORAGE,
+                    permission
+                )
+            }
         }
+
+
+
 
         binding.tiPlaylistName.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
@@ -95,11 +119,12 @@ class PlaylistFragment : Fragment() {
             }
         }
 
-        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, object : OnBackPressedCallback(true) {
-            override fun handleOnBackPressed() {
-                onBackPress()
-            }
-        })
+        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner,
+            object : OnBackPressedCallback(true) {
+                override fun handleOnBackPressed() {
+                    onBackPress()
+                }
+            })
     }
 
     private fun observeViewModel() {
@@ -121,13 +146,14 @@ class PlaylistFragment : Fragment() {
     }
 
     private fun showPopUpDialogue() {
-        MaterialAlertDialogBuilder(requireContext(), R.style.CustomAlertDialogTheme)
-            .setTitle(R.string.playlistDialogueHeader)
-            .setMessage(R.string.playlistDialogueBody)
+        MaterialAlertDialogBuilder(
+            requireContext(),
+            R.style.CustomAlertDialogTheme
+        ).setTitle(R.string.playlistDialogueHeader).setMessage(R.string.playlistDialogueBody)
             .setNegativeButton(R.string.playlistDialogueNo, null)
             .setPositiveButton(R.string.playlistDialogueYes) { _, _ ->
-                findNavController().navigateUp()}
-            .show()
+                findNavController().navigateUp()
+            }.show()
     }
 
     private fun setupTextInputWatcher(inputLayout: TextInputLayout) {
@@ -164,4 +190,37 @@ class PlaylistFragment : Fragment() {
             isSelected = hasText
         }
     }
+
+    override fun onPermissionsGranted(requestCode: Int, perms: List<String>) {
+        if (requestCode == REQUEST_CODE_STORAGE) {
+            Toast.makeText(requireContext(), "Доступ к хранилищу разрешён!", Toast.LENGTH_SHORT)
+                .show()
+            binding.imagePlayList.performClick() // Запускаем обработчик снова
+        }
+    }
+
+    override fun onPermissionsDenied(requestCode: Int, perms: List<String>) {
+        if (EasyPermissions.somePermissionPermanentlyDenied(this, perms)) {
+            Toast.makeText(
+                requireContext(),
+                "Перейдите в настройки, чтобы включить доступ.",
+                Toast.LENGTH_LONG
+            ).show()
+            openAppSettings()
+        } else {
+            Toast.makeText(requireContext(), "Разрешение отклонено!", Toast.LENGTH_SHORT).show()
+        }
+    }
+    private fun openAppSettings() {
+        val intent = Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS).apply {
+            data = Uri.fromParts(SCHEME, requireContext().packageName, null)
+        }
+        startActivity(intent)
+    }
+
+    private companion object {
+        const val REQUEST_CODE_STORAGE = 1001
+        const val SCHEME = "package"
+    }
+
 }

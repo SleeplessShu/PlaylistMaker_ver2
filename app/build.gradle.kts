@@ -65,6 +65,7 @@ dependencies {
     implementation("androidx.room:room-runtime:2.6.1")
     implementation("androidx.room:room-ktx:2.6.1")
     kapt("androidx.room:room-compiler:2.6.1")
-    //implementation( "androidx.navigation:navigation-safe-args-gradle-plugin:2.5.3")
+    implementation("pub.devrel:easypermissions:3.0.0")
+
 
 }
