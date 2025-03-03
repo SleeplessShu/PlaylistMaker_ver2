@@ -81,7 +81,7 @@ class TabPlaylistsFragment(private val navController: NavController?) : Fragment
         dataBinding: TabPlaylistDataBinding, playlists: List<PlaylistEntityPresentation>
     ) {
         val adapter = TabPlaylistAdapter(playlists = playlists,
-            layoutType = LayoutType.ForPlayer,
+            layoutType = LayoutType.ForPlaylist,
             onItemClick = { playlist ->
                 onPlaylistClick(playlist)
             })

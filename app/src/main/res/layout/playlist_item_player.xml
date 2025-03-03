@@ -4,8 +4,8 @@
     xmlns:tool="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginVertical="@dimen/playlistItemPlayerElementPaddingVertical"
-    android:layout_marginHorizontal="@dimen/playlistItemPlayerElementPaddingHorizontal">
+    android:layout_marginHorizontal="@dimen/playlistItemPlayerElementPaddingHorizontal"
+    android:layout_marginVertical="@dimen/playlistItemPlayerElementPaddingVertical">
 
     <com.google.android.material.imageview.ShapeableImageView
         android:id="@+id/ivPlaylistItemImage"
@@ -20,23 +20,25 @@
 
     <TextView
         android:id="@+id/tvPlaylistItemName"
+        style="@style/PlaylistItemPlayer"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        style="@style/PlaylistItemPlayer"
-        android:paddingTop="@dimen/playlistItemPlayerPaddingVertical"
+        android:layout_marginEnd="@dimen/dim_106dp"
         android:paddingStart="@dimen/playlistItemPlayerPaddingHorizontal"
+        android:paddingTop="@dimen/playlistItemPlayerPaddingVertical"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@id/ivPlaylistItemImage"
         app:layout_constraintTop_toTopOf="@id/ivPlaylistItemImage"
         tool:text="Best Summer Parties" />
 
     <TextView
         android:id="@+id/tvPlaylistItemTracksCount"
+        style="@style/PlaylistItemPlayerSmall"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        style="@style/PlaylistItemPlayerSmall"
-        android:paddingBottom="@dimen/playlistItemPlayerPaddingVertical"
         android:paddingStart="@dimen/playlistItemPlayerPaddingHorizontal"
-        app:layout_constraintStart_toStartOf="@id/tvPlaylistItemName"
+        android:paddingBottom="@dimen/playlistItemPlayerPaddingVertical"
         app:layout_constraintBottom_toBottomOf="@id/ivPlaylistItemImage"
+        app:layout_constraintStart_toStartOf="@id/tvPlaylistItemName"
         tool:text="197 треков" />
 </androidx.constraintlayout.widget.ConstraintLayout>
