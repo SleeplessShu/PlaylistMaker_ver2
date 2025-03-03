@@ -30,37 +30,38 @@ class PlayerViewModel(
     private val mainThreadHandler: Handler,
 ) : ViewModel() {
 
-
     private val _viewState = MutableLiveData<PlayerViewState>()
     val viewState: LiveData<PlayerViewState> get() = _viewState
 
     private val _uiState = MutableLiveData<UiState>()
     val uiState: LiveData<UiState> get() = _uiState
 
-    private val _playlists = MutableLiveData<List<PlaylistEntityPresentation>>()
-    val playlists: LiveData<List<PlaylistEntityPresentation>> = _playlists
-
     private val _track = MutableLiveData<PlayerTrack>()
     val track: LiveData<PlayerTrack> get() = _track
 
+    private val _playlists = MutableLiveData<List<PlaylistEntityPresentation>>()
+    val playlists: LiveData<List<PlaylistEntityPresentation>> = _playlists
+
     private var savedTrackUrl = ""
     private var timerJob: Job? = null
+    private var bottomSheetState = BottomSheetBehavior.STATE_HIDDEN
 
     fun setupPlayer(trackUrl: String) {
-        savedTrackUrl = trackUrl
+        if (savedTrackUrl == trackUrl && interactorPlayer.isPrepared()) {
+            return
+        }
 
+        savedTrackUrl = trackUrl
         interactorPlayer.prepare(trackUrl, onPrepared = {
             updatePlayerState(PlayerState.PREPARED, 0L, null)
         },
-
             onCompletion = {
                 mainThreadHandler.post {
                     stopPlayingTimeCounter()
-                    interactorPlayer.seekTo(0)  // Reset to the beginning
+                    interactorPlayer.seekTo(0)
                     updatePlayerState(PlayerState.PREPARED, 0L, null)
                 }
             },
-
             onError = { what, extra ->
                 val errorMessage = "Error occurred: $what, $extra"
                 mainThreadHandler.post {
@@ -71,6 +72,11 @@ class PlayerViewModel(
     }
 
     fun playPause() {
+        if (!interactorPlayer.isPrepared()) {
+            setupPlayer(savedTrackUrl)
+            return
+        }
+
         if (interactorPlayer.isPlaying()) {
             pausePlayer()
         } else {
@@ -79,8 +85,9 @@ class PlayerViewModel(
     }
 
     fun releasePlayer() {
-        interactorPlayer.releasePlayer()
         stopPlayingTimeCounter()
+        interactorPlayer.releasePlayer()
+        updatePlayerState(PlayerState.RELEASED, 0L, null)
     }
 
     override fun onCleared() {
@@ -89,6 +96,78 @@ class PlayerViewModel(
         releasePlayer()
     }
 
+    fun restoreBottomSheetState() {
+        updateUiState(bottomSheet = bottomSheetState)
+    }
+
+    fun bottomSheetCollapsed() {
+        bottomSheetState = BottomSheetBehavior.STATE_HIDDEN
+        updateUiState(bottomSheet = BottomSheetBehavior.STATE_HIDDEN, overlayVisibility = false)
+
+        if (!interactorPlayer.isPlaying()) {
+            setupPlayer(savedTrackUrl)
+        }
+    }
+
+    fun openBottomSheet() {
+        loadPlaylists()
+        bottomSheetState = BottomSheetBehavior.STATE_EXPANDED
+        updateUiState(bottomSheet = BottomSheetBehavior.STATE_EXPANDED, overlayVisibility = true)
+    }
+    fun onPlaylistClick(playlist: PlaylistEntityPresentation, currentTrack: PlayerTrack) {
+        if (currentTrack.trackId.toString() in playlist.tracksIDsList) {
+            updateUiState(inPlaylist = false, messageState = MessageState.ALREADY_ADDED)
+        } else {
+            updatePlaylistAndTrack(playlist.id, currentTrack)
+        }
+    }
+
+    private fun loadPlaylists() {
+        viewModelScope.launch {
+            interactorPlaylist.getAllPlaylists().collect { playlistList ->
+                _playlists.postValue(playlistList)
+            }
+        }
+    }
+    private fun startPlayer() {
+        interactorPlayer.startPlayer()
+        startPlayingTimeCounter()
+        updatePlayerState(PlayerState.PLAYING, getCurrentTime(), null)
+    }
+
+    private fun pausePlayer() {
+        interactorPlayer.pausePlayer()
+        stopPlayingTimeCounter()
+        updatePlayerState(PlayerState.PAUSED, getCurrentTime(), null)
+    }
+
+    private fun startPlayingTimeCounter() {
+        timerJob?.cancel()
+        timerJob = viewModelScope.launch {
+            while (interactorPlayer.isPlaying()) {
+                updatePlayerState(PlayerState.PLAYING, getCurrentTime(), null)
+                delay(TIMER_DELAY)
+            }
+        }
+    }
+
+    private fun stopPlayingTimeCounter() {
+        timerJob?.cancel()
+    }
+
+    private fun getCurrentTime(): Long {
+        return interactorPlayer.getCurrentPosition().toLong()
+    }
+
+    private fun convertTime(currentTime: Long): String {
+        return if (currentTime == 0L) {
+            "00:00"
+        } else {
+            val minutes = TimeUnit.MILLISECONDS.toMinutes(currentTime)
+            val seconds = TimeUnit.MILLISECONDS.toSeconds(currentTime) % 60
+            String.format("%02d:%02d", minutes, seconds)
+        }
+    }
 
     fun reactOnLikeButton(currentTrack: PlayerTrack) {
         if (_uiState.value!!.isLiked) {
@@ -101,43 +180,16 @@ class PlayerViewModel(
         updateUiState(isLiked = currentTrack.isLiked)
     }
 
-
-    fun checkInLiked(track: PlayerTrack) {
+    fun checkInLiked(currentTrack: PlayerTrack) {
         viewModelScope.launch {
             val isLiked = interactorLikedTracks.getTracks()
-                .map { tracks -> tracks.any { it.trackId == track.trackId } }.first()
+                .map { tracks ->
+                    tracks.any {
+                        it.trackId == currentTrack.trackId
+                    }
+                }.first()
             updateUiState(isLiked)
         }
-    }
-
-    fun reactOnPlaylistButton(trackID: Int) {
-        updateUiState(bottomSheet = BottomSheetBehavior.STATE_EXPANDED, overlayVisibility = true)
-        loadPlaylists()
-    }
-
-    fun loadPlaylists() {
-        viewModelScope.launch {
-            interactorPlaylist.getAllPlaylists().collect { playlistList ->
-                _playlists.postValue(playlistList)
-            }
-        }
-    }
-
-    fun bottomSheetCollapsed() {
-        updateUiState(bottomSheet = BottomSheetBehavior.STATE_HIDDEN, overlayVisibility = false)
-    }
-
-    fun onPlaylistClick(playlist: PlaylistEntityPresentation, currentTrack: PlayerTrack) {
-        if (currentTrack.trackId.toString() in playlist.tracksIDsList) {
-            updateUiState(inPlaylist = false, messageState = MessageState.ALREADY_ADDED)
-        } else {
-            updatePlaylistAndTrack(playlist.id, currentTrack)
-        }
-    }
-
-    fun setTrack(playerTrack: PlayerTrack) {
-        _track.value = playerTrack
-        Log.d("DEBUG", "viewModel: ${_track.value}")
     }
 
     private fun updatePlaylistAndTrack(playlistID: Int, track: PlayerTrack) {
@@ -154,9 +206,12 @@ class PlayerViewModel(
                     bottomSheet = BottomSheetBehavior.STATE_HIDDEN,
                     inPlaylist = false,
                     messageState = MessageState.FAIL
+
                 )
+                Log.d("DEBUG", "updatePlaylistAndTrack: ")
             }
         }
+
     }
 
     private fun addTrackToFavorite(currentTrack: PlayerTrack) {
@@ -171,52 +226,10 @@ class PlayerViewModel(
         }
     }
 
-    private fun startPlayer() {
-        interactorPlayer.startPlayer()
-        startPlayingTimeCounter()
-        val currentTime = getCurrentTime()
-        updatePlayerState(PlayerState.PLAYING, currentTime, null)
-    }
-
-    private fun pausePlayer() {
-        interactorPlayer.pausePlayer()
-        val currentTime = getCurrentTime()
-        stopPlayingTimeCounter()
-        updatePlayerState(PlayerState.PAUSED, currentTime, null)
-    }
-
-    private fun startPlayingTimeCounter() {
-        timerJob?.cancel()
-        timerJob = viewModelScope.launch {
-            while (interactorPlayer.isPlaying()) {
-                val currentTime = getCurrentTime()
-                updatePlayerState(PlayerState.PLAYING, currentTime, null)
-                delay(TIMER_DELAY)
-            }
-        }
-    }
-
-    private fun stopPlayingTimeCounter() {
-        timerJob?.cancel()
-    }
-
-
-    private fun getCurrentTime(): Long {
-        return interactorPlayer.getCurrentPosition().toLong()
-    }
-
-    private fun convertTime(currentTime: Long): String {
-        return if (currentTime == 0L) {
-            "00:00"
-        } else {
-            val minutes = TimeUnit.MILLISECONDS.toMinutes(currentTime)
-            val seconds = TimeUnit.MILLISECONDS.toSeconds(currentTime) % 60
-            String.format("%02d:%02d", minutes, seconds)
-        }
-    }
-
     private fun updatePlayerState(
-        state: PlayerState, currentTime: Long, errorMessage: String? = null
+        state: PlayerState,
+        currentTime: Long,
+        errorMessage: String? = null
     ) {
         _viewState.postValue(PlayerViewState(state, convertTime(currentTime), errorMessage))
     }
@@ -235,8 +248,9 @@ class PlayerViewModel(
         )
     }
 
-
     companion object {
         private const val TIMER_DELAY = 300L
     }
 }
+
+

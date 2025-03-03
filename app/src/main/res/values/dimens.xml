@@ -74,4 +74,7 @@
     <dimen name="Header">20sp</dimen>
     <dimen name="Button">14sp</dimen>
 
+
+
+    <dimen name="corner_radius">8px</dimen>
 </resources>

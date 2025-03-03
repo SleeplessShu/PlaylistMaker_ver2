@@ -6,5 +6,6 @@ enum class PlayerState {
     PLAYING,
     PAUSED,
     STOPPED,
-    ERROR
+    ERROR,
+    RELEASED
 }

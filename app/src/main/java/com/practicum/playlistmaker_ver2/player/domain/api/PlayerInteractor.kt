@@ -13,6 +13,7 @@ interface PlayerInteractor {
     fun stopPlayer()
     fun releasePlayer()
     fun isPlaying(): Boolean
+    fun isPrepared(): Boolean
     fun getCurrentPosition(): Int
     fun seekTo(position: Int)
 }
