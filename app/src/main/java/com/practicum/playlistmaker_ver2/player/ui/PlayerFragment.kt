@@ -100,6 +100,7 @@ class PlayerFragment : Fragment() {
                 findNavController().navigate(R.id.action_playerFragment_to_playlistCreationFragment)
             }
             bLike.setOnClickListener { viewModel.reactOnLikeButton(currentTrack) }
+            setupBottomSheetPeekHeight()
         }
     }
 
@@ -117,7 +118,7 @@ class PlayerFragment : Fragment() {
             }
 
             override fun onSlide(bottomSheet: View, slideOffset: Float) {
-                binding.overlay.animate().alpha(slideOffset).setDuration(300).start()
+
             }
         })
     }
@@ -184,6 +185,15 @@ class PlayerFragment : Fragment() {
                 context, getString(R.string.addInPlaylistAlreadyAdded), Toast.LENGTH_SHORT
             ).show()
         }
+    }
+
+    private fun setupBottomSheetPeekHeight() {
+        val displayMetrics = resources.displayMetrics
+        val screenHeight = displayMetrics.heightPixels
+        val peekHeightPercentage = 0.63
+        val calculatedPeekHeight = (screenHeight * peekHeightPercentage).toInt()
+
+        bottomSheetBehavior.maxHeight = calculatedPeekHeight
     }
 
     private fun setupRecyclerView(

@@ -1,7 +1,6 @@
 package com.practicum.playlistmaker_ver2.player.ui
 
 import android.os.Handler
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -208,7 +207,6 @@ class PlayerViewModel(
                     messageState = MessageState.FAIL
 
                 )
-                Log.d("DEBUG", "updatePlaylistAndTrack: ")
             }
         }
 
