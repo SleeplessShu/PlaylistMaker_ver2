@@ -1,8 +1,7 @@
-package com.practicum.playlistmaker_ver2.database.LikedTracks.domain.impl
+package com.practicum.playlistmaker_ver2.player.domain.impl
 
-import com.practicum.playlistmaker_ver2.database.LikedTracks.data.TrackEntity
-import com.practicum.playlistmaker_ver2.database.LikedTracks.domain.LikedTracksInteractor
-import com.practicum.playlistmaker_ver2.database.LikedTracks.domain.LikedTracksRepository
+import com.practicum.playlistmaker_ver2.player.domain.api.LikedTracksInteractor
+import com.practicum.playlistmaker_ver2.player.domain.repositories.LikedTracksRepository
 import com.practicum.playlistmaker_ver2.player.ui.models.PlayerTrack
 import com.practicum.playlistmaker_ver2.search.domain.models.Track
 import kotlinx.coroutines.flow.Flow

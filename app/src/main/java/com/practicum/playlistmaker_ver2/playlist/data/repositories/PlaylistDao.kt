@@ -1,4 +1,4 @@
-package com.practicum.playlistmaker_ver2.database.Playlists.data
+package com.practicum.playlistmaker_ver2.playlist.data.repositories
 
 import androidx.room.Dao
 import androidx.room.Insert
@@ -6,6 +6,7 @@ import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import androidx.room.Transaction
 import androidx.room.Update
+import com.practicum.playlistmaker_ver2.playlist.data.entities.PlaylistEntity
 import kotlinx.coroutines.flow.Flow
 
 @Dao

@@ -1,12 +1,12 @@
-package com.practicum.playlistmaker_ver2.database.Playlists.domain
+package com.practicum.playlistmaker_ver2.playlist.domain.interactor
 
 import android.net.Uri
 import com.practicum.playlistmaker_ver2.player.ui.models.PlayerTrack
 import com.practicum.playlistmaker_ver2.playlist.domain.models.PlaylistEntityPresentation
 import kotlinx.coroutines.flow.Flow
 
-interface PlaylistRepository {
-    suspend fun updatePlaylistAndTrack(playlistID: Int, track: PlayerTrack): Result<Unit>
+interface PlaylistInteractor {
+    suspend fun updatePlaylistAndTrack(playlistID: Int, track: PlayerTrack) : Result<Unit>
 
     suspend fun addPlaylist(image: Uri, title: String, description: String)
 

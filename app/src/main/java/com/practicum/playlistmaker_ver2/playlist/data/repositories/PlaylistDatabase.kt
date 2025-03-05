@@ -1,9 +1,10 @@
-package com.practicum.playlistmaker_ver2.database.Playlists.data
+package com.practicum.playlistmaker_ver2.playlist.data.repositories
 
 import androidx.room.Database
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
-import com.practicum.playlistmaker_ver2.database.Playlists.data.converters.UriConverter
+import com.practicum.playlistmaker_ver2.playlist.data.converters.UriConverter
+import com.practicum.playlistmaker_ver2.playlist.data.entities.PlaylistEntity
 
 
 @Database(

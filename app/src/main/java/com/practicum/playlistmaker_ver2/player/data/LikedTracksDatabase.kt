@@ -1,9 +1,10 @@
-package com.practicum.playlistmaker_ver2.database.LikedTracks.data
+package com.practicum.playlistmaker_ver2.player.data
 
 import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
+import com.practicum.playlistmaker_ver2.player.data.entities.TrackEntity
 
 @Database(
     version = 4,

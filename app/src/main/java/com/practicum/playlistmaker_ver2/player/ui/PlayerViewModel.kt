@@ -6,8 +6,8 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.google.android.material.bottomsheet.BottomSheetBehavior
-import com.practicum.playlistmaker_ver2.database.LikedTracks.domain.LikedTracksInteractor
-import com.practicum.playlistmaker_ver2.database.Playlists.domain.PlaylistInteractor
+import com.practicum.playlistmaker_ver2.player.domain.api.LikedTracksInteractor
+import com.practicum.playlistmaker_ver2.playlist.domain.interactor.PlaylistInteractor
 import com.practicum.playlistmaker_ver2.player.domain.api.PlayerInteractor
 import com.practicum.playlistmaker_ver2.player.ui.models.MessageState
 import com.practicum.playlistmaker_ver2.player.ui.models.PlayerState

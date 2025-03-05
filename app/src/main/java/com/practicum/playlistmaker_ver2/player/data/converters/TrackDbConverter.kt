@@ -1,7 +1,7 @@
-package com.practicum.playlistmaker_ver2.database.LikedTracks.data.converters
+package com.practicum.playlistmaker_ver2.player.data.converters
 
 
-import com.practicum.playlistmaker_ver2.database.LikedTracks.data.TrackEntity
+import com.practicum.playlistmaker_ver2.player.data.entities.TrackEntity
 import com.practicum.playlistmaker_ver2.player.ui.models.PlayerTrack
 import com.practicum.playlistmaker_ver2.search.domain.models.Track
 

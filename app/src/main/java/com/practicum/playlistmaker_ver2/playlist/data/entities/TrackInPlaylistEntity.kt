@@ -1,13 +1,13 @@
-package com.practicum.playlistmaker_ver2.database.LikedTracks.data
+package com.practicum.playlistmaker_ver2.playlist.data.entities
+
 
 import androidx.room.ColumnInfo
 import androidx.room.ColumnInfo.Companion.TEXT
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 
-@Entity(tableName = "tracks_table")
-data class TrackEntity(
-
+@Entity(tableName = "tracksInPlaylists_table")
+data class TrackInPlaylistEntity(
     @PrimaryKey @ColumnInfo(name = "track_id")
     val trackId: Int,
     @ColumnInfo(name = "track_name", typeAffinity = TEXT, defaultValue = "unknown")

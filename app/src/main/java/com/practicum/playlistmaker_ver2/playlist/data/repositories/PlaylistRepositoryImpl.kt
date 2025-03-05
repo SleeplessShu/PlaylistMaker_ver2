@@ -1,11 +1,11 @@
-package com.practicum.playlistmaker_ver2.database.Playlists.data
+package com.practicum.playlistmaker_ver2.playlist.data.repositories
 
 import android.net.Uri
 import com.practicum.playlistmaker_ver2.playlist.domain.models.PlaylistEntityPresentation
-import com.practicum.playlistmaker_ver2.database.Playlists.domain.PlaylistRepository
-import com.practicum.playlistmaker_ver2.database.TracksInPlaylists.TrackInPlaylistEntity
-import com.practicum.playlistmaker_ver2.database.TracksInPlaylists.TracksInPlaylistsDao
+import com.practicum.playlistmaker_ver2.playlist.domain.PlaylistRepository
+import com.practicum.playlistmaker_ver2.playlist.data.entities.TrackInPlaylistEntity
 import com.practicum.playlistmaker_ver2.player.ui.models.PlayerTrack
+import com.practicum.playlistmaker_ver2.playlist.data.entities.PlaylistEntity
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.flow.map

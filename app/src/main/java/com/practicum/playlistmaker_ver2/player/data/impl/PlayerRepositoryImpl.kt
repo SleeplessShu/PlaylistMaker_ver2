@@ -1,4 +1,4 @@
-package com.practicum.playlistmaker_ver2.player.data.repository
+package com.practicum.playlistmaker_ver2.player.data.impl
 
 import android.media.MediaPlayer
 import android.os.Handler

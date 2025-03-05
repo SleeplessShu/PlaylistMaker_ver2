@@ -1,10 +1,11 @@
-package com.practicum.playlistmaker_ver2.database.LikedTracks.data
+package com.practicum.playlistmaker_ver2.player.data
 
 import androidx.room.Dao
 import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
+import com.practicum.playlistmaker_ver2.player.data.entities.TrackEntity
 import kotlinx.coroutines.flow.Flow
 
 @Dao

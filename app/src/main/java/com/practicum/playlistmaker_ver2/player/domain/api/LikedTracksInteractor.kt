@@ -1,4 +1,4 @@
-package com.practicum.playlistmaker_ver2.database.LikedTracks.domain
+package com.practicum.playlistmaker_ver2.player.domain.api
 
 import com.practicum.playlistmaker_ver2.player.ui.models.PlayerTrack
 import com.practicum.playlistmaker_ver2.search.domain.models.Track
