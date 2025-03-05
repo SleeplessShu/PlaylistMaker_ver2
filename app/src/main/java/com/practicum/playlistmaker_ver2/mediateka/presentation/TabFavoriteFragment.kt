@@ -107,6 +107,7 @@ class TabFavoriteFragment : Fragment() {
         binding.scrollable.isVisible = false
     }
 
+
     companion object {
         fun newInstance(): TabFavoriteFragment {
             return TabFavoriteFragment()

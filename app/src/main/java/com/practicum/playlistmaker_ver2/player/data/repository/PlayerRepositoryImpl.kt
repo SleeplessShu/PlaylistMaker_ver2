@@ -20,9 +20,7 @@ class PlayerRepositoryImpl(
         onError: (what: Int, extra: Int) -> Boolean
     ) {
         try {
-            if (!isPlayerReleased) {
-                resetPlayer()
-            }
+            resetPlayer()
 
             player.apply {
                 setDataSource(trackUrl)

@@ -228,7 +228,12 @@ class PlaylistFragment : Fragment(), EasyPermissions.PermissionCallbacks {
         startActivity(intent)
     }
 
+
     private companion object {
+        fun newInstance(): PlaylistFragment {
+            return PlaylistFragment()
+        }
+
         const val REQUEST_CODE_STORAGE = 1001
         const val SCHEME = "package"
     }
