@@ -113,9 +113,14 @@ class PlayerViewModel(
         bottomSheetState = BottomSheetBehavior.STATE_EXPANDED
         updateUiState(bottomSheet = BottomSheetBehavior.STATE_EXPANDED, overlayVisibility = true)
     }
+
     fun onPlaylistClick(playlist: PlaylistEntityPresentation, currentTrack: PlayerTrack) {
         if (currentTrack.trackId.toString() in playlist.tracksIDsList) {
-            updateUiState(inPlaylist = false, messageState = MessageState.ALREADY_ADDED)
+            updateUiState(
+                inPlaylist = false,
+                messageState = MessageState.ALREADY_ADDED,
+                playlistName = playlist.name
+            )
         } else {
             updatePlaylistAndTrack(playlist.id, currentTrack)
         }
@@ -128,6 +133,7 @@ class PlayerViewModel(
             }
         }
     }
+
     private fun startPlayer() {
         interactorPlayer.startPlayer()
         startPlayingTimeCounter()
@@ -237,11 +243,12 @@ class PlayerViewModel(
         inPlaylist: Boolean = _uiState.value?.inPlaylist ?: false,
         bottomSheet: Int = _uiState.value?.bottomSheet ?: BottomSheetBehavior.STATE_HIDDEN,
         overlayVisibility: Boolean = _uiState.value?.overlayVisibility ?: false,
-        messageState: MessageState = MessageState.NOTHING
+        messageState: MessageState = MessageState.NOTHING,
+        playlistName: String = ""
     ) {
         _uiState.postValue(
             UiState(
-                isLiked, inPlaylist, bottomSheet, overlayVisibility, messageState
+                isLiked, inPlaylist, bottomSheet, overlayVisibility, messageState, playlistName
             )
         )
     }

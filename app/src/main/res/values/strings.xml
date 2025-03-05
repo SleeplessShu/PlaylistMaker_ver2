@@ -85,7 +85,7 @@
     <string name="addInPlaylist">Добавить в плейлист</string>
     <string name="addInPlaylistSuccess">Трек успешно добавлен в плейлист</string>
     <string name="addInPlaylistFail">При добавлении трека возникла ошибка</string>
-    <string name="addInPlaylistAlreadyAdded">Данный трек уже добавлен в плейлист</string>
+    <string name="addInPlaylistAlreadyAdded">Трек уже добавлен в плейлист %s</string>
 
     <!--EASY PERMISSIONS-->
     <string name="permissionDenied">"Разрешение отклонено!"</string>

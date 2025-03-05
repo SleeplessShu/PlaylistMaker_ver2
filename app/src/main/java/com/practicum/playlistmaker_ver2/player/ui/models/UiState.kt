@@ -7,5 +7,6 @@ data class UiState(
     val inPlaylist: Boolean = false,
     val bottomSheet: Int = BottomSheetBehavior.STATE_HIDDEN,
     val overlayVisibility: Boolean = false,
-    val messageState: MessageState = MessageState.NOTHING
+    val messageState: MessageState = MessageState.NOTHING,
+    val playlistName: String = ""
 )
