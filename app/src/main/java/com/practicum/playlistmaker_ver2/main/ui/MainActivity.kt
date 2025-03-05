@@ -4,6 +4,8 @@ package com.practicum.playlistmaker_ver2.main.ui
 import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.isGone
+import androidx.core.view.isVisible
 import androidx.navigation.fragment.NavHostFragment
 import com.practicum.playlistmaker_ver2.R
 import com.practicum.playlistmaker_ver2.databinding.ActivityMainBinding
@@ -63,24 +65,16 @@ class MainActivity : AppCompatActivity() {
         }
 
         navController.addOnDestinationChangedListener { _, destination, _ ->
-            if (destination.id == R.id.playlistCreationFragment || destination.id == R.id.playerFragment) {
-                bottomNavigationVisible(false)
-            } else {
-                bottomNavigationVisible(true)
-            }
-        }/*val bottomNavigationView = binding.bottomNavigationView
-        bottomNavigationView.setupWithNavController(navController)*/
+            bottomNavigationVisible(
+                !(destination.id == R.id.playlistCreationFragment || destination.id == R.id.playerFragment)
+            )
+        }
 
     }
 
     private fun bottomNavigationVisible(isVisible: Boolean) {
-        if (isVisible) {
-            findViewById<View>(R.id.bottomNavigationView)?.visibility = View.VISIBLE
-            findViewById<View>(R.id.view_line)?.visibility = View.VISIBLE
-        } else {
-            findViewById<View>(R.id.bottomNavigationView)?.visibility = View.GONE
-            findViewById<View>(R.id.view_line)?.visibility = View.GONE
-        }
+            findViewById<View>(R.id.bottomNavigationView)?.isVisible = isVisible
+            findViewById<View>(R.id.view_line)?.isVisible = isVisible
     }
 
 
