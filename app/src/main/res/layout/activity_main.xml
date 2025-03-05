@@ -9,8 +9,8 @@
     <androidx.fragment.app.FragmentContainerView
         android:id="@+id/fragment_container"
         android:name="androidx.navigation.fragment.NavHostFragment"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
+        android:layout_width="@dimen/Zero"
+        android:layout_height="@dimen/Zero"
         app:defaultNavHost="true"
         app:layout_constraintBottom_toTopOf="@id/view_line"
         app:layout_constraintEnd_toEndOf="parent"
@@ -20,8 +20,8 @@
 
     <View
         android:id="@+id/view_line"
-        android:layout_width="0dp"
-        android:layout_height="0.5dp"
+        android:layout_width="@dimen/Zero"
+        android:layout_height="@dimen/thin_line"
         android:background="@color/greyLight"
         app:layout_constraintBottom_toTopOf="@id/bottomNavigationView"
         app:layout_constraintEnd_toEndOf="parent"
@@ -30,7 +30,7 @@
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/bottomNavigationView"
-        android:layout_width="0dp"
+        android:layout_width="@dimen/Zero"
         android:layout_height="wrap_content"
         android:background="?attr/colorPrimary"
         app:itemIconTint="@color/navigation_item_colors"

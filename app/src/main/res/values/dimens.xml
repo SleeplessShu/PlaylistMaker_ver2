@@ -50,6 +50,11 @@
 
     <!--PLAYLIST-->
     <dimen name="playlistImageRoundedCorners">8dp</dimen>
+    <dimen name="playlistMargin16">16dp</dimen>
+    <dimen name="playlistMargin26">26dp</dimen>
+    <dimen name="playlistMargin32">32dp</dimen>
+    <dimen name="playlistImageButton">40dp</dimen>
+
 
     <!--PlAYLIST_ITEM-->
     <dimen name="playlistItemPaddingTop">4dp</dimen>
@@ -73,6 +78,22 @@
     <!--PLAYER_BOTTOM_SHEET-->
     <dimen name="Header">20sp</dimen>
     <dimen name="Button">14sp</dimen>
+
+    <!--Main activity-->
+    <dimen name="thin_line">0.5dp</dimen>
+
+    <!--ALL-->
+    <dimen name="Zero">0dp</dimen>
+
+    <!--error_network_connection-->
+    <dimen name="imageMarginTop">102dp</dimen>
+    <dimen name="imageMarginBottom">16dp</dimen>
+    <dimen name="error_tvSize">19sp</dimen>
+    <dimen name="error_buttonText">14sp</dimen>
+    <dimen name="error_paddingVertical">10dp</dimen>
+    <dimen name="error_paddingHorizontal">12dp</dimen>
+
+
 
 
 
