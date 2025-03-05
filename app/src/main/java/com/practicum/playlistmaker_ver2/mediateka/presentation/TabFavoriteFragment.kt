@@ -1,16 +1,13 @@
 package com.practicum.playlistmaker_ver2.mediateka.presentation
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
-import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.practicum.playlistmaker_ver2.R
 import com.practicum.playlistmaker_ver2.databinding.TabFavoriteTracksBinding
 import com.practicum.playlistmaker_ver2.mediateka.presentation.states.FavoriteTracksState
 
@@ -20,7 +17,8 @@ import com.practicum.playlistmaker_ver2.search.presentation.adapters.TrackAdapte
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 
-class TabFavoriteFragment(private val navController: NavController?) : Fragment() {
+class TabFavoriteFragment : Fragment() {
+
     private val viewModel: TabFavoriteViewModel by viewModel()
     private var _binding: TabFavoriteTracksBinding? = null
     private val binding: TabFavoriteTracksBinding get() = _binding!!
@@ -30,7 +28,7 @@ class TabFavoriteFragment(private val navController: NavController?) : Fragment(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         _binding = TabFavoriteTracksBinding.inflate(inflater, container, false)
         return binding.root
     }
@@ -64,7 +62,6 @@ class TabFavoriteFragment(private val navController: NavController?) : Fragment(
     }
 
     private fun onTrackClick(track: Track) {
-        //viewModel.addToSearchHistory(track)
         startPlayer(track)
     }
 
@@ -72,7 +69,7 @@ class TabFavoriteFragment(private val navController: NavController?) : Fragment(
         val action = MediatekaFragmentDirections.actionFavoriteTracksFragmentToPlayerFragment(
             TrackToPlayerTrackMapper.map(track)
         )
-        navController?.navigate(action)
+        findNavController().navigate(action)
     }
 
     override fun onDestroyView() {
@@ -96,11 +93,7 @@ class TabFavoriteFragment(private val navController: NavController?) : Fragment(
     }
 
     private fun showContent(tracks: List<Track>) {
-        adapter?.updateTracks(tracks, TrackAdapter.VIEW_TYPE_ITEM)
-        tracks.forEach { track ->
-            Log.d("DEBUG", "${track.trackName}, ${track.order}")
-        }
-
+        adapter.updateTracks(tracks, TrackAdapter.VIEW_TYPE_ITEM)
         binding.progressBar.isVisible = false
         binding.ivNothingFound.isVisible = false
         binding.tvNothingFound.isVisible = false
@@ -115,8 +108,8 @@ class TabFavoriteFragment(private val navController: NavController?) : Fragment(
     }
 
     companion object {
-        fun newInstance(navController: NavController?): TabFavoriteFragment {
-            return TabFavoriteFragment(navController)
+        fun newInstance(): TabFavoriteFragment {
+            return TabFavoriteFragment()
         }
     }
 }

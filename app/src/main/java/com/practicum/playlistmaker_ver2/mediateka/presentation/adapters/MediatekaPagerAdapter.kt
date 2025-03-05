@@ -7,7 +7,7 @@ import androidx.viewpager2.adapter.FragmentStateAdapter
 import com.practicum.playlistmaker_ver2.mediateka.presentation.TabPlaylistsFragment
 import com.practicum.playlistmaker_ver2.mediateka.presentation.TabFavoriteFragment
 
-class MediatekaPagerAdapter(activity: AppCompatActivity, private val navController: NavController?) : FragmentStateAdapter(activity) {
+class MediatekaPagerAdapter(activity: AppCompatActivity) : FragmentStateAdapter(activity) {
 
     override fun getItemCount(): Int {
         return 2
@@ -15,8 +15,8 @@ class MediatekaPagerAdapter(activity: AppCompatActivity, private val navControll
 
     override fun createFragment(position: Int): Fragment {
         return when (position) {
-            0 -> TabFavoriteFragment.newInstance(navController)
-            else -> TabPlaylistsFragment.newInstance(navController)
+            0 -> TabFavoriteFragment.newInstance()
+            else -> TabPlaylistsFragment.newInstance()
         }
     }
 }

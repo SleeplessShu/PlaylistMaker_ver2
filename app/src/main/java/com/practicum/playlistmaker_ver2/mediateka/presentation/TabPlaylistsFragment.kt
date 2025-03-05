@@ -20,7 +20,7 @@ import com.practicum.playlistmaker_ver2.playlist.presentation.LayoutType
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 
-class TabPlaylistsFragment(private val navController: NavController?) : Fragment() {
+class TabPlaylistsFragment : Fragment() {
 
     private val viewModel: TabPlaylistsViewModel by viewModel()
     private var _binding: TabPlaylistFragmentBinding? = null
@@ -60,7 +60,7 @@ class TabPlaylistsFragment(private val navController: NavController?) : Fragment
         emptyBinding.bNewPlaylist.isClickable = true
         emptyBinding.bNewPlaylist.isFocusable = true
         emptyBinding.bNewPlaylist.setOnClickListener {
-            navController?.navigate(R.id.action_mediatekaFragment_to_playlistCreationFragment)
+            findNavController().navigate(R.id.action_mediatekaFragment_to_playlistCreationFragment)
 
 
         }
@@ -71,7 +71,7 @@ class TabPlaylistsFragment(private val navController: NavController?) : Fragment
         val dataBinding = TabPlaylistDataBinding.bind(binding.viewFlipper.getChildAt(1))
         setupRecyclerView(dataBinding, playlists)
         dataBinding.bNewPlaylist.setOnClickListener {
-            navController?.navigate(R.id.action_mediatekaFragment_to_playlistCreationFragment)
+           findNavController().navigate(R.id.action_mediatekaFragment_to_playlistCreationFragment)
 
 
         }
@@ -90,14 +90,12 @@ class TabPlaylistsFragment(private val navController: NavController?) : Fragment
     }
 
     private fun onPlaylistClick(playlist: PlaylistEntityPresentation) {
-
         Toast.makeText(context, "clicked on playlist ${playlist}", Toast.LENGTH_SHORT).show()
-        //viewModel.onPlaylistClick(playlist)
     }
 
     companion object {
-        fun newInstance(navController: NavController?): TabPlaylistsFragment {
-            return TabPlaylistsFragment(navController)
+        fun newInstance(): TabPlaylistsFragment {
+            return TabPlaylistsFragment()
         }
     }
 }

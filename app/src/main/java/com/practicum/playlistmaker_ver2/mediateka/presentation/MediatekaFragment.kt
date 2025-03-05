@@ -24,7 +24,7 @@ class MediatekaFragment : Fragment() {
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         _binding = MediatekaFragmentBinding.inflate(inflater, container, false)
         return binding.root
     }
@@ -37,20 +37,15 @@ class MediatekaFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val navController = parentFragment?.findNavController()
-        pagerAdapter = MediatekaPagerAdapter(requireActivity() as AppCompatActivity, navController)
+        pagerAdapter = MediatekaPagerAdapter(requireActivity() as AppCompatActivity)
         binding.viewPager.adapter = pagerAdapter
-        //pagerAdapter = MediatekaPagerAdapter(requireActivity() as AppCompatActivity)
-        binding?.viewPager?.adapter = pagerAdapter
 
-        tabMediator = binding?.tabLayout?.let {
-            binding?.viewPager?.let { it1 ->
-                TabLayoutMediator(it, it1) { tab, position ->
-                    when (position) {
-                        0 -> tab.text = getString(R.string.FavTracks)
-                        else -> tab.text = getString(R.string.FavPlaylists)
+        tabMediator = binding.tabLayout.let {
+            TabLayoutMediator(it, binding.viewPager) { tab, position ->
+                when (position) {
+                    0 -> tab.text = getString(R.string.FavTracks)
+                    else -> tab.text = getString(R.string.FavPlaylists)
 
-                    }
                 }
             }
         }
