@@ -122,7 +122,7 @@ class PlayerViewModel(
                 playlistName = playlist.name
             )
         } else {
-            updatePlaylistAndTrack(playlist.id, currentTrack)
+            updatePlaylistAndTrack(playlist, currentTrack)
         }
     }
 
@@ -197,20 +197,23 @@ class PlayerViewModel(
         }
     }
 
-    private fun updatePlaylistAndTrack(playlistID: Int, track: PlayerTrack) {
+    private fun updatePlaylistAndTrack(playlist: PlaylistEntityPresentation, track: PlayerTrack) {
         viewModelScope.launch {
-            val result = interactorPlaylist.updatePlaylistAndTrack(playlistID, track)
+            val result = interactorPlaylist.updatePlaylistAndTrack(playlist.id, track)
+            val playlistName = playlist.name
             if (Result.success(Unit) == result) {
                 updateUiState(
                     bottomSheet = BottomSheetBehavior.STATE_HIDDEN,
                     inPlaylist = true,
-                    messageState = MessageState.SUCCESS
+                    messageState = MessageState.SUCCESS,
+                    playlistName = playlistName
                 )
             } else {
                 updateUiState(
                     bottomSheet = BottomSheetBehavior.STATE_HIDDEN,
                     inPlaylist = false,
-                    messageState = MessageState.FAIL
+                    messageState = MessageState.FAIL,
+                    playlistName = playlistName
 
                 )
             }

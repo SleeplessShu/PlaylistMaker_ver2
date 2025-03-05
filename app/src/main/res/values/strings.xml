@@ -83,7 +83,7 @@
 
     <!--PLAYER_BOTTOM_SHEET-->
     <string name="addInPlaylist">Добавить в плейлист</string>
-    <string name="addInPlaylistSuccess">Трек успешно добавлен в плейлист</string>
+    <string name="addInPlaylistSuccess">Трек добавлен в плейлист %s</string>
     <string name="addInPlaylistFail">При добавлении трека возникла ошибка</string>
     <string name="addInPlaylistAlreadyAdded">Трек уже добавлен в плейлист %s</string>
 

@@ -175,9 +175,12 @@ class PlayerFragment : Fragment() {
                 context, getString(R.string.addInPlaylistFail), Toast.LENGTH_SHORT
             ).show()
 
-            MessageState.SUCCESS -> Toast.makeText(
-                context, getString(R.string.addInPlaylistSuccess), Toast.LENGTH_SHORT
-            ).show()
+            MessageState.SUCCESS -> {
+                val message = getString(R.string.addInPlaylistSuccess, uiState.playlistName)
+                Toast.makeText(
+                    context, message, Toast.LENGTH_SHORT
+                ).show()
+            }
 
             MessageState.ALREADY_ADDED -> {
                 val message = getString(R.string.addInPlaylistAlreadyAdded,uiState.playlistName)
