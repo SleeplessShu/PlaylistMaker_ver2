@@ -21,6 +21,9 @@ class PlaylistViewModel(
     private val _isPlaylistValid = MutableLiveData<Boolean>()
     val isPlaylistValid: LiveData<Boolean> get() = _isPlaylistValid
 
+    private val _isDescriptionValid = MutableLiveData<Boolean>()
+    val isDescriptionValid: LiveData<Boolean> get() = _isDescriptionValid
+
 
     fun saveImageToPrivateStorage(uri: Uri) {
         val savedUri = imageInteractor.saveImageToPrivateStorage(uri)
@@ -29,6 +32,9 @@ class PlaylistViewModel(
 
     fun validatePlaylist(name: String) {
         _isPlaylistValid.postValue(name.isNotBlank())
+    }
+    fun validateDescription(description: String) {
+        _isDescriptionValid.postValue(description.isNotBlank())
     }
 
     fun addPlaylist(title: String, description: String, onComplete: () -> Unit) {
@@ -43,7 +49,7 @@ class PlaylistViewModel(
     }
 
     fun shouldShowExitDialog(): Boolean {
-        return _playlistImage.value != Constants.DEFAULT_PLAYLIST_IMAGE_URI || _isPlaylistValid.value == true
+        return _playlistImage.value != Constants.DEFAULT_PLAYLIST_IMAGE_URI || _isPlaylistValid.value == true || _isDescriptionValid.value == true
     }
 
 }
