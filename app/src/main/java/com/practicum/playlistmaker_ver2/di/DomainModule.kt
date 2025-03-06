@@ -1,9 +1,13 @@
 package com.practicum.playlistmaker_ver2.di
 
-import com.practicum.playlistmaker_ver2.database.domain.LikedTracksInteractor
-import com.practicum.playlistmaker_ver2.database.domain.impl.LikedTracksInteractorImpl
+import com.practicum.playlistmaker_ver2.player.domain.api.LikedTracksInteractor
+import com.practicum.playlistmaker_ver2.player.domain.impl.LikedTracksInteractorImpl
+import com.practicum.playlistmaker_ver2.mediateka.domain.api.ImageInteractor
+import com.practicum.playlistmaker_ver2.mediateka.domain.implementation.ImageInteractorImpl
 import com.practicum.playlistmaker_ver2.player.domain.api.PlayerInteractor
 import com.practicum.playlistmaker_ver2.player.domain.impl.PlayerInteractorImpl
+import com.practicum.playlistmaker_ver2.playlist.domain.interactor.PlaylistInteractor
+import com.practicum.playlistmaker_ver2.playlist.domain.implimentation.PlaylistInteractorImpl
 import com.practicum.playlistmaker_ver2.search.domain.interactor.SearchInteractor
 import com.practicum.playlistmaker_ver2.search.domain.interactor.TrackInteractor
 import com.practicum.playlistmaker_ver2.search.domain.impl.ClickedTracksInteractorImpl
@@ -43,5 +47,11 @@ val domainModule = module {
 
     single<LikedTracksInteractor> {
         LikedTracksInteractorImpl(get())
+    }
+    single<ImageInteractor> {
+        ImageInteractorImpl(get())
+    }
+    single<PlaylistInteractor> {
+        PlaylistInteractorImpl(get())
     }
 }

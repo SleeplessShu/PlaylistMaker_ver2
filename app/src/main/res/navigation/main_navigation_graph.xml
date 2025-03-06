@@ -5,38 +5,130 @@
     android:id="@+id/main_navigation_graph"
     app:startDestination="@id/mediatekaFragment">
 
+    <!-- Фрагмент поиска -->
     <fragment
         android:id="@+id/searchFragment"
         android:name="com.practicum.playlistmaker_ver2.search.presentation.SearchFragment"
         android:label="search_fragment"
-        tools:layout="@layout/search_fragment" />
+        tools:layout="@layout/search_fragment" >
+
+        <action android:id="@+id/actionSearchFragmentToPlayerFragment"
+            app:destination="@id/playerFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_right"
+            app:popExitAnim="@anim/slide_out_left"/>
+
+    </fragment>
+
+    <!-- Фрагмент медиатеки -->
     <fragment
         android:id="@+id/mediatekaFragment"
         android:name="com.practicum.playlistmaker_ver2.mediateka.presentation.MediatekaFragment"
         android:label="mediateka_fragment"
         tools:layout="@layout/mediateka_fragment">
         <action
+            android:id="@+id/action_mediatekaFragment_to_playlistCreationFragment"
+            app:destination="@id/playlistCreationFragment"
+            app:popEnterAnim="@anim/slide_in_up"
+            app:popExitAnim="@anim/slide_out_down"
+            app:enterAnim="@anim/slide_in_up"
+            app:exitAnim="@anim/slide_out_down"/>
+
+        <action
             android:id="@+id/action_mediatekaFragment_to_searchFragment"
-            app:destination="@id/searchFragment" />
+            app:destination="@id/searchFragment"
+            app:enterAnim="@anim/slide_in_left"
+            app:exitAnim="@anim/slide_out_right"
+            app:popEnterAnim="@anim/slide_in_right"
+            app:popExitAnim="@anim/slide_out_left" />
+
         <action
             android:id="@+id/action_mediatekaFragment_to_settingsFragment"
             app:destination="@id/settingsFragment"
             app:enterAnim="@anim/slide_in_right"
-            app:exitAnim="@anim/slide_out_right"
-            app:popEnterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
             app:popExitAnim="@anim/slide_out_right" />
+        <argument
+            android:name="track"
+            app:argType="com.practicum.playlistmaker_ver2.player.ui.models.PlayerTrack"
+            app:nullable="false" />
+
         <action
-            android:id="@+id/action_mediatekaFragment_to_activityPlayer2"
-            app:destination="@id/activityPlayer2" />
+            android:id="@+id/action_favoriteTracksFragment_to_playerFragment"
+            app:destination="@id/playerFragment"
+            app:popEnterAnim="@anim/slide_in_right"
+            app:popExitAnim="@anim/slide_out_left"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            />
+
     </fragment>
+
+    <!-- Вложенный фрагмент избранных треков -->
+    <fragment
+        android:id="@+id/tabFavoriteFragment"
+        android:name="com.practicum.playlistmaker_ver2.mediateka.presentation.TabFavoriteFragment"
+        android:label="tab_favorite_tracks"
+        tools:layout="@layout/tab_favorite_tracks">
+
+    </fragment>
+
+    <!-- Вложенный фрагмент плейлистов -->
+    <fragment
+        android:id="@+id/tabPlaylistFragment"
+        android:name="com.practicum.playlistmaker_ver2.mediateka.presentation.TabPlaylistsFragment"
+        android:label="tab_playlist_fragment"
+        tools:layout="@layout/tab_playlist_fragment">
+
+        <!-- Переход в создание плейлиста -->
+        <action
+            android:id="@+id/action_tabPlaylistFragment_to_playlistCreationFragment"
+            app:destination="@id/playlistCreationFragment"
+            app:popEnterAnim="@anim/slide_in_up"
+            app:popExitAnim="@anim/slide_in_up"
+            app:enterAnim="@anim/slide_out_down"
+            app:exitAnim="@anim/slide_out_down"
+            />
+    </fragment>
+
+    <!-- Фрагмент плеера -->
+    <fragment
+        android:id="@+id/playerFragment"
+        android:name="com.practicum.playlistmaker_ver2.player.ui.PlayerFragment"
+        android:label="player_fragment"
+        tools:layout="@layout/player_fragment">
+
+        <argument
+            android:name="track"
+            app:argType="com.practicum.playlistmaker_ver2.player.ui.models.PlayerTrack"
+            app:nullable="false" />
+        <action
+            android:id="@+id/action_playerFragment_to_playlistCreationFragment"
+            app:destination="@id/playlistCreationFragment"
+            app:popEnterAnim="@anim/slide_in_up"
+            app:popExitAnim="@anim/slide_out_down"
+            app:enterAnim="@anim/slide_in_up"
+            app:exitAnim="@anim/slide_out_down"/>
+    </fragment>
+
+    <!-- Фрагмент создания плейлиста -->
+    <fragment
+        android:id="@+id/playlistCreationFragment"
+        android:name="com.practicum.playlistmaker_ver2.playlist.presentation.PlaylistFragment"
+        android:label="Создание плейлиста"
+        tools:layout="@layout/playlist_editor"
+        app:popEnterAnim="@anim/slide_in_up"
+        app:popExitAnim="@anim/slide_out_down"
+        app:enterAnim="@anim/slide_in_up"
+        app:exitAnim="@anim/slide_out_down"/>
+
+    <!-- Фрагмент настроек -->
     <fragment
         android:id="@+id/settingsFragment"
         android:name="com.practicum.playlistmaker_ver2.settings.presentation.SettingsFragment"
         android:label="settings_fragment"
         tools:layout="@layout/settings_fragment" />
-    <activity
-        android:id="@+id/activityPlayer2"
-        android:name="com.practicum.playlistmaker_ver2.player.ui.ActivityPlayer"
-        android:label="activity_player"
-        tools:layout="@layout/activity_player" />
+
 </navigation>

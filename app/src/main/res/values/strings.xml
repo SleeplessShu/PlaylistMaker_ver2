@@ -1,4 +1,7 @@
 <resources>
+    <!-- GLOBAL -->
+    <string name="buttonBack">кнопка "назад"</string>
+
     <!-- TITLES -->
     <string name="title_application_name">PlaylistMaker</string>
     <string name="title_screen_name">Playlist Maker</string>
@@ -13,7 +16,7 @@
     <string name="Refresh">Обновить</string>
     <string name="Clear_history">Очистить историю</string>
 
-
+    <!--Settings-->
     <string name="switchDarkTheme">Тёмная тема</string>
     <string name="shareApp">Поделиться приложением</string>
     <string name="support">Написать в поддержку</string>
@@ -43,11 +46,50 @@
     <string name="sYear">Год</string>
     <string name="sGenre">Жанр</string>
     <string name="sCountry">Страна</string>
+    <string name="defaultTime">00:00</string>
+    <string name="timeCounter">"%02d:%02d"</string>
+
 
     <!--Mediateka-->
     <string name="noPlaylists">Вы не создали\nни одного плейлиста</string>
-    <string name="newPlaylists">Новый плейлист</string>
+    <string name="newPlaylist">Новый плейлист</string>
     <string name="emptyMediateka">Ваша медиатека пуста</string>
     <string name="FavTracks">Избранные треки</string>
     <string name="FavPlaylists">Плейлисты</string>
+
+    <!--PlaylistEditor-->
+    <string name="playlistImage">Обложка плейлиста</string>
+    <string name="playlistName">Название*</string>
+    <string name="playlistDescription">Описание</string>
+    <string name="playlistCreate">Создать</string>
+    <string name="playlistImageNotSelected">Изображение не выбрано</string>
+    <string name="playlistImageSelected">Обложка сохранена</string>
+    <string name="playlistImageSelectionError">Ошибка сохранения обложки</string>
+    <string name="playlistHasCreated">«Плейлист %s создан»</string>
+    <!--PlaylistDialogue-->
+    <string name="playlistDialogueHeader">Завершить создание плейлиста?</string>
+    <string name="playlistDialogueBody">Все несохраненные данные будут потеряны</string>
+    <string name="playlistDialogueYes">Завершить</string>
+    <string name="playlistDialogueNo">Отмена</string>
+
+    <!--WordsForWordsEnding-->
+    <plurals name="track_count">
+        <item quantity="one">%d трек</item>       <!-- 1 трек -->
+        <item quantity="few">%d трека</item>      <!-- 2, 3, 4 трека -->
+        <item quantity="many">%d треков</item>    <!-- 5, 6, 7... треков -->
+        <item quantity="other">%d треков</item>   <!-- 0, 11-19, 20+ треков -->
+    </plurals>
+
+
+    <!--PLAYER_BOTTOM_SHEET-->
+    <string name="addInPlaylist">Добавить в плейлист</string>
+    <string name="addInPlaylistSuccess">Трек добавлен в плейлист %s</string>
+    <string name="addInPlaylistFail">При добавлении трека возникла ошибка</string>
+    <string name="addInPlaylistAlreadyAdded">Трек уже добавлен в плейлист %s</string>
+
+    <!--EASY PERMISSIONS-->
+    <string name="permissionDenied">"Разрешение отклонено!"</string>
+    <string name="checkSettingsForAccess">"Перейдите в настройки, чтобы включить доступ."</string>
+    <string name="accessToStorageGranted">"Доступ к хранилищу разрешён!"</string>
+    <string name="appNeedsPermission">"Приложению нужно разрешение на доступ к изображениям."</string>
 </resources>

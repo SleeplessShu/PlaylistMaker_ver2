@@ -1,7 +1,6 @@
 package com.practicum.playlistmaker_ver2.search.presentation
 
 import android.content.Context
-import android.content.Intent
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -11,25 +10,16 @@ import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
-import androidx.core.content.ContentProviderCompat.requireContext
-import androidx.core.content.ContextCompat.startActivity
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.google.android.material.internal.ViewUtils.hideKeyboard
 import com.practicum.playlistmaker_ver2.databinding.SearchFragmentBinding
-import com.practicum.playlistmaker_ver2.player.ui.ActivityPlayer
 import com.practicum.playlistmaker_ver2.player.ui.mappers.TrackToPlayerTrackMapper
-import com.practicum.playlistmaker_ver2.player.ui.models.PlayerTrack
 import com.practicum.playlistmaker_ver2.search.domain.models.Track
 import com.practicum.playlistmaker_ver2.search.presentation.adapters.TrackAdapter
 import com.practicum.playlistmaker_ver2.search.presentation.models.SearchState
-import com.practicum.playlistmaker_ver2.utils.DebounceClickListener
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
-
+import androidx.navigation.fragment.findNavController
 
 class SearchFragment : Fragment() {
 
@@ -164,28 +154,34 @@ class SearchFragment : Fragment() {
 
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
-        savedSearchText = binding.queryInput.text.toString()
-        outState.putString(SEARCH_TEXT_KEY, binding.queryInput.text.toString())
-
+        _binding?.queryInput?.text?.toString()?.let {
+            savedSearchText = it
+            outState.putString(SEARCH_TEXT_KEY, it)
+        }
     }
 
+
+
     private fun restoreSearchState(savedInstanceState: Bundle?) {
-        binding.queryInput.setText("")
-        savedInstanceState?.getString(SEARCH_TEXT_KEY)?.let { viewModel.restoreSearchState(it) }
-        binding.queryInput.setText(viewModel.currentQuery)
+        _binding?.queryInput?.setText("")
+        savedInstanceState?.getString(SEARCH_TEXT_KEY)?.let {
+            viewModel.restoreSearchState(it)
+            _binding?.queryInput?.setText(viewModel.currentQuery)
+        }
+
     }
 
     private fun onTrackClick(track: Track) {
         viewModel.addToSearchHistory(track)
-        startPlayer(requireContext(), track)
+        startPlayer(track)
     }
-    private fun startPlayer(context: Context, track: Track) {
-        val playerTrack: PlayerTrack = TrackToPlayerTrackMapper.map(track)
-        val intent = Intent(context, ActivityPlayer::class.java).apply {
-            putExtra("trackData", playerTrack)
-        }
-        startActivity(intent)
+    private fun startPlayer(track: Track) {
+        val action = SearchFragmentDirections.actionSearchFragmentToPlayerFragment(
+            TrackToPlayerTrackMapper.map(track)
+            )
+        findNavController().navigate(action)
     }
+
 
     private fun hideKeyboard() {
         val imm = requireActivity()

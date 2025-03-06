@@ -2,10 +2,11 @@ package com.practicum.playlistmaker_ver2.di
 
 import android.os.Handler
 import android.os.Looper
-import com.practicum.playlistmaker_ver2.mediateka.presentation.FavoriteTracksViewModel
+import com.practicum.playlistmaker_ver2.mediateka.presentation.TabFavoriteViewModel
 import com.practicum.playlistmaker_ver2.mediateka.presentation.MediatekaViewModel
-import com.practicum.playlistmaker_ver2.mediateka.presentation.FavoritePlaylistsViewModel
+import com.practicum.playlistmaker_ver2.mediateka.presentation.TabPlaylistsViewModel
 import com.practicum.playlistmaker_ver2.player.ui.PlayerViewModel
+import com.practicum.playlistmaker_ver2.playlist.presentation.PlaylistViewModel
 import com.practicum.playlistmaker_ver2.search.presentation.SearchViewModel
 import com.practicum.playlistmaker_ver2.settings.presentation.SettingsViewModel
 import org.koin.androidx.viewmodel.dsl.viewModel
@@ -17,7 +18,7 @@ val presentationModule = module {
     }
 
     viewModel {
-        PlayerViewModel(get(), get(), get())
+        PlayerViewModel(get(), get(), get(), get())
     }
 
     viewModel {
@@ -25,7 +26,7 @@ val presentationModule = module {
     }
 
     viewModel {
-        FavoriteTracksViewModel(get())
+        TabFavoriteViewModel(get())
     }
 
     viewModel {
@@ -33,7 +34,11 @@ val presentationModule = module {
     }
 
     viewModel {
-        FavoritePlaylistsViewModel()
+        TabPlaylistsViewModel(get())
+    }
+
+    viewModel {
+        PlaylistViewModel(get(), get())
     }
 
 
