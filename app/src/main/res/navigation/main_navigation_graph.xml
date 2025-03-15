@@ -116,7 +116,7 @@
     <!-- Фрагмент создания плейлиста -->
     <fragment
         android:id="@+id/playlistCreationFragment"
-        android:name="com.practicum.playlistmaker_ver2.playlist.presentation.PlaylistFragment"
+        android:name="com.practicum.playlistmaker_ver2.playlist.presentation.PlaylistEditorFragment"
         android:label="Создание плейлиста"
         tools:layout="@layout/playlist_editor"
         app:popEnterAnim="@anim/slide_in_up"

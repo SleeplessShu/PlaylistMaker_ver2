@@ -25,7 +25,7 @@ import com.practicum.playlistmaker_ver2.databinding.PlaylistEditorBinding
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import pub.devrel.easypermissions.EasyPermissions
 
-class PlaylistFragment : Fragment(), EasyPermissions.PermissionCallbacks {
+class PlaylistEditorFragment : Fragment(), EasyPermissions.PermissionCallbacks {
     private val playlistViewModel: PlaylistViewModel by viewModel()
     private var _binding: PlaylistEditorBinding? = null
     private val binding: PlaylistEditorBinding get() = _binding!!
@@ -230,8 +230,8 @@ class PlaylistFragment : Fragment(), EasyPermissions.PermissionCallbacks {
 
 
     private companion object {
-        fun newInstance(): PlaylistFragment {
-            return PlaylistFragment()
+        fun newInstance(): PlaylistEditorFragment {
+            return PlaylistEditorFragment()
         }
 
         const val REQUEST_CODE_STORAGE = 1001
