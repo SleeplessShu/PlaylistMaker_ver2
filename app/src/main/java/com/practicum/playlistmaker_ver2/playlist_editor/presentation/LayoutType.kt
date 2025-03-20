@@ -1,4 +1,4 @@
-package com.practicum.playlistmaker_ver2.playlist.presentation
+package com.practicum.playlistmaker_ver2.playlist_editor.presentation
 
 sealed class LayoutType {
     object ForPlayer: LayoutType()

@@ -1,4 +1,4 @@
-package com.practicum.playlistmaker_ver2.playlist.data.converters
+package com.practicum.playlistmaker_ver2.playlist_editor.data.converters
 
 import android.net.Uri
 import androidx.room.TypeConverter

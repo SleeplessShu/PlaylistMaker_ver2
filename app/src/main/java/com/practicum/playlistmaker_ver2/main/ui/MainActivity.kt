@@ -4,7 +4,6 @@ package com.practicum.playlistmaker_ver2.main.ui
 import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.isGone
 import androidx.core.view.isVisible
 import androidx.navigation.fragment.NavHostFragment
 import com.practicum.playlistmaker_ver2.R
@@ -66,15 +65,15 @@ class MainActivity : AppCompatActivity() {
 
         navController.addOnDestinationChangedListener { _, destination, _ ->
             bottomNavigationVisible(
-                !(destination.id == R.id.playlistCreationFragment || destination.id == R.id.playerFragment)
+                !(destination.id == R.id.playlistCreationFragment || destination.id == R.id.playerFragment || destination.id == R.id.playlistFragment)
             )
         }
 
     }
 
     private fun bottomNavigationVisible(isVisible: Boolean) {
-            findViewById<View>(R.id.bottomNavigationView)?.isVisible = isVisible
-            findViewById<View>(R.id.view_line)?.isVisible = isVisible
+        findViewById<View>(R.id.bottomNavigationView)?.isVisible = isVisible
+        findViewById<View>(R.id.view_line)?.isVisible = isVisible
     }
 
 

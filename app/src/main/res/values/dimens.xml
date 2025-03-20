@@ -60,6 +60,8 @@
     <dimen name="playlistItemPaddingTop">4dp</dimen>
     <dimen name="playlistItemRoundedCorners">8dp</dimen>
     <dimen name="playlistItemFontSizeMedium">16sp</dimen>
+    <dimen name="playlistItemFontSizePlaylistMedium">18sp</dimen>
+    <dimen name="playlistItemFontSizeBig">24sp</dimen>
 
     <!--PlAYLIST_ITEM_PLAYER-->
     <dimen name="playlistImageSize">46dp</dimen>

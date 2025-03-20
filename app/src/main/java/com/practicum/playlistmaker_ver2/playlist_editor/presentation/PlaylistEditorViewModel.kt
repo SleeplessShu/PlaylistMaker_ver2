@@ -1,4 +1,4 @@
-package com.practicum.playlistmaker_ver2.playlist.presentation
+package com.practicum.playlistmaker_ver2.playlist_editor.presentation
 
 import android.net.Uri
 
@@ -7,11 +7,11 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.practicum.playlistmaker_ver2.mediateka.domain.api.ImageInteractor
-import com.practicum.playlistmaker_ver2.playlist.domain.interactor.PlaylistInteractor
+import com.practicum.playlistmaker_ver2.playlist_editor.domain.interactor.PlaylistInteractor
 import com.practicum.playlistmaker_ver2.utils.Constants
 import kotlinx.coroutines.launch
 
-class PlaylistViewModel(
+class PlaylistEditorViewModel(
     private val imageInteractor: ImageInteractor, private val playlistInteractor: PlaylistInteractor
 ) : ViewModel() {
 

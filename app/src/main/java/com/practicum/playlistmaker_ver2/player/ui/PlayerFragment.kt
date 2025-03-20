@@ -23,8 +23,8 @@ import com.practicum.playlistmaker_ver2.player.ui.models.PlayerState
 import com.practicum.playlistmaker_ver2.player.ui.models.PlayerTrack
 import com.practicum.playlistmaker_ver2.player.ui.models.PlayerViewState
 import com.practicum.playlistmaker_ver2.player.ui.models.UiState
-import com.practicum.playlistmaker_ver2.playlist.domain.models.PlaylistEntityPresentation
-import com.practicum.playlistmaker_ver2.playlist.presentation.LayoutType
+import com.practicum.playlistmaker_ver2.playlist_editor.domain.models.PlaylistEntityPresentation
+import com.practicum.playlistmaker_ver2.playlist_editor.presentation.LayoutType
 import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
@@ -171,22 +171,24 @@ class PlayerFragment : Fragment() {
         }
         when (uiState.messageState) {
             MessageState.NOTHING -> {}
-            MessageState.FAIL -> Toast.makeText(
+            MessageState.PLAYLIST_ADDING_FAIL -> Toast.makeText(
                 context, getString(R.string.addInPlaylistFail), Toast.LENGTH_SHORT
             ).show()
 
-            MessageState.SUCCESS -> {
+            MessageState.PLAYLIST_SUCCESSFULLY_ADDED -> {
                 val message = getString(R.string.addInPlaylistSuccess, uiState.playlistName)
                 Toast.makeText(
                     context, message, Toast.LENGTH_SHORT
                 ).show()
             }
-
             MessageState.ALREADY_ADDED -> {
                 val message = getString(R.string.addInPlaylistAlreadyAdded,uiState.playlistName)
                 Toast.makeText(
                     context, message, Toast.LENGTH_SHORT
                 ).show()
+            }
+            else -> {
+
             }
         }
     }
@@ -196,7 +198,6 @@ class PlayerFragment : Fragment() {
         val screenHeight = displayMetrics.heightPixels
         val peekHeightPercentage = 0.63
         val calculatedPeekHeight = (screenHeight * peekHeightPercentage).toInt()
-
         bottomSheetBehavior.maxHeight = calculatedPeekHeight
     }
 

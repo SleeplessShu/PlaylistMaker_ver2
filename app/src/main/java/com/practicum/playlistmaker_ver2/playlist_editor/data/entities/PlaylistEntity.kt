@@ -1,4 +1,4 @@
-package com.practicum.playlistmaker_ver2.playlist.data.entities
+package com.practicum.playlistmaker_ver2.playlist_editor.data.entities
 
 import android.net.Uri
 import androidx.room.ColumnInfo

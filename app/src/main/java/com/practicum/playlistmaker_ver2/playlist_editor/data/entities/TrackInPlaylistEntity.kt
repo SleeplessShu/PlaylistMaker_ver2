@@ -1,4 +1,4 @@
-package com.practicum.playlistmaker_ver2.playlist.data.entities
+package com.practicum.playlistmaker_ver2.playlist_editor.data.entities
 
 
 import androidx.room.ColumnInfo
@@ -28,7 +28,8 @@ data class TrackInPlaylistEntity(
     val previewUrl: String,
     @ColumnInfo(name = "poster", typeAffinity = TEXT)
     val artworkUrl500: String,
-
+    @ColumnInfo(name = "playlistsIDs", typeAffinity = TEXT)
+    val playlistsIDs: String = "",
     val isLiked: Boolean = false,
     @ColumnInfo(name = "order", typeAffinity = ColumnInfo.INTEGER)
     val order: Int = 0

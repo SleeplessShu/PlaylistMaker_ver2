@@ -1,4 +1,4 @@
-package com.practicum.playlistmaker_ver2.playlist.data.repositories
+package com.practicum.playlistmaker_ver2.playlist_editor.data.repositories
 
 import androidx.room.Dao
 import androidx.room.Insert
@@ -6,7 +6,7 @@ import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import androidx.room.Transaction
 import androidx.room.Update
-import com.practicum.playlistmaker_ver2.playlist.data.entities.PlaylistEntity
+import com.practicum.playlistmaker_ver2.playlist_editor.data.entities.PlaylistEntity
 import kotlinx.coroutines.flow.Flow
 
 @Dao
@@ -53,4 +53,6 @@ interface PlaylistDao {
 
     @Query("SELECT * FROM playlist_table WHERE id = :playlistId LIMIT 1")
     suspend fun getPlaylistById(playlistId: Int): PlaylistEntity?
+
+
 }

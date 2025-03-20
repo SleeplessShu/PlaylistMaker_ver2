@@ -4,8 +4,8 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.practicum.playlistmaker_ver2.playlist.domain.interactor.PlaylistInteractor
-import com.practicum.playlistmaker_ver2.playlist.domain.models.PlaylistEntityPresentation
+import com.practicum.playlistmaker_ver2.playlist_editor.domain.interactor.PlaylistInteractor
+import com.practicum.playlistmaker_ver2.playlist_editor.domain.models.PlaylistEntityPresentation
 import kotlinx.coroutines.launch
 
 class TabPlaylistsViewModel

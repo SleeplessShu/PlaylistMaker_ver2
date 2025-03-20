@@ -6,7 +6,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.practicum.playlistmaker_ver2.R
-import com.practicum.playlistmaker_ver2.playlist.domain.models.PlaylistEntityPresentation
+import com.practicum.playlistmaker_ver2.playlist_editor.domain.models.PlaylistEntityPresentation
 
 class PlaylistViewHolder(itemView: View, ) : RecyclerView.ViewHolder(itemView) {
     private val playlistName: TextView = itemView.findViewById(R.id.tvPlaylistItemName)

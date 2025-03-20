@@ -1,20 +1,21 @@
 package com.practicum.playlistmaker_ver2.player.ui
 
 import android.os.Handler
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.practicum.playlistmaker_ver2.player.domain.api.LikedTracksInteractor
-import com.practicum.playlistmaker_ver2.playlist.domain.interactor.PlaylistInteractor
+import com.practicum.playlistmaker_ver2.playlist_editor.domain.interactor.PlaylistInteractor
 import com.practicum.playlistmaker_ver2.player.domain.api.PlayerInteractor
 import com.practicum.playlistmaker_ver2.player.ui.models.MessageState
 import com.practicum.playlistmaker_ver2.player.ui.models.PlayerState
 import com.practicum.playlistmaker_ver2.player.ui.models.PlayerTrack
 import com.practicum.playlistmaker_ver2.player.ui.models.PlayerViewState
 import com.practicum.playlistmaker_ver2.player.ui.models.UiState
-import com.practicum.playlistmaker_ver2.playlist.domain.models.PlaylistEntityPresentation
+import com.practicum.playlistmaker_ver2.playlist_editor.domain.models.PlaylistEntityPresentation
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.first
@@ -199,20 +200,40 @@ class PlayerViewModel(
 
     private fun updatePlaylistAndTrack(playlist: PlaylistEntityPresentation, track: PlayerTrack) {
         viewModelScope.launch {
-            val result = interactorPlaylist.updatePlaylistAndTrack(playlist.id, track)
+            val updatePlaylistResult = interactorPlaylist.updateTracklistInPlaylist(playlist.id, track.trackId)
+
             val playlistName = playlist.name
-            if (Result.success(Unit) == result) {
+            Log.d("DEBUG", "updateTracklistInPlaylist: ${updatePlaylistResult}")
+            if (Result.success(Unit) == updatePlaylistResult) {
                 updateUiState(
                     bottomSheet = BottomSheetBehavior.STATE_HIDDEN,
                     inPlaylist = true,
-                    messageState = MessageState.SUCCESS,
+                    messageState = MessageState.PLAYLIST_SUCCESSFULLY_ADDED,
                     playlistName = playlistName
                 )
             } else {
                 updateUiState(
                     bottomSheet = BottomSheetBehavior.STATE_HIDDEN,
                     inPlaylist = false,
-                    messageState = MessageState.FAIL,
+                    messageState = MessageState.PLAYLIST_ADDING_FAIL,
+                    playlistName = playlistName
+
+                )
+            }
+            val updateTrackInPlaylistResult = interactorPlaylist.updateTrack(playlist.id, track)
+            Log.d("DEBUG", "updateTrack: ${updateTrackInPlaylistResult}")
+            if (Result.success(Unit) == updateTrackInPlaylistResult) {
+                updateUiState(
+                    bottomSheet = BottomSheetBehavior.STATE_HIDDEN,
+                    inPlaylist = true,
+                    messageState = MessageState.TRACK_SUCCESSFULLY_ADDED,
+                    playlistName = playlistName
+                )
+            } else {
+                updateUiState(
+                    bottomSheet = BottomSheetBehavior.STATE_HIDDEN,
+                    inPlaylist = false,
+                    messageState = MessageState.TRACK_ADDING_FAIL,
                     playlistName = playlistName
 
                 )

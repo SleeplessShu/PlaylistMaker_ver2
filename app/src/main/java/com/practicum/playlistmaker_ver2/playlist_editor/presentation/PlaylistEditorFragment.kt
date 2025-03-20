@@ -1,4 +1,4 @@
-package com.practicum.playlistmaker_ver2.playlist.presentation
+package com.practicum.playlistmaker_ver2.playlist_editor.presentation
 
 import android.Manifest
 import android.content.Intent
@@ -26,13 +26,13 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 import pub.devrel.easypermissions.EasyPermissions
 
 class PlaylistEditorFragment : Fragment(), EasyPermissions.PermissionCallbacks {
-    private val playlistViewModel: PlaylistViewModel by viewModel()
+    private val playlistEditorViewModel: PlaylistEditorViewModel by viewModel()
     private var _binding: PlaylistEditorBinding? = null
     private val binding: PlaylistEditorBinding get() = _binding!!
 
     private val pickImageLauncher =
         registerForActivityResult(ActivityResultContracts.PickVisualMedia()) { uri ->
-            uri?.let { playlistViewModel.saveImageToPrivateStorage(it) } ?: Toast.makeText(
+            uri?.let { playlistEditorViewModel.saveImageToPrivateStorage(it) } ?: Toast.makeText(
                 requireContext(), R.string.playlistImageNotSelected, Toast.LENGTH_SHORT
             ).show()
         }
@@ -90,7 +90,7 @@ class PlaylistEditorFragment : Fragment(), EasyPermissions.PermissionCallbacks {
         binding.tiPlaylistName.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                playlistViewModel.validatePlaylist(s.toString())
+                playlistEditorViewModel.validatePlaylist(s.toString())
                 updateTextInputLayoutState(binding.frameName, s?.isNotEmpty() == true)
             }
 
@@ -100,7 +100,7 @@ class PlaylistEditorFragment : Fragment(), EasyPermissions.PermissionCallbacks {
         binding.tiDescription.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                playlistViewModel.validateDescription(s.toString())
+                playlistEditorViewModel.validateDescription(s.toString())
                 updateTextInputLayoutState(binding.frameDescription, s?.isNotEmpty() == true)
             }
 
@@ -108,7 +108,7 @@ class PlaylistEditorFragment : Fragment(), EasyPermissions.PermissionCallbacks {
         })
 
         binding.bCreatePlaylist.setOnClickListener {
-            playlistViewModel.addPlaylist(
+            playlistEditorViewModel.addPlaylist(
                 binding.tiPlaylistName.text.toString(), binding.tiDescription.text.toString()
             ) {
                 Toast.makeText(
@@ -129,17 +129,17 @@ class PlaylistEditorFragment : Fragment(), EasyPermissions.PermissionCallbacks {
     }
 
     private fun observeViewModel() {
-        playlistViewModel.playlistImage.observe(viewLifecycleOwner) { uri ->
+        playlistEditorViewModel.playlistImage.observe(viewLifecycleOwner) { uri ->
             binding.imagePlayList.setImageURI(uri)
         }
 
-        playlistViewModel.isPlaylistValid.observe(viewLifecycleOwner) { isValid ->
+        playlistEditorViewModel.isPlaylistValid.observe(viewLifecycleOwner) { isValid ->
             binding.bCreatePlaylist.isEnabled = isValid
         }
     }
 
     private fun onBackPress() {
-        if (playlistViewModel.shouldShowExitDialog()) {
+        if (playlistEditorViewModel.shouldShowExitDialog()) {
             showPopUpDialogue()
         } else {
             findNavController().navigateUp()

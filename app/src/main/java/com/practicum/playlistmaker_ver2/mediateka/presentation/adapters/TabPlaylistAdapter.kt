@@ -4,8 +4,8 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.practicum.playlistmaker_ver2.R
-import com.practicum.playlistmaker_ver2.playlist.domain.models.PlaylistEntityPresentation
-import com.practicum.playlistmaker_ver2.playlist.presentation.LayoutType
+import com.practicum.playlistmaker_ver2.playlist_editor.domain.models.PlaylistEntityPresentation
+import com.practicum.playlistmaker_ver2.playlist_editor.presentation.LayoutType
 
 class TabPlaylistAdapter(
     private val playlists: List<PlaylistEntityPresentation>,
