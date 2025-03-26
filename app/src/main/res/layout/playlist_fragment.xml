@@ -19,12 +19,12 @@
             android:id="@+id/btnBack"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:padding="16dp"
-            android:gravity="center_vertical"
             android:background="?attr/selectableItemBackground"
             android:clickable="true"
             android:focusable="true"
+            android:gravity="center_vertical"
             android:orientation="horizontal"
+            android:padding="16dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
@@ -41,8 +41,8 @@
 
         <com.google.android.material.imageview.ShapeableImageView
             android:id="@+id/imagePlayList"
-            android:layout_width="@dimen/Zero"
-            android:layout_height="@dimen/Zero"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
             android:adjustViewBounds="true"
             android:contentDescription="@string/playlistImage"
             android:scaleType="fitCenter"
@@ -65,7 +65,6 @@
             tools:text="Best Summer Parties" />
 
 
-
         <TextView
             android:id="@+id/tv_PlaylistDescription"
             style="@style/playlistText"
@@ -73,11 +72,10 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:maxLength="200"
-            app:layout_constraintTop_toBottomOf="@id/tvPlaylistName"
-            app:layout_constraintStart_toStartOf="@id/tvPlaylistName"
             app:layout_constraintEnd_toEndOf="@id/tvPlaylistName"
+            app:layout_constraintStart_toStartOf="@id/tvPlaylistName"
+            app:layout_constraintTop_toBottomOf="@id/tvPlaylistName"
             tools:text="Some fun playlist description" />
-
 
 
         <TextView
@@ -86,8 +84,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
-            app:layout_constraintTop_toBottomOf="@id/tv_PlaylistDescription"
             app:layout_constraintStart_toStartOf="@id/tv_PlaylistDescription"
+            app:layout_constraintTop_toBottomOf="@id/tv_PlaylistDescription"
             tools:text="276 минут" />
 
         <ImageView
@@ -106,33 +104,33 @@
             style="@style/playlistText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:layout_constraintTop_toTopOf="@id/tv_PlaylistDuration"
-            app:layout_constraintStart_toEndOf="@id/ic_dot"
             app:layout_constraintBottom_toBottomOf="@id/tv_PlaylistDuration"
+            app:layout_constraintStart_toEndOf="@id/ic_dot"
+            app:layout_constraintTop_toTopOf="@id/tv_PlaylistDuration"
             tools:text="197 треков" />
+
         <ImageView
             android:id="@+id/ic_share"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
             android:src="@drawable/ic_share"
-            app:layout_constraintTop_toBottomOf="@id/tv_PlaylistDuration"
             app:layout_constraintStart_toStartOf="@id/tv_PlaylistDuration"
+            app:layout_constraintTop_toBottomOf="@id/tv_PlaylistDuration"
             app:tint="#1A1B22" />
 
         <ImageView
             android:id="@+id/ic_more_options"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/ic_more_options"
             android:layout_marginStart="16dp"
+            android:src="@drawable/ic_more_options"
             app:layout_constraintBottom_toBottomOf="@id/ic_share"
             app:layout_constraintStart_toEndOf="@id/ic_share"
             app:layout_constraintTop_toTopOf="@id/ic_share"
             app:tint="#1A1B22"
 
             />
-
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>
@@ -165,16 +163,44 @@
             app:tint="?attr/colorTextInputBackground" />
 
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/rvPlaylistsList"
+            android:id="@+id/rvTracksList"
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:layout_marginTop="12dp"
             android:clipToPadding="false"
             android:scrollbars="vertical"
-
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/nice_thing" />
+        <ImageView
+            android:id="@+id/ivNothingFound"
+            android:layout_width="120dp"
+            android:layout_height="120dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="@dimen/dim_40dp"
+            android:src="@drawable/er_nothingfound"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:src="@drawable/er_nothingfound"
+            />
+
+        <TextView
+            android:id="@+id/tvNothingFound"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:fontFamily="@font/ys_display_medium"
+            android:paddingTop="@dimen/dim_16dp"
+            android:text="@string/emptyMediateka"
+            android:textAlignment="center"
+            android:textColor="?attr/colorOnPrimary"
+            android:textSize="@dimen/ts_20sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/ivNothingFound"
+            tools:text="@string/emptyPlaylist" />
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

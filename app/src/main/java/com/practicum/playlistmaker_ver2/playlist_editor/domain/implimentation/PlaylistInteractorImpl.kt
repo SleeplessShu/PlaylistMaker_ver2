@@ -23,8 +23,8 @@ class PlaylistInteractorImpl(
         playlistRepository.addPlaylist(image, title, description)
     }
 
-    override suspend fun updatePlaylist(image: Uri, title: String, description: String) {
-        playlistRepository.updatePlaylist(image, title, description)
+    override suspend fun updatePlaylist(playlistID:Int, image: Uri, title: String, description: String) {
+        playlistRepository.updatePlaylist(playlistID, image, title, description)
     }
 
 
@@ -40,7 +40,7 @@ class PlaylistInteractorImpl(
         playlistRepository.addTrack(playlistId, trackId)
     }
 
-    override suspend fun removeTrack(playlistId: Int, trackId: String) {
+    override suspend fun removeTrack(playlistId: Int, trackId: Int) {
         playlistRepository.removeTrack(playlistId, trackId)
     }
 

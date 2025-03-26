@@ -19,27 +19,13 @@ class TrackDbConverter {
             track.trackTime,
             track.previewUrl,
             track.artworkUrl500,
-            track.order
-
-        )
-    }
-
-    fun mapToPlayer(track: TrackEntity): PlayerTrack {
-        return PlayerTrack(
-            track.trackId,
-            track.trackName,
-            track.collectionName,
-            track.releaseDate,
-            track.primaryGenreName,
-            track.country,
-            track.artistName,
-            track.trackTime,
-            track.previewUrl,
-            track.artworkUrl500,
             track.isLiked,
             track.order
+
         )
     }
+
+
 
     fun mapToTrackEntity(track: PlayerTrack): TrackEntity {
         return TrackEntity(

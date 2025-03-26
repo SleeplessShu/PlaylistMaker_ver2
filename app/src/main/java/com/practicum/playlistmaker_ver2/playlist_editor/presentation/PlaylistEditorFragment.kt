@@ -151,8 +151,8 @@ class PlaylistEditorFragment : Fragment(), EasyPermissions.PermissionCallbacks {
             requireContext(),
             R.style.CustomAlertDialogTheme
         ).setTitle(R.string.playlistDialogueHeader).setMessage(R.string.playlistDialogueBody)
-            .setNegativeButton(R.string.playlistDialogueNo, null)
-            .setPositiveButton(R.string.playlistDialogueYes) { _, _ ->
+            .setNegativeButton(R.string.playlistDialogueCancel, null)
+            .setPositiveButton(R.string.playlistDialogueFinish) { _, _ ->
                 findNavController().navigateUp()
             }.show()
     }

@@ -13,7 +13,7 @@ interface PlaylistRepository {
 
     suspend fun addPlaylist(image: Uri, title: String, description: String)
 
-    suspend fun updatePlaylist(image: Uri, title: String, description: String)
+    suspend fun updatePlaylist(playlistID:Int, image: Uri, title: String, description: String)
 
     fun getAllPlaylists(): Flow<List<PlaylistEntityPresentation>>
 
@@ -21,7 +21,7 @@ interface PlaylistRepository {
 
     suspend fun addTrack(playlistId: Int, trackId: String)
 
-    suspend fun removeTrack(playlistId: Int, trackId: String)
+    suspend fun removeTrack(playlistId: Int, trackId: Int)
 
     suspend fun getPlaylistByID(id: Int): PlaylistEntityPresentation?
 

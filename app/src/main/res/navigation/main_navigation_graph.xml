@@ -60,7 +60,12 @@
             app:enterAnim="@anim/slide_in_right"
             app:exitAnim="@anim/slide_out_left"
             app:popEnterAnim="@anim/slide_in_right"
-            app:popExitAnim="@anim/slide_out_left" />
+            app:popExitAnim="@anim/slide_out_left"
+            />
+        <argument
+            android:name="track"
+            app:argType="com.practicum.playlistmaker_ver2.player.ui.models.PlayerTrack"
+            app:nullable="false" />
 
         <action
             android:id="@+id/action_mediatekaFragment_to_playlistFragment"
@@ -69,12 +74,6 @@
             app:exitAnim="@anim/slide_out_down"
             app:popEnterAnim="@anim/slide_in_up"
             app:popExitAnim="@anim/slide_out_down" />
-
-        <argument
-            android:name="track"
-            app:argType="com.practicum.playlistmaker_ver2.player.ui.models.PlayerTrack"
-            app:nullable="false" />
-
         <argument
             android:name="playlistID"
             app:argType="integer"
@@ -118,6 +117,15 @@
         android:name="com.practicum.playlistmaker_ver2.playlist.presentation.PlaylistFragment"
         android:label="playlistFragment"
         tools:layout="@layout/playlist_fragment">
+
+        <action
+            android:id="@+id/action_playlistFragment_to_playerFragment"
+            app:destination="@id/playerFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_right"
+            app:popEnterAnim="@anim/slide_in_right"
+            app:popExitAnim="@anim/slide_out_right" />
+
         <argument
             android:name="playlistID"
             app:argType="integer"

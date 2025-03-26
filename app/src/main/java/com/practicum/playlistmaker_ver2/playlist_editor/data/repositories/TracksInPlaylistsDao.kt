@@ -10,13 +10,13 @@ import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface TracksInPlaylistsDao {
-    @Insert(entity = TrackInPlaylistEntity::class, onConflict = OnConflictStrategy.IGNORE)
+    @Insert(entity = TrackInPlaylistEntity::class, onConflict = OnConflictStrategy.REPLACE)
     suspend fun addTrackToTracksInPlaylists(trackEntity: TrackInPlaylistEntity)
 
     @Delete(entity = TrackInPlaylistEntity::class)
     suspend fun deleteTrackEntity(trackEntity: TrackInPlaylistEntity)
 
-    @Query("SELECT * FROM tracksInPlaylists_table WHERE track_id LIKE :id")
+    @Query("SELECT * FROM tracksInPlaylists_table WHERE track_id = :id")
     suspend fun getTrackById(id: Int): TrackInPlaylistEntity
 
     @Query("SELECT * FROM tracksInPlaylists_table ORDER BY \"order\" ASC")
