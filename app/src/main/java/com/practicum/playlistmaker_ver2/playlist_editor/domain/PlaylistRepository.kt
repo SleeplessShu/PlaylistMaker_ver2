@@ -7,9 +7,8 @@ import com.practicum.playlistmaker_ver2.playlist_editor.domain.models.PlaylistEn
 import kotlinx.coroutines.flow.Flow
 
 interface PlaylistRepository {
-    suspend fun updateTrackListInPlaylist(playlistID: Int, trackID: Int): Result<Unit>
 
-    suspend fun updateTrackInTracksInPlaylists(playlistID: Int, track: PlayerTrack): Result<Unit>
+    suspend fun addOrUpdateTrackInPlaylist(playlistId: Int, track: PlayerTrack): Result<Unit>
 
     suspend fun addPlaylist(image: Uri, title: String, description: String)
 
@@ -17,11 +16,9 @@ interface PlaylistRepository {
 
     fun getAllPlaylists(): Flow<List<PlaylistEntityPresentation>>
 
-    suspend fun deletePlaylist(playlistId: Int)
+    suspend fun deletePlaylist(playlistID: Int)
 
-    suspend fun addTrack(playlistId: Int, trackId: String)
-
-    suspend fun removeTrack(playlistId: Int, trackId: Int)
+    suspend fun removeTrack(playlistID: Int, trackID: Int)
 
     suspend fun getPlaylistByID(id: Int): PlaylistEntityPresentation?
 

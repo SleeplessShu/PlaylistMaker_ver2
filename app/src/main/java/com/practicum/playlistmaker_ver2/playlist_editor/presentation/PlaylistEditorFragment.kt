@@ -17,11 +17,16 @@ import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.textfield.TextInputLayout
 import com.practicum.playlistmaker_ver2.R
 import com.practicum.playlistmaker_ver2.databinding.PlaylistEditorBinding
+import com.practicum.playlistmaker_ver2.playlist_editor.data.entities.PlaylistEditorMessageState
+import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import pub.devrel.easypermissions.EasyPermissions
 
@@ -32,9 +37,7 @@ class PlaylistEditorFragment : Fragment(), EasyPermissions.PermissionCallbacks {
 
     private val pickImageLauncher =
         registerForActivityResult(ActivityResultContracts.PickVisualMedia()) { uri ->
-            uri?.let { playlistEditorViewModel.saveImageToPrivateStorage(it) } ?: Toast.makeText(
-                requireContext(), R.string.playlistImageNotSelected, Toast.LENGTH_SHORT
-            ).show()
+            playlistEditorViewModel.saveImageToPrivateStorage(uri)
         }
 
     override fun onCreateView(
@@ -51,8 +54,24 @@ class PlaylistEditorFragment : Fragment(), EasyPermissions.PermissionCallbacks {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        getArgs()
         setupUI()
-        observeViewModel()
+        setupObservers()
+    }
+
+    private fun getArgs() {
+        if (arguments?.containsKey("playlistToEdit") == true) {
+            val args = PlaylistEditorFragmentArgs.fromBundle(requireArguments())
+            args.playlistToEdit?.let {
+                playlistEditorViewModel.initEditMode(it)
+                playlistEditorViewModel.setPlaylistToEdit(it)
+                binding.toolbarTitle.text = getString(R.string.playlistEditorEdit)
+                binding.bCreatePlaylist.text = getString(R.string.playlistEditorSave)
+                binding.tiPlaylistName.setText(it.name)
+                binding.tiDescription.setText(it.description)
+                binding.imagePlayList.setImageURI(Uri.parse(it.image))
+            }
+        }
     }
 
     private fun setupUI() {
@@ -88,7 +107,14 @@ class PlaylistEditorFragment : Fragment(), EasyPermissions.PermissionCallbacks {
 
 
         binding.tiPlaylistName.addTextChangedListener(object : TextWatcher {
-            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+            override fun beforeTextChanged(
+                s: CharSequence?,
+                start: Int,
+                count: Int,
+                after: Int
+            ) {
+            }
+
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
                 playlistEditorViewModel.validatePlaylist(s.toString())
                 updateTextInputLayoutState(binding.frameName, s?.isNotEmpty() == true)
@@ -98,7 +124,14 @@ class PlaylistEditorFragment : Fragment(), EasyPermissions.PermissionCallbacks {
         })
 
         binding.tiDescription.addTextChangedListener(object : TextWatcher {
-            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+            override fun beforeTextChanged(
+                s: CharSequence?,
+                start: Int,
+                count: Int,
+                after: Int
+            ) {
+            }
+
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
                 playlistEditorViewModel.validateDescription(s.toString())
                 updateTextInputLayoutState(binding.frameDescription, s?.isNotEmpty() == true)
@@ -108,14 +141,11 @@ class PlaylistEditorFragment : Fragment(), EasyPermissions.PermissionCallbacks {
         })
 
         binding.bCreatePlaylist.setOnClickListener {
-            playlistEditorViewModel.addPlaylist(
-                binding.tiPlaylistName.text.toString(), binding.tiDescription.text.toString()
-            ) {
-                Toast.makeText(
-                    context,
-                    getString(R.string.playlistHasCreated, binding.tiPlaylistName.text.toString()),
-                    Toast.LENGTH_SHORT
-                ).show()
+            playlistEditorViewModel.addOrUpdatePlaylist(
+                title = binding.tiPlaylistName.text.toString(),
+                description = binding.tiDescription.text.toString()
+            )
+            {
                 findNavController().popBackStack()
             }
         }
@@ -128,7 +158,7 @@ class PlaylistEditorFragment : Fragment(), EasyPermissions.PermissionCallbacks {
             })
     }
 
-    private fun observeViewModel() {
+    private fun setupObservers() {
         playlistEditorViewModel.playlistImage.observe(viewLifecycleOwner) { uri ->
             binding.imagePlayList.setImageURI(uri)
         }
@@ -136,13 +166,24 @@ class PlaylistEditorFragment : Fragment(), EasyPermissions.PermissionCallbacks {
         playlistEditorViewModel.isPlaylistValid.observe(viewLifecycleOwner) { isValid ->
             binding.bCreatePlaylist.isEnabled = isValid
         }
+        lifecycleScope.launch {
+            viewLifecycleOwner.lifecycle.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                playlistEditorViewModel.toastMessage.collect { message ->
+                    showToast(message)
+                }
+            }
+        }
     }
 
     private fun onBackPress() {
-        if (playlistEditorViewModel.shouldShowExitDialog()) {
-            showPopUpDialogue()
-        } else {
+        if (playlistEditorViewModel.isEditMode()) {
             findNavController().navigateUp()
+        } else {
+            if (playlistEditorViewModel.shouldShowExitDialog()) {
+                showPopUpDialogue()
+            } else {
+                findNavController().navigateUp()
+            }
         }
     }
 
@@ -166,7 +207,13 @@ class PlaylistEditorFragment : Fragment(), EasyPermissions.PermissionCallbacks {
         }
 
         editText?.addTextChangedListener(object : TextWatcher {
-            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+            override fun beforeTextChanged(
+                s: CharSequence?,
+                start: Int,
+                count: Int,
+                after: Int
+            ) {
+            }
 
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
                 val hasText = !s.isNullOrBlank()
@@ -194,31 +241,15 @@ class PlaylistEditorFragment : Fragment(), EasyPermissions.PermissionCallbacks {
 
     override fun onPermissionsGranted(requestCode: Int, perms: List<String>) {
         if (requestCode == REQUEST_CODE_STORAGE) {
-            Toast.makeText(
-                requireContext(),
-                getString(R.string.accessToStorageGranted),
-                Toast.LENGTH_SHORT
-            )
-                .show()
+            playlistEditorViewModel.accessToStorageGranted()
             binding.imagePlayList.performClick()
         }
     }
 
     override fun onPermissionsDenied(requestCode: Int, perms: List<String>) {
-        if (EasyPermissions.somePermissionPermanentlyDenied(this, perms)) {
-            Toast.makeText(
-                requireContext(),
-                getString(R.string.checkSettingsForAccess),
-                Toast.LENGTH_LONG
-            ).show()
-            openAppSettings()
-        } else {
-            Toast.makeText(
-                requireContext(),
-                getString(R.string.permissionDenied),
-                Toast.LENGTH_SHORT
-            ).show()
-        }
+        val isPermissionsDenied =
+            EasyPermissions.somePermissionPermanentlyDenied(this, perms)
+        playlistEditorViewModel.onPermissionDenied(isPermissionsDenied)
     }
 
     private fun openAppSettings() {
@@ -226,6 +257,28 @@ class PlaylistEditorFragment : Fragment(), EasyPermissions.PermissionCallbacks {
             data = Uri.fromParts(SCHEME, requireContext().packageName, null)
         }
         startActivity(intent)
+    }
+
+
+    private fun showToast(state: PlaylistEditorMessageState) {
+        val message =
+            when (state) {
+                PlaylistEditorMessageState.PERMISSION_DECLINED -> getString(R.string.permissionDenied)
+                PlaylistEditorMessageState.ACCESS_GRANTED -> getString(R.string.accessToStorageGranted)
+                PlaylistEditorMessageState.PLAYLIST_CREATED -> getString(
+                    R.string.playlistHasCreated,
+                    binding.tiPlaylistName.text.toString()
+                )
+
+                PlaylistEditorMessageState.PLAYLIST_IMAGE_NOT_SELECTED -> getString(R.string.playlistImageNotSelected)
+                PlaylistEditorMessageState.PLAYLIST_EDITS_SAVED -> getString(R.string.playlistEditsSaved)
+                PlaylistEditorMessageState.CHECK_SETTINGS_FOR_ACCESS -> getString(R.string.checkSettingsForAccess)
+            }
+        Toast.makeText(
+            requireContext(),
+            message,
+            Toast.LENGTH_SHORT
+        ).show()
     }
 
 

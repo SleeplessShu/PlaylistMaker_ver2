@@ -7,6 +7,7 @@ import com.practicum.playlistmaker_ver2.playlist_editor.domain.models.PlaylistEn
 data class PlaylistPresentationState (
     val playlistEntity: PlaylistEntityPresentation,
     val overlayVisibility: Boolean = false,
-    val bottomSheet: Int = BottomSheetBehavior.STATE_HALF_EXPANDED,
+    val bottomSheetTracks: Int = BottomSheetBehavior.STATE_HALF_EXPANDED,
+    val bottomSheetOptions: Int = BottomSheetBehavior.STATE_HIDDEN,
     val messageState: MessageState
 )

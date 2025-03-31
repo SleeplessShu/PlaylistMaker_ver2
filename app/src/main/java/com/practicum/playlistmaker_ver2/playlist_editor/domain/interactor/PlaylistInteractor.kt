@@ -7,19 +7,18 @@ import com.practicum.playlistmaker_ver2.playlist_editor.domain.models.PlaylistEn
 import kotlinx.coroutines.flow.Flow
 
 interface PlaylistInteractor {
-    suspend fun updateTracklistInPlaylist(playlistID: Int, trackID: Int): Result<Unit>
 
-    suspend fun updateTrack(playlistID: Int, track: PlayerTrack): Result<Unit>
+    suspend fun addOrUpdateTrackInPlaylist(
+        playlistId: Int, track: PlayerTrack
+    ): Result<Unit>
 
     suspend fun addPlaylist(image: Uri, title: String, description: String)
 
-    suspend fun updatePlaylist(playlistID:Int, image: Uri, title: String, description: String)
+    suspend fun updatePlaylist(playlistID: Int, image: Uri, title: String, description: String)
 
     fun getAllPlaylists(): Flow<List<PlaylistEntityPresentation>>
 
     suspend fun deletePlaylist(playlistId: Int)
-
-    suspend fun addTrack(playlistId: Int, trackId: String)
 
     suspend fun removeTrack(playlistId: Int, trackId: Int)
 

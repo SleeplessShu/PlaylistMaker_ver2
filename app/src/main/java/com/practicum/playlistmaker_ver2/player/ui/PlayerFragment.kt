@@ -55,14 +55,10 @@ class PlayerFragment : Fragment() {
 
         setupUI()
         setupObservers()
-
-        // Восстанавливаем состояние BottomSheet при возврате
         viewModel.restoreBottomSheetState()
 
-        // Настройка плеера
         viewModel.setupPlayer(currentTrack.previewUrl)
 
-        // Заполнение UI
         initializeViews(currentTrack)
     }
 
@@ -147,7 +143,7 @@ class PlayerFragment : Fragment() {
             PlayerState.RELEASED -> {
                 binding.bPlay.setImageResource(R.drawable.ic_play)
                 binding.bPlay.isEnabled = false
-                binding.tvPlayTime.text = getString(R.string.defaultTime) // Сбрасываем таймер
+                binding.tvPlayTime.text = getString(R.string.defaultTime)
             }
         }
     }

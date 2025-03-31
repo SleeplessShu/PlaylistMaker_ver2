@@ -5,13 +5,17 @@ import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
+import androidx.room.Update
 import com.practicum.playlistmaker_ver2.playlist_editor.data.entities.TrackInPlaylistEntity
 import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface TracksInPlaylistsDao {
-    @Insert(entity = TrackInPlaylistEntity::class, onConflict = OnConflictStrategy.REPLACE)
+    @Insert(entity = TrackInPlaylistEntity::class, onConflict = OnConflictStrategy.IGNORE)
     suspend fun addTrackToTracksInPlaylists(trackEntity: TrackInPlaylistEntity)
+
+    @Update
+    suspend fun updateTrack(track: TrackInPlaylistEntity)
 
     @Delete(entity = TrackInPlaylistEntity::class)
     suspend fun deleteTrackEntity(trackEntity: TrackInPlaylistEntity)
@@ -26,7 +30,7 @@ interface TracksInPlaylistsDao {
     suspend fun getMinOrder(): Int?
 
     @Query("SELECT playlistsIDs FROM tracksInPlaylists_table WHERE track_id = :id")
-    suspend fun getPlaylistsIDsByTrackId(id: Int): String
+    suspend fun getPlaylistsIDsByTrackId(id: Int): String?
 
 
 }

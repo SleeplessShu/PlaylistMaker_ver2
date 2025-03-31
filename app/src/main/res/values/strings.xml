@@ -63,9 +63,13 @@
     <string name="playlistDescription">Описание</string>
     <string name="playlistCreate">Создать</string>
     <string name="playlistImageNotSelected">Изображение не выбрано</string>
+    <string name="playlistEditsSaved">Изменения сохранены</string>
     <string name="playlistImageSelected">Обложка сохранена</string>
     <string name="playlistImageSelectionError">Ошибка сохранения обложки</string>
-    <string name="playlistHasCreated">«Плейлист %s создан»</string>
+    <string name="playlistHasCreated">Плейлист %s создан</string>
+    <string name="playlistEditorSave">Сохранить</string>
+    <string name="playlistEditorEdit">Редактировать</string>
+
     <!--PlaylistDialogue-->
     <string name="playlistDialogueHeader">Завершить создание плейлиста?</string>
     <string name="playlistDialogueBody">Все несохраненные данные будут потеряны</string>
@@ -73,8 +77,10 @@
     <string name="playlistDialogueCancel">Отмена</string>
 
     <string name="playlistDialogueDeleteTrack">Хотите удалить трек?</string>
-    <string name="playlistDialogueYes">Да</string>
-    <string name="playlistDialogueNo">Нет</string>
+    <string name="playlistDialogueDeletePlaylist">Хотите удалить плейлист %s?</string>
+
+    <string name="dialogueYes">Да</string>
+    <string name="dialogueNo">Нет</string>
 
 
     <!--WordsForWordsEnding-->
@@ -84,6 +90,13 @@
         <item quantity="many">%d треков</item>    <!-- 5, 6, 7... треков -->
         <item quantity="other">%d треков</item>   <!-- 0, 11-19, 20+ треков -->
     </plurals>
+
+
+    <!--PlaylistFragment-->
+    <string name="nothingToShare">В этом плейлисте нет списка треков, которым можно поделиться</string>
+    <string name="playlistShare">Поделиться</string>
+    <string name="playlistEdit">Редактировать информацию</string>
+    <string name="playlistDelete">Удалить плейлист</string>
 
 
     <!--PLAYER_BOTTOM_SHEET-->

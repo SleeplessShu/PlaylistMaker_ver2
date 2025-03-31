@@ -1,16 +1,20 @@
 package com.practicum.playlistmaker_ver2.playlist.presentation
 
+import android.content.res.Resources
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.google.android.material.bottomsheet.BottomSheetBehavior
+import com.practicum.playlistmaker_ver2.R
 import com.practicum.playlistmaker_ver2.player.ui.models.MessageState
 import com.practicum.playlistmaker_ver2.playlist.presentation.models.TracksInPlaylistState
 import com.practicum.playlistmaker_ver2.playlist_editor.data.entities.TrackInPlaylistEntity
 import com.practicum.playlistmaker_ver2.playlist_editor.data.entities.toTrack
 import com.practicum.playlistmaker_ver2.playlist_editor.domain.interactor.PlaylistInteractor
 import com.practicum.playlistmaker_ver2.playlist_editor.domain.models.PlaylistEntityPresentation
+import com.practicum.playlistmaker_ver2.settings.domain.api.SharingInteractor
+import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.filterNotNull
@@ -19,74 +23,90 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 
 class PlaylistViewModel(
-    private val playlistInteractor: PlaylistInteractor
+    private val playlistInteractor: PlaylistInteractor,
+    private val sharingInteractor: SharingInteractor,
+    private val resources: Resources
 ) : ViewModel() {
-    private val _playlistData = MutableLiveData<PlaylistPresentationState>()
-    val playlistData: LiveData<PlaylistPresentationState> get() = _playlistData/*
-         private val _tracksData = MutableLiveData<TracksInPlaylistState>()
-         val tracksData: LiveData<TracksInPlaylistState> get() = _tracksData*/
 
-    private var bottomSheetState = BottomSheetBehavior.STATE_HALF_EXPANDED
+    val toastMessage = MutableSharedFlow<MessageState>(extraBufferCapacity = 1)
+
+    private val _playlistData = MutableLiveData<PlaylistPresentationState>()
+    val playlistData: LiveData<PlaylistPresentationState> get() = _playlistData
 
     private val _currentPlaylistID = MutableStateFlow<Int?>(null)
     private val _playlistTrackState =
-        MutableStateFlow<TracksInPlaylistState>(TracksInPlaylistState.Empty(""))
+        MutableStateFlow<TracksInPlaylistState>(TracksInPlaylistState.Empty(message = MessageState.NOTHING))
     val tracksData: StateFlow<TracksInPlaylistState> get() = _playlistTrackState
 
-    init {
-        viewModelScope.launch {
-            _currentPlaylistID.filterNotNull().collect { playlistID ->
-                playlistInteractor.getPlaylistTracks().map { allTracks ->
-                    val filtered = allTracks.filter { playlistID.toString() in it.playlistsIDs }
-                        .map { it.toTrack() }
-
-                    if (filtered.isEmpty()) {
-                        TracksInPlaylistState.Empty("")
-                    } else {
-                        TracksInPlaylistState.Content(filtered)
-                    }
-                }.collect { state ->
-                    _playlistTrackState.value = state
-                }
+    fun shareButtonPressed() {
+        if (_playlistData.value?.playlistEntity?.tracksCount == 0) {
+            viewModelScope.launch {
+                toastMessage.emit(MessageState.NOTHING_TO_SHARE)
             }
+        } else {
+            sharePlaylist()
         }
     }
 
+    fun optionsButtonPressed() {
+        renderPlaylistState(
+            bottomSheetOptions = BottomSheetBehavior.STATE_COLLAPSED,
+            overlayVisibility = true
+        )
+    }
 
-    fun restoreBottomSheetState() {
-        renderPlaylistState(bottomSheet = bottomSheetState)
+    fun bottomSheetOptionsCollapsed() {
+        renderPlaylistState(
+            bottomSheetOptions = BottomSheetBehavior.STATE_HIDDEN,
+            overlayVisibility = false
+        )
+    }
+
+    fun restoreBottomSheetOptionsState() {
+        val state = _playlistData.value ?: return
+        renderPlaylistState(
+            bottomSheetOptions = state.bottomSheetOptions,
+            overlayVisibility = state.overlayVisibility
+        )
     }
 
 
     fun getPlaylistByID(playlistID: Int) {
         viewModelScope.launch {
-            /*val selectedPlaylist = playlistInteractor.getPlaylistByID(playlistID)
-            val playlistDuration = playlistDuration(playlistID)
-
-            if (selectedPlaylist != null) {
-                _playlistData.value = _playlistData.value?.copy(
-                    playlistEntity = selectedPlaylist.copy(
-                        tracksDuration = playlistDuration
-                    )
-                )
-            } else {
-                renderPlaylistState(messageState = MessageState.GETTING_PLAYLIST_DATA_FAIL)
-            }*/
-            _currentPlaylistID.value = playlistID
-
             val selectedPlaylist = playlistInteractor.getPlaylistByID(playlistID)
-            val duration = playlistDuration(playlistID)
-
-            if (selectedPlaylist != null) {
-                _playlistData.value = PlaylistPresentationState(
-                    playlistEntity = selectedPlaylist.copy(tracksDuration = duration),
-                    overlayVisibility = false,
-                    bottomSheet = BottomSheetBehavior.STATE_HALF_EXPANDED,
-                    messageState = MessageState.NOTHING
-                )
-            } else {
+            if (selectedPlaylist == null) {
                 renderPlaylistState(messageState = MessageState.GETTING_PLAYLIST_DATA_FAIL)
+                return@launch
             }
+
+            val allTracks = playlistInteractor.getPlaylistTracks().first()
+            val trackMap = allTracks
+                .filter { playlistID.toString() in it.playlistsIDs }
+                .associateBy { it.trackId.toString() }
+
+            val orderedTracks = selectedPlaylist.tracksIDsList
+                .split(",")
+                .asReversed()
+                .mapNotNull { trackMap[it] }
+                .map { it.toTrack() }
+
+            val state = if (orderedTracks.isEmpty()) {
+                TracksInPlaylistState.Empty(message = MessageState.NOTHING)
+            } else {
+                TracksInPlaylistState.Content(orderedTracks, MessageState.NOTHING)
+            }
+
+            _playlistTrackState.value = state
+
+            val duration = sumTimeStrings(orderedTracks.map { it.trackTime })
+
+            _playlistData.value = PlaylistPresentationState(
+                playlistEntity = selectedPlaylist.copy(tracksDuration = duration),
+                overlayVisibility = false,
+                bottomSheetTracks = BottomSheetBehavior.STATE_COLLAPSED,
+                bottomSheetOptions = BottomSheetBehavior.STATE_HIDDEN,
+                messageState = MessageState.NOTHING
+            )
         }
     }
 
@@ -99,19 +119,20 @@ class PlaylistViewModel(
         getPlaylistByID(playlistID)
     }
 
+    fun removePlaylistFromDB() {
+        val playlistID: Int = _playlistData.value?.playlistEntity?.id ?: return
+
+        viewModelScope.launch {
+            playlistInteractor.deletePlaylist(playlistID)
+        }
+    }
+
     private suspend fun playlistDuration(playlistID: Int): String {
         return playlistInteractor.getPlaylistTracks().map { tracks ->
-            //mapToPresentation(tracks)
             val allTracksTime = filterTracksByPlaylist(tracks, playlistID).map { it.trackTime }
             sumTimeStrings(allTracksTime)
         }.first()
     }
-
-    /*private fun mapToPresentation(tracksList: List<TrackInPlaylistEntity>) {
-        val tracks = tracksList.map { it.toTrack() }
-        processResult(tracks)
-
-    }*/
 
     private fun sumTimeStrings(times: List<String>): String {
         var totalSeconds = 0
@@ -127,8 +148,10 @@ class PlaylistViewModel(
     }
 
     private fun renderPlaylistState(
-        bottomSheet: Int = _playlistData.value?.bottomSheet
+        bottomSheetTracks: Int = _playlistData.value?.bottomSheetTracks
             ?: BottomSheetBehavior.STATE_HALF_EXPANDED,
+        bottomSheetOptions: Int = _playlistData.value?.bottomSheetOptions
+            ?: BottomSheetBehavior.STATE_HIDDEN,
         overlayVisibility: Boolean = _playlistData.value?.overlayVisibility ?: false,
         messageState: MessageState = MessageState.NOTHING,
         playlistEntity: PlaylistEntityPresentation = _playlistData.value?.playlistEntity
@@ -136,23 +159,14 @@ class PlaylistViewModel(
     ) {
         _playlistData.postValue(
             PlaylistPresentationState(
-                playlistEntity, overlayVisibility, bottomSheet, messageState
+                playlistEntity,
+                overlayVisibility,
+                bottomSheetTracks,
+                bottomSheetOptions,
+                messageState
             )
         )
     }
-
-    /*private fun processResult(tracks: List<Track>) {
-        if (tracks.isEmpty()) {
-            renderAdapterState((TracksInPlaylistState.Empty("")))
-        } else {
-            renderAdapterState(TracksInPlaylistState.Content(tracks))
-        }
-
-    }*/
-
-    /*private fun renderAdapterState(state: TracksInPlaylistState) {
-        _tracksData.postValue(state)
-    }*/
 
     private fun filterTracksByPlaylist(
         tracks: List<TrackInPlaylistEntity>, playlistID: Int
@@ -160,5 +174,30 @@ class PlaylistViewModel(
         return tracks.filter { playlistID.toString() in it.playlistsIDs }
     }
 
+    private fun sharePlaylist() {
+        val playlist = _playlistData.value?.playlistEntity ?: return
+        val tracksCount = playlist.tracksCount
+        val tracksCountText = resources.getQuantityString(
+            R.plurals.track_count, tracksCount, tracksCount
+        )
+        val tracksDataAsText = tracksToText()
+        val playlistTextData = buildString {
+            appendLine(playlist.name)
+            appendLine(playlist.description)
+            appendLine(tracksCountText)
+            appendLine(tracksDataAsText)
+        }
+        sharingInteractor.sharePlaylist(playlistTextData)
+    }
+
+    private fun tracksToText(): String {
+        val currentTracks =
+            (_playlistTrackState.value as? TracksInPlaylistState.Content)?.tracks ?: return ""
+        return currentTracks.withIndex().joinToString("\n") { (i, track) ->
+            "${i + 1}. ${track.artistName} - ${track.trackName} (${track.trackTime})"
+        }
+    }
+
 
 }
+

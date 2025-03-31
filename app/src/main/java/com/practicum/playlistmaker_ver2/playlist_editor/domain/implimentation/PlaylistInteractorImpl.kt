@@ -12,21 +12,21 @@ class PlaylistInteractorImpl(
     val playlistRepository: PlaylistRepository
 ) : PlaylistInteractor {
 
-    override suspend fun updateTracklistInPlaylist(playlistID: Int, trackID: Int): Result<Unit> {
-        return playlistRepository.updateTrackListInPlaylist(playlistID, trackID)
-    }
-    override suspend fun updateTrack(playlistID: Int, track: PlayerTrack): Result<Unit> {
-        return playlistRepository.updateTrackInTracksInPlaylists(playlistID, track)
+    override suspend fun addOrUpdateTrackInPlaylist(
+        playlistId: Int, track: PlayerTrack
+    ): Result<Unit> {
+        return playlistRepository.addOrUpdateTrackInPlaylist(playlistId = playlistId, track = track)
     }
 
     override suspend fun addPlaylist(image: Uri, title: String, description: String) {
         playlistRepository.addPlaylist(image, title, description)
     }
 
-    override suspend fun updatePlaylist(playlistID:Int, image: Uri, title: String, description: String) {
+    override suspend fun updatePlaylist(
+        playlistID: Int, image: Uri, title: String, description: String
+    ) {
         playlistRepository.updatePlaylist(playlistID, image, title, description)
     }
-
 
     override fun getAllPlaylists(): Flow<List<PlaylistEntityPresentation>> {
         return playlistRepository.getAllPlaylists()
@@ -34,10 +34,6 @@ class PlaylistInteractorImpl(
 
     override suspend fun deletePlaylist(playlistId: Int) {
         return playlistRepository.deletePlaylist(playlistId)
-    }
-
-    override suspend fun addTrack(playlistId: Int, trackId: String) {
-        playlistRepository.addTrack(playlistId, trackId)
     }
 
     override suspend fun removeTrack(playlistId: Int, trackId: Int) {

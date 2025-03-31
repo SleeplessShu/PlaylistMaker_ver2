@@ -126,6 +126,14 @@
             app:popEnterAnim="@anim/slide_in_right"
             app:popExitAnim="@anim/slide_out_right" />
 
+        <action
+            android:id="@+id/actionPlaylistFragmentToPlaylistCreationFragment"
+            app:destination="@id/playlistCreationFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_right"
+            app:popEnterAnim="@anim/slide_in_right"
+            app:popExitAnim="@anim/slide_out_right" />
+
         <argument
             android:name="playlistID"
             app:argType="integer"
@@ -161,7 +169,12 @@
         app:exitAnim="@anim/slide_out_down"
         app:popEnterAnim="@anim/slide_in_up"
         app:popExitAnim="@anim/slide_out_down"
-        tools:layout="@layout/playlist_editor" />
+        tools:layout="@layout/playlist_editor" >
+        <argument
+            android:name="playlistToEdit"
+            app:argType="com.practicum.playlistmaker_ver2.playlist_editor.domain.models.PlaylistEntityPresentation"
+            app:nullable="true" />
+    </fragment>
 
     <!-- Фрагмент настроек -->
     <fragment

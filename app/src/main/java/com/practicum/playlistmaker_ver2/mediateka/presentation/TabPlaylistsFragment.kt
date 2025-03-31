@@ -93,7 +93,7 @@ class TabPlaylistsFragment : Fragment() {
 
     private fun onPlaylistClick(playlist: PlaylistEntityPresentation) {
         openFragment(playlist.id)
-        Toast.makeText(context, "clicked on playlist ${playlist}", Toast.LENGTH_SHORT).show()
+
     }
 
     private fun openFragment(playlistID: Int) {

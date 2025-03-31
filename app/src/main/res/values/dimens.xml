@@ -100,4 +100,18 @@
 
 
     <dimen name="corner_radius">8px</dimen>
+
+
+
+    <!--PlaylistFragment-->
+
+    <dimen name="PlaylistFragment_padding_S">8dp</dimen>
+    <dimen name="PlaylistFragment_padding_M">16dp</dimen>
+    <dimen name="PlaylistFragment_padding_L">21dp</dimen>
+    <dimen name="PlaylistFragment_padding_XL">24dp</dimen>
+    <dimen name="PlaylistFragment_empty_space">300dp</dimen>
+
+    <dimen name="PlaylistFragment_medium_text_size">14sp</dimen>
+
+
 </resources>
