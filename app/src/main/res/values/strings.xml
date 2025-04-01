@@ -63,14 +63,25 @@
     <string name="playlistDescription">Описание</string>
     <string name="playlistCreate">Создать</string>
     <string name="playlistImageNotSelected">Изображение не выбрано</string>
+    <string name="playlistEditsSaved">Изменения сохранены</string>
     <string name="playlistImageSelected">Обложка сохранена</string>
     <string name="playlistImageSelectionError">Ошибка сохранения обложки</string>
-    <string name="playlistHasCreated">«Плейлист %s создан»</string>
+    <string name="playlistHasCreated">Плейлист %s создан</string>
+    <string name="playlistEditorSave">Сохранить</string>
+    <string name="playlistEditorEdit">Редактировать</string>
+
     <!--PlaylistDialogue-->
     <string name="playlistDialogueHeader">Завершить создание плейлиста?</string>
     <string name="playlistDialogueBody">Все несохраненные данные будут потеряны</string>
-    <string name="playlistDialogueYes">Завершить</string>
-    <string name="playlistDialogueNo">Отмена</string>
+    <string name="playlistDialogueFinish">Завершить</string>
+    <string name="playlistDialogueCancel">Отмена</string>
+
+    <string name="playlistDialogueDeleteTrack">Хотите удалить трек?</string>
+    <string name="playlistDialogueDeletePlaylist">Хотите удалить плейлист %s?</string>
+
+    <string name="dialogueYes">Да</string>
+    <string name="dialogueNo">Нет</string>
+
 
     <!--WordsForWordsEnding-->
     <plurals name="track_count">
@@ -81,11 +92,21 @@
     </plurals>
 
 
+    <!--PlaylistFragment-->
+    <string name="nothingToShare">В этом плейлисте нет списка треков, которым можно поделиться</string>
+    <string name="playlistShare">Поделиться</string>
+    <string name="playlistEdit">Редактировать информацию</string>
+    <string name="playlistDelete">Удалить плейлист</string>
+
+
     <!--PLAYER_BOTTOM_SHEET-->
     <string name="addInPlaylist">Добавить в плейлист</string>
     <string name="addInPlaylistSuccess">Трек добавлен в плейлист %s</string>
     <string name="addInPlaylistFail">При добавлении трека возникла ошибка</string>
     <string name="addInPlaylistAlreadyAdded">Трек уже добавлен в плейлист %s</string>
+
+
+    <string name="emptyPlaylist">Ваш плейлист пуст</string>
 
     <!--EASY PERMISSIONS-->
     <string name="permissionDenied">"Разрешение отклонено!"</string>

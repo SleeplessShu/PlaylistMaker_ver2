@@ -16,30 +16,24 @@ class PlayerInteractorImpl(private val playerRepository: PlayerRepository) : Pla
     }
 
     override fun startPlayer() {
-        Log.d("DEBUG", "startPlayer: ")
         playerRepository.startPlayer()
     }
 
     override fun pausePlayer() {
-        Log.d("DEBUG", "pausePlayer: ")
         playerRepository.pausePlayer()
     }
 
     override fun stopPlayer() {
-        Log.d("DEBUG", "stopPlayer: ")
         playerRepository.stopPlayer()
     }
 
     override fun releasePlayer() {
-        Log.d("DEBUG", "releasePlayer: ")
         playerRepository.releasePlayer()
     }
 
     override fun isPlaying(): Boolean {
         val result = playerRepository.isPlaying()
-        Log.d("DEBUG", "isPlaying: ${result}")
         return result
-        //return playerRepository.isPlaying()
     }
 
     override fun getCurrentPosition(): Int {
@@ -52,9 +46,7 @@ class PlayerInteractorImpl(private val playerRepository: PlayerRepository) : Pla
 
     override fun isPrepared(): Boolean {
         val result = playerRepository.isPrepared()
-        Log.d("DEBUG", "isPrepared: ${result}")
         return result
-        //return  playerRepository.isPrepared()
     }
 
 }

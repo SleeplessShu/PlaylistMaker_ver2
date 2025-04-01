@@ -14,7 +14,6 @@ fun Context.formatDpToPx(dp: Int): Int {
     ).toInt()
 }
 
-
 inline fun <reified T : Serializable> Intent.serializable(key: String): T? = when {
     Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU -> getSerializableExtra(
         key,

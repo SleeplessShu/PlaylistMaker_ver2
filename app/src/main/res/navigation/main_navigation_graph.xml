@@ -10,14 +10,15 @@
         android:id="@+id/searchFragment"
         android:name="com.practicum.playlistmaker_ver2.search.presentation.SearchFragment"
         android:label="search_fragment"
-        tools:layout="@layout/search_fragment" >
+        tools:layout="@layout/search_fragment">
 
-        <action android:id="@+id/actionSearchFragmentToPlayerFragment"
+        <action
+            android:id="@+id/actionSearchFragmentToPlayerFragment"
             app:destination="@id/playerFragment"
             app:enterAnim="@anim/slide_in_right"
             app:exitAnim="@anim/slide_out_left"
             app:popEnterAnim="@anim/slide_in_right"
-            app:popExitAnim="@anim/slide_out_left"/>
+            app:popExitAnim="@anim/slide_out_left" />
 
     </fragment>
 
@@ -27,13 +28,14 @@
         android:name="com.practicum.playlistmaker_ver2.mediateka.presentation.MediatekaFragment"
         android:label="mediateka_fragment"
         tools:layout="@layout/mediateka_fragment">
+
         <action
             android:id="@+id/action_mediatekaFragment_to_playlistCreationFragment"
             app:destination="@id/playlistCreationFragment"
-            app:popEnterAnim="@anim/slide_in_up"
-            app:popExitAnim="@anim/slide_out_down"
             app:enterAnim="@anim/slide_in_up"
-            app:exitAnim="@anim/slide_out_down"/>
+            app:exitAnim="@anim/slide_out_down"
+            app:popEnterAnim="@anim/slide_in_up"
+            app:popExitAnim="@anim/slide_out_down" />
 
         <action
             android:id="@+id/action_mediatekaFragment_to_searchFragment"
@@ -50,19 +52,32 @@
             app:exitAnim="@anim/slide_out_left"
             app:popEnterAnim="@anim/slide_in_left"
             app:popExitAnim="@anim/slide_out_right" />
+
+
+        <action
+            android:id="@+id/action_favoriteTracksFragment_to_playerFragment"
+            app:destination="@id/playerFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_right"
+            app:popExitAnim="@anim/slide_out_left"
+            />
         <argument
             android:name="track"
             app:argType="com.practicum.playlistmaker_ver2.player.ui.models.PlayerTrack"
             app:nullable="false" />
 
         <action
-            android:id="@+id/action_favoriteTracksFragment_to_playerFragment"
-            app:destination="@id/playerFragment"
-            app:popEnterAnim="@anim/slide_in_right"
-            app:popExitAnim="@anim/slide_out_left"
-            app:enterAnim="@anim/slide_in_right"
-            app:exitAnim="@anim/slide_out_left"
-            />
+            android:id="@+id/action_mediatekaFragment_to_playlistFragment"
+            app:destination="@id/playlistFragment"
+            app:enterAnim="@anim/slide_in_up"
+            app:exitAnim="@anim/slide_out_down"
+            app:popEnterAnim="@anim/slide_in_up"
+            app:popExitAnim="@anim/slide_out_down" />
+        <argument
+            android:name="playlistID"
+            app:argType="integer"
+            app:nullable="false" />
 
     </fragment>
 
@@ -71,9 +86,7 @@
         android:id="@+id/tabFavoriteFragment"
         android:name="com.practicum.playlistmaker_ver2.mediateka.presentation.TabFavoriteFragment"
         android:label="tab_favorite_tracks"
-        tools:layout="@layout/tab_favorite_tracks">
-
-    </fragment>
+        tools:layout="@layout/tab_favorite_tracks"/>
 
     <!-- Вложенный фрагмент плейлистов -->
     <fragment
@@ -86,11 +99,45 @@
         <action
             android:id="@+id/action_tabPlaylistFragment_to_playlistCreationFragment"
             app:destination="@id/playlistCreationFragment"
-            app:popEnterAnim="@anim/slide_in_up"
-            app:popExitAnim="@anim/slide_in_up"
             app:enterAnim="@anim/slide_out_down"
             app:exitAnim="@anim/slide_out_down"
-            />
+            app:popEnterAnim="@anim/slide_in_up"
+            app:popExitAnim="@anim/slide_in_up" />
+        <action
+            android:id="@+id/action_tabPlaylistFragment_to_playlistFragment"
+            app:destination="@id/playlistCreationFragment"
+            app:enterAnim="@anim/slide_out_down"
+            app:exitAnim="@anim/slide_out_down"
+            app:popEnterAnim="@anim/slide_in_up"
+            app:popExitAnim="@anim/slide_in_up" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/playlistFragment"
+        android:name="com.practicum.playlistmaker_ver2.playlist.presentation.PlaylistFragment"
+        android:label="playlistFragment"
+        tools:layout="@layout/playlist_fragment">
+
+        <action
+            android:id="@+id/action_playlistFragment_to_playerFragment"
+            app:destination="@id/playerFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_right"
+            app:popEnterAnim="@anim/slide_in_right"
+            app:popExitAnim="@anim/slide_out_right" />
+
+        <action
+            android:id="@+id/actionPlaylistFragmentToPlaylistCreationFragment"
+            app:destination="@id/playlistCreationFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_right"
+            app:popEnterAnim="@anim/slide_in_right"
+            app:popExitAnim="@anim/slide_out_right" />
+
+        <argument
+            android:name="playlistID"
+            app:argType="integer"
+            app:nullable="false" />
     </fragment>
 
     <!-- Фрагмент плеера -->
@@ -107,22 +154,27 @@
         <action
             android:id="@+id/action_playerFragment_to_playlistCreationFragment"
             app:destination="@id/playlistCreationFragment"
-            app:popEnterAnim="@anim/slide_in_up"
-            app:popExitAnim="@anim/slide_out_down"
             app:enterAnim="@anim/slide_in_up"
-            app:exitAnim="@anim/slide_out_down"/>
+            app:exitAnim="@anim/slide_out_down"
+            app:popEnterAnim="@anim/slide_in_up"
+            app:popExitAnim="@anim/slide_out_down" />
     </fragment>
 
     <!-- Фрагмент создания плейлиста -->
     <fragment
         android:id="@+id/playlistCreationFragment"
-        android:name="com.practicum.playlistmaker_ver2.playlist.presentation.PlaylistFragment"
+        android:name="com.practicum.playlistmaker_ver2.playlist_editor.presentation.PlaylistEditorFragment"
         android:label="Создание плейлиста"
-        tools:layout="@layout/playlist_editor"
+        app:enterAnim="@anim/slide_in_up"
+        app:exitAnim="@anim/slide_out_down"
         app:popEnterAnim="@anim/slide_in_up"
         app:popExitAnim="@anim/slide_out_down"
-        app:enterAnim="@anim/slide_in_up"
-        app:exitAnim="@anim/slide_out_down"/>
+        tools:layout="@layout/playlist_editor" >
+        <argument
+            android:name="playlistToEdit"
+            app:argType="com.practicum.playlistmaker_ver2.playlist_editor.domain.models.PlaylistEntityPresentation"
+            app:nullable="true" />
+    </fragment>
 
     <!-- Фрагмент настроек -->
     <fragment

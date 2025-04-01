@@ -173,6 +173,16 @@
         <item name="android:singleLine">true</item>
     </style>
 
+    <style name="PlaylistFragmentItem">
+
+        <item name="android:color">?attr/colorOnPrimary</item>
+        <item name="android:textSize">@dimen/playlistItemFontSizeMedium</item>
+        <item name="android:fontFamily">@font/ys_display_regular</item>
+        <item name="cornerSize">@dimen/playlistItemPlayerRoundedCorners</item>
+        <item name="android:ellipsize">end</item>
+        <item name="android:singleLine">true</item>
+    </style>
+
     <style name="PlaylistItemPlayerSmall" parent="PlaylistItemPlayer">
         <item name="android:textSize">@dimen/playlistItemPlayerFontSizeSmall</item>
     </style>
@@ -200,5 +210,29 @@
         <item name="cornerFamilyTopRight">rounded</item>
         <item name="cornerFamilyTopLeft">rounded</item>
         <item name="cornerSize">16dp</item>
+    </style>
+
+    <style name="playlistHeader">
+        <item name="android:textSize">@dimen/playlistItemFontSizeBig</item>
+        <item name="android:fontFamily">@font/ys_display_bold</item>
+        <item name="android:ellipsize">end</item>
+        <item name="android:singleLine">true</item>
+        <item name="android:textColor">#1A1B22</item>
+    </style>
+
+    <style name="playlistText">
+        <item name="android:textSize">@dimen/playlistItemFontSizePlaylistMedium</item>
+        <item name="android:fontFamily">@font/ys_display_regular</item>
+        <item name="android:ellipsize">end</item>
+        <item name="android:singleLine">true</item>
+        <item name="android:textColor">#1A1B22</item>
+    </style>
+
+    <style name="playlistFragment">
+        <item name="android:textSize">@dimen/playlistItemFontSizeMedium</item>
+        <item name="android:fontFamily">@font/ys_display_regular</item>
+        <item name="android:ellipsize">end</item>
+        <item name="android:singleLine">true</item>
+        <item name="android:textColor">?attr/colorOnPrimary</item>
     </style>
 </resources>

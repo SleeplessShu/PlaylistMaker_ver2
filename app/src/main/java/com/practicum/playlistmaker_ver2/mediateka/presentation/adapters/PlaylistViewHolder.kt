@@ -6,7 +6,8 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.practicum.playlistmaker_ver2.R
-import com.practicum.playlistmaker_ver2.playlist.domain.models.PlaylistEntityPresentation
+import com.practicum.playlistmaker_ver2.playlist_editor.domain.models.PlaylistEntityPresentation
+import com.practicum.playlistmaker_ver2.utils.PluralUtils
 
 class PlaylistViewHolder(itemView: View, ) : RecyclerView.ViewHolder(itemView) {
     private val playlistName: TextView = itemView.findViewById(R.id.tvPlaylistItemName)
@@ -17,9 +18,7 @@ class PlaylistViewHolder(itemView: View, ) : RecyclerView.ViewHolder(itemView) {
     fun bind(playlist: PlaylistEntityPresentation, onItemClick: (PlaylistEntityPresentation) -> Unit) {
         playlistImage.setImageURI(Uri.parse(playlist.image))
         playlistName.text = playlist.name
-        playlistTracksCount.text =itemView.context.resources.getQuantityString(
-            R.plurals.track_count, playlist.tracksCount, playlist.tracksCount
-        )
+        playlistTracksCount.text = PluralUtils.formatTrackCount(itemView.context, playlist.tracksCount)
         itemView.setOnClickListener { onItemClick(playlist) }
     }
 }

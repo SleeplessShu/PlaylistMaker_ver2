@@ -55,7 +55,7 @@
             android:layout_marginTop="@dimen/playlistMargin26"
             android:adjustViewBounds="true"
             android:contentDescription="@string/playlistImage"
-            android:scaleType="fitCenter"
+            android:scaleType="centerCrop"
             tools:src="@drawable/playlist_default_image"
             app:layout_constraintBottom_toTopOf="@id/frameName"
             app:layout_constraintDimensionRatio="H,1:1"

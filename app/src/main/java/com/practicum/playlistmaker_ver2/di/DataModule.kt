@@ -11,14 +11,14 @@ import com.practicum.playlistmaker_ver2.player.data.impl.LikedTracksRepositoryIm
 import com.practicum.playlistmaker_ver2.player.data.converters.TrackDbConverter
 import com.practicum.playlistmaker_ver2.player.data.LikedTracksDatabase
 import com.practicum.playlistmaker_ver2.player.domain.repositories.LikedTracksRepository
-import com.practicum.playlistmaker_ver2.playlist.data.repositories.PlaylistDatabase
+import com.practicum.playlistmaker_ver2.playlist_editor.data.repositories.PlaylistDatabase
 import com.practicum.playlistmaker_ver2.player.data.impl.ImageRepositoryImpl
 import com.practicum.playlistmaker_ver2.player.data.impl.PlayerRepositoryImpl
 import com.practicum.playlistmaker_ver2.player.domain.repositories.ImageRepository
 import com.practicum.playlistmaker_ver2.player.domain.repositories.PlayerRepository
-import com.practicum.playlistmaker_ver2.playlist.data.repositories.PlaylistRepositoryImpl
-import com.practicum.playlistmaker_ver2.playlist.domain.PlaylistRepository
-import com.practicum.playlistmaker_ver2.playlist.data.repositories.TracksInPlaylistsDatabase
+import com.practicum.playlistmaker_ver2.playlist_editor.data.repositories.PlaylistRepositoryImpl
+import com.practicum.playlistmaker_ver2.playlist_editor.domain.PlaylistRepository
+import com.practicum.playlistmaker_ver2.playlist_editor.data.repositories.TracksInPlaylistsDatabase
 
 import com.practicum.playlistmaker_ver2.search.data.dto.TracksRepositoryImpl
 import com.practicum.playlistmaker_ver2.search.data.network.ITunesApiService

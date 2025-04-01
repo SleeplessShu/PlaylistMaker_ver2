@@ -20,6 +20,7 @@ class TrackAdapter(
     private var viewType: Int = VIEW_TYPE_EMPTY,
     private val onRetry: (() -> Unit)? = null,
     private val onItemClick: (Track) -> Unit,
+    private val onItemLongClick: ((Track) -> Boolean)? = null,
     private val lifecycleOwner: LifecycleOwner
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
@@ -78,11 +79,8 @@ class TrackAdapter(
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         when (holder) {
             is ViewHolderTrack -> if (trackData.isNotEmpty() && position in trackData.indices) {
-                holder.bind(trackData[position], onItemClick)
-                holder.itemView.setOnClickListener {
-                    if (position < trackData.size) {
-                        onItemClick(trackData[position])
-                    }
+                holder.bind(trackData[position], onItemClick) { track ->
+                    onItemLongClick?.invoke(track) ?: false
                 }
             }
 

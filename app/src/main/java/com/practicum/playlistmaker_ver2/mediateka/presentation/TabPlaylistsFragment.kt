@@ -15,8 +15,10 @@ import com.practicum.playlistmaker_ver2.databinding.TabPlaylistDataBinding
 import com.practicum.playlistmaker_ver2.databinding.TabPlaylistFragmentBinding
 import com.practicum.playlistmaker_ver2.databinding.TabPlaylistsEmptyBinding
 import com.practicum.playlistmaker_ver2.mediateka.presentation.adapters.TabPlaylistAdapter
-import com.practicum.playlistmaker_ver2.playlist.domain.models.PlaylistEntityPresentation
-import com.practicum.playlistmaker_ver2.playlist.presentation.LayoutType
+import com.practicum.playlistmaker_ver2.player.ui.mappers.TrackToPlayerTrackMapper
+import com.practicum.playlistmaker_ver2.playlist_editor.domain.models.PlaylistEntityPresentation
+import com.practicum.playlistmaker_ver2.playlist_editor.presentation.LayoutType
+import com.practicum.playlistmaker_ver2.search.domain.models.Track
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 
@@ -90,7 +92,15 @@ class TabPlaylistsFragment : Fragment() {
     }
 
     private fun onPlaylistClick(playlist: PlaylistEntityPresentation) {
-        Toast.makeText(context, "clicked on playlist ${playlist}", Toast.LENGTH_SHORT).show()
+        openFragment(playlist.id)
+
+    }
+
+    private fun openFragment(playlistID: Int) {
+        val action = MediatekaFragmentDirections.actionMediatekaFragmentToPlaylistFragment(
+            playlistID
+        )
+        findNavController().navigate(action)
     }
 
     companion object {
